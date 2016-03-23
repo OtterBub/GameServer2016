@@ -16,6 +16,8 @@
     <ClCompile Include="Source\Object\World.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ClientThread.cpp" />
+    <ClCompile Include="Source\Common.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Object\Object.h">
@@ -34,5 +36,6 @@
     <ClInclude Include="Source\Object\World.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ClientThread.h" />
   </ItemGroup>
 </Project>

@@ -11,11 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ClientThread.cpp" />
+    <ClCompile Include="Source\Common.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Object\Player.cpp" />
     <ClCompile Include="Source\Object\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ClientThread.h" />
     <ClInclude Include="Source\Common.h" />
     <ClInclude Include="Source\Math\Math.h" />
     <ClInclude Include="Source\Object\Object3D.h" />
@@ -27,20 +30,21 @@
     <ProjectGuid>{19D9AB6E-92A8-43EC-BB12-65F59653ACA2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>GameServer</RootNamespace>
+    <ProjectName>GameClient</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">

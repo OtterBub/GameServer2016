@@ -32,6 +32,7 @@ int main()
 {
 	glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH );
 	glutInitWindowSize( 800, 600 );
+	glutInitWindowPosition( 100, 100 );
 	glutCreateWindow( "OpenGL Study" );
 	glutDisplayFunc( Display );
 	glutReshapeFunc( Reshape );
@@ -46,6 +47,24 @@ int main()
 
 	g_World.Start();
 	g_Player.Start();
+
+	HANDLE hThread;
+
+	char SERVERIP[20];
+	printf( "서버 ip 주소를 입력하시오: " );
+	scanf( "%s", SERVERIP );
+
+	HANDLE hLogInComplete;
+
+	hLogInComplete = CreateEvent( NULL, TRUE, FALSE, NULL );
+	if( hLogInComplete == NULL )	return -1;
+
+
+	hThread = CreateThread( NULL, 0, ClientMain, &SERVERIP, 0, NULL );
+
+	CloseHandle( hLogInComplete );
+
+	WaitForSingleObject(hLogInComplete, INFINITE);
 
 	glutMainLoop();
 
