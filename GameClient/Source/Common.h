@@ -8,7 +8,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
-#include <gl\glut.h>
+#include <glut.h>
 
 #include "Math\Math.h"
 #include "PacketStruct.h"
