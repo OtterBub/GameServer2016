@@ -25,6 +25,7 @@
     <ClInclude Include="Source\Object\Object.h" />
     <ClInclude Include="Source\Object\Player.h" />
     <ClInclude Include="Source\Object\World.h" />
+    <ClInclude Include="Source\PacketStruct.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{19D9AB6E-92A8-43EC-BB12-65F59653ACA2}</ProjectGuid>

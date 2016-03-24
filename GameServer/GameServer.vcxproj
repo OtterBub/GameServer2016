@@ -12,6 +12,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Thread\Thread.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Thread\PacketStruct.h" />
+    <ClInclude Include="Source\Thread\Thread.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C7A1E937-04E8-4353-B04C-558C5BDBBA77}</ProjectGuid>

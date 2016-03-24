@@ -1,4 +1,5 @@
 #include "Common.h"
+#include "ClientThread.h"
 #include "Object\World.h"
 #include "Object\Player.h"
 
@@ -26,7 +27,7 @@ GLvoid MouseMotion( int x, int y );
 GLvoid Timer( int val );
 
 static World g_World;
-static Player g_Player;
+Player g_Player;
 
 int main()
 {
@@ -105,31 +106,42 @@ GLvoid KeyBoardUp( unsigned char key, int x, int y )
 GLvoid SpecialKeyBoard( int key, int x, int y )
 {
 	Vector2i currentPos = g_Player.GetWorldPos();
+	int movedir = 0;
 	switch( key )
 	{
 		case 100: // left
+			movedir = MOVE_LEFT;
 			currentPos.x --;
 			if( currentPos.x < 0 )
 				currentPos.x = 0;
 			break;
 		case 101: // up
+			movedir = MOVE_UP;
 			currentPos.y --;
 			if( currentPos.y < 0 )
 				currentPos.y = 0;
 			break;
 		case 102: // right
+			movedir = MOVE_RIGHT;
 			currentPos.x ++;
 			if( currentPos.x > 7 )
 				currentPos.x = 7;
 			break;
 		case 103: // down
+			movedir = MOVE_DOWN;
 			currentPos.y ++;
 			if( currentPos.y > 7 )
 				currentPos.y = 7;
 			break;
 	}
 
-	g_Player.SetWorldposition( currentPos );
+	if( movedir != 0 )
+	{
+		if( serverSock != NULL )
+		send(serverSock, (char*)&movedir, sizeof(movedir), 0);
+	}
+
+	//g_Player.SetWorldposition( currentPos );
 }
 GLvoid SpecialKeyBoardUp( int key, int x, int y )
 {
