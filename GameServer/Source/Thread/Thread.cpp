@@ -134,18 +134,31 @@ DWORD WINAPI PlayerSoketThread(LPVOID arg)
 		else {
 
 			//static int CHAR_SPEED = 1;
-
+			
+			// Get Key Input by Client
 			if(dir & MOVE_RIGHT){
-				printf("RIGHT");
+				g_playerPos.x++;
+				if( g_playerPos.x > 7 )
+					g_playerPos.x = 7;
+				//printf("RIGHT");
 			}
 			if(dir & MOVE_LEFT){
-				printf("LEFT");
+				g_playerPos.x--;
+				if( g_playerPos.x < 0 )
+					g_playerPos.x = 0;
+				//printf("LEFT");
 			}
 			if(dir & MOVE_UP){
-				printf("UP");
+				g_playerPos.y--;
+				if( g_playerPos.y < 0 )
+					g_playerPos.y = 0;
+				//printf("UP");
 			}
 			if(dir & MOVE_DOWN){
-				printf("DOWN");
+				g_playerPos.y++;
+				if( g_playerPos.y > 7 )
+					g_playerPos.y = 7;
+				//printf("DOWN");
 			}
 		}
 	}
@@ -168,6 +181,7 @@ DWORD WINAPI WorldDataBroadCastThread(LPVOID arg)
 	while( 1 ){
 		if( g_playerSocket != NULL )
 		{
+			// Send Player Position Information to Client
 			retval = send( g_playerSocket, (char*)&g_playerPos, sizeof( g_playerPos ), 0 );
 			if( retval == SOCKET_ERROR ) {
 				if( WSAGetLastError() != WSAEWOULDBLOCK ) {

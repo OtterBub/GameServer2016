@@ -23,8 +23,10 @@ DWORD WINAPI ClientMain(LPVOID arg)
 	serveraddr.sin_addr.s_addr = inet_addr( SERVERIP );
 	serveraddr.sin_port = htons( SERVERPORT );
 	retval = connect( serverSock, ( SOCKADDR * )&serveraddr, sizeof( serveraddr ) );
-	if( retval == SOCKET_ERROR )
+	if( retval == SOCKET_ERROR ){
 		err_quit( "connect()" );
+		exit(0);
+	}
 	else {
 		printf("Login \n");
 		_sleep(1000);
@@ -36,6 +38,7 @@ DWORD WINAPI ClientMain(LPVOID arg)
 	ZeroMemory( &pos, sizeof(pos) );
 
 	while( 1 ){
+		// Get Player Position Information by Server
 		retval = recvn( serverSock, (char*)&pos, sizeof( pos ), 0 );
 		if( retval == SOCKET_ERROR ) {
 			err_display( "recv()" );
@@ -53,6 +56,6 @@ DWORD WINAPI ClientMain(LPVOID arg)
 	serverSock = NULL;
 
 	WSACleanup();
-
+	exit(0);
 	return 0;
 }

@@ -137,6 +137,7 @@ GLvoid SpecialKeyBoard( int key, int x, int y )
 
 	if( movedir != 0 )
 	{
+		// Send Player Key Input to Server
 		if( serverSock != NULL )
 		send(serverSock, (char*)&movedir, sizeof(movedir), 0);
 	}
