@@ -1,6 +1,7 @@
 #include "ClientThread.h"
 
 SOCKET serverSock;
+int playerID;
 
 DWORD WINAPI ClientMain(LPVOID arg)
 {	
@@ -34,12 +35,20 @@ DWORD WINAPI ClientMain(LPVOID arg)
 
 	char readString[BUFSIZE+1];
 
-	playerPos pos;
-	ZeroMemory( &pos, sizeof(pos) );
+	ZeroMemory( &g_worldData, sizeof(g_worldData) );
+
+	retval = recvn( serverSock, (char*)&playerID, sizeof( playerID ), 0 );
+	if( retval == SOCKET_ERROR ) {
+		err_display( "recv()" );
+	}
+	else
+	{
+		printf("Player ID %d\n", playerID);
+	}
 
 	while( 1 ){
 		// Get Player Position Information by Server
-		retval = recvn( serverSock, (char*)&pos, sizeof( pos ), 0 );
+		retval = recvn( serverSock, (char*)&g_worldData, sizeof( g_worldData ), 0 );
 		if( retval == SOCKET_ERROR ) {
 			err_display( "recv()" );
 			break;
@@ -47,10 +56,10 @@ DWORD WINAPI ClientMain(LPVOID arg)
 		else if( retval == 0 )
 			break;
 
-		Vector2i setPos;
-		setPos.x = pos.x;
-		setPos.y = pos.y;
-		g_Player.SetWorldposition( setPos );
+		/*Vector2i setPos;
+		setPos.x = g_worldData.playerInfo[playerID].pos.x;
+		setPos.y = g_worldData.playerInfo[playerID].pos.y;
+		g_Player[playerID].SetWorldposition( setPos );*/
 	}
 	closesocket( serverSock );
 	serverSock = NULL;

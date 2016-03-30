@@ -27,7 +27,8 @@ GLvoid MouseMotion( int x, int y );
 GLvoid Timer( int val );
 
 static World g_World;
-Player g_Player;
+Player g_Player[20];
+WorldData g_worldData;
 
 int main()
 {
@@ -47,7 +48,11 @@ int main()
 	srand( (unsigned int)time( NULL ) );
 
 	g_World.Start();
-	g_Player.Start();
+
+	for( int i = 0; i < 20; i++ )
+	{
+		g_Player[i].Start();
+	}
 
 	HANDLE hThread;
 
@@ -83,7 +88,14 @@ GLvoid Display( GLvoid )
 	glEnable( GL_DEPTH_TEST );
 
 	g_World.Draw();
-	g_Player.Draw();
+
+	for( int i = 0; i < 20; i++ )
+	{
+		if( g_worldData.playerInfo[i].login )
+		{
+			g_Player[i].Draw();
+		}		
+	}
 
 	glutSwapBuffers();
 }
@@ -105,33 +117,20 @@ GLvoid KeyBoardUp( unsigned char key, int x, int y )
 }
 GLvoid SpecialKeyBoard( int key, int x, int y )
 {
-	Vector2i currentPos = g_Player.GetWorldPos();
 	int movedir = 0;
 	switch( key )
 	{
 		case 100: // left
 			movedir = MOVE_LEFT;
-			currentPos.x --;
-			if( currentPos.x < 0 )
-				currentPos.x = 0;
 			break;
 		case 101: // up
 			movedir = MOVE_UP;
-			currentPos.y --;
-			if( currentPos.y < 0 )
-				currentPos.y = 0;
 			break;
 		case 102: // right
 			movedir = MOVE_RIGHT;
-			currentPos.x ++;
-			if( currentPos.x > 7 )
-				currentPos.x = 7;
 			break;
 		case 103: // down
 			movedir = MOVE_DOWN;
-			currentPos.y ++;
-			if( currentPos.y > 7 )
-				currentPos.y = 7;
 			break;
 	}
 
@@ -159,8 +158,18 @@ GLvoid Timer( int val )
 	static float deltaTime = 0;
 	static float currentTime = clock();
 
-	Vector3f currentWorldPos = g_World.GetWorldPosition( g_Player.GetWorldPos() );
-	g_Player.SetPosition( currentWorldPos );
+	for( int i = 0; i < 20; i++ )
+	{
+		if( g_worldData.playerInfo[i].login )
+		{
+			Vector3f worldPos;
+			Vector2i playerPos;
+			playerPos.x = g_worldData.playerInfo[i].pos.x;
+			playerPos.y = g_worldData.playerInfo[i].pos.y;
+			worldPos = g_World.GetWorldPosition( playerPos );
+			g_Player[i].SetPosition( worldPos );
+		}
+	}
 
 	glutTimerFunc( 3, Timer, 0 );
 	glutPostRedisplay();

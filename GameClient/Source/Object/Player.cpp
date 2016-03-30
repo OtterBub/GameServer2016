@@ -39,6 +39,33 @@ void Player::Draw()
 	glPopMatrix();
 }
 
+void Player::Draw( int x, int y )
+{
+	Vector2i pos;
+	pos.x = x;
+	pos.y = y;
+	SetWorldposition( pos );
+	glPushMatrix();
+	{
+		mPosition.y = 9;
+		glTranslatef( mPosition.x, mPosition.y, mPosition.z );
+		glColor4f( 1, 1, 1, 1 );
+		glutSolidCube( 10 );
+		glColor4f( 0, 0, 0, 0 );
+		glutWireCube( 10.1 );
+
+		float shadowHalf = 10 / 2.f;
+		glColor4f( 0, 0, 0, 1.0 );
+		glBegin( GL_QUADS );
+		glVertex3f( shadowHalf, -mPosition.y + 0.5, -shadowHalf );
+		glVertex3f( -shadowHalf, -mPosition.y + 0.5, -shadowHalf );
+		glVertex3f( -shadowHalf, -mPosition.y + 0.5, shadowHalf );
+		glVertex3f( shadowHalf, -mPosition.y + 0.5, shadowHalf );
+		glEnd();
+	}
+	glPopMatrix();
+}
+
 void Player::SetPosition( Vector3f pos )
 {
 	mPosition = pos;
@@ -47,6 +74,11 @@ void Player::SetPosition( Vector3f pos )
 void Player::SetWorldposition( Vector2i pos )
 {
 	mWorldPos = pos;
+}
+
+void Player::SetPlayerID( int id )
+{
+	mID = id;
 }
 
 Vector2i Player::GetWorldPos()

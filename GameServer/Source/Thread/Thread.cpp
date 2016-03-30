@@ -1,7 +1,15 @@
 #include "Thread.h"
 
+struct clientListInfo
+{
+	SOCKET* cliensSock;
+	bool use;
+};
+clientListInfo clientAddList[50] = {0,};
+
 playerPos g_playerPos;
 SOCKET g_playerSocket;
+WorldData g_worldData;
 
 // 소켓 함수 오류 출력 후 종료
 void err_quit(char* msg)
@@ -107,6 +115,30 @@ DWORD WINAPI CreatePlayerSocket(LPVOID arg)
 DWORD WINAPI PlayerSoketThread(LPVOID arg)
 {
 	SOCKET client_sock = (SOCKET)arg;
+	int playerIndex;
+	int retval;
+
+	for( int i = 0; i < 50; i++ )
+	{
+		if( clientAddList[i].use == false )
+		{
+
+			retval = send( client_sock, (char*)&i, sizeof( i ), 0 );
+			if( retval == SOCKET_ERROR ) {
+				if( WSAGetLastError() != WSAEWOULDBLOCK ) {
+					err_display( "send()" );
+					continue;
+				}
+			}
+
+			clientAddList[i].use = true;
+			clientAddList[i].cliensSock = &client_sock;
+			playerIndex = i;
+			break;
+		}
+	}
+	g_worldData.playerInfo[playerIndex].Id = playerIndex;
+	g_worldData.playerInfo[playerIndex].login = true;
 
 	BOOL bPotVal = TRUE;
 	int bOptLen = sizeof(BOOL);
@@ -116,7 +148,6 @@ DWORD WINAPI PlayerSoketThread(LPVOID arg)
 	char buf[BUFSIZE + 1];
 	SOCKADDR_IN clientaddr;
 	int addrlen;
-	int retval;
 
 	addrlen = sizeof(clientaddr);
 	getpeername(client_sock, (SOCKADDR *)&clientaddr, &addrlen);
@@ -137,27 +168,27 @@ DWORD WINAPI PlayerSoketThread(LPVOID arg)
 			
 			// Get Key Input by Client
 			if(dir & MOVE_RIGHT){
-				g_playerPos.x++;
-				if( g_playerPos.x > 7 )
-					g_playerPos.x = 7;
+				g_worldData.playerInfo[playerIndex].pos.x++;
+				if( g_worldData.playerInfo[playerIndex].pos.x > 7 )
+					g_worldData.playerInfo[playerIndex].pos.x = 7;
 				//printf("RIGHT");
 			}
 			if(dir & MOVE_LEFT){
-				g_playerPos.x--;
-				if( g_playerPos.x < 0 )
-					g_playerPos.x = 0;
+				g_worldData.playerInfo[playerIndex].pos.x--;
+				if( g_worldData.playerInfo[playerIndex].pos.x < 0 )
+					g_worldData.playerInfo[playerIndex].pos.x = 0;
 				//printf("LEFT");
 			}
 			if(dir & MOVE_UP){
-				g_playerPos.y--;
-				if( g_playerPos.y < 0 )
-					g_playerPos.y = 0;
+				g_worldData.playerInfo[playerIndex].pos.y--;
+				if( g_worldData.playerInfo[playerIndex].pos.y < 0 )
+					g_worldData.playerInfo[playerIndex].pos.y = 0;
 				//printf("UP");
 			}
 			if(dir & MOVE_DOWN){
-				g_playerPos.y++;
-				if( g_playerPos.y > 7 )
-					g_playerPos.y = 7;
+				g_worldData.playerInfo[playerIndex].pos.y++;
+				if( g_worldData.playerInfo[playerIndex].pos.y > 7 )
+					g_worldData.playerInfo[playerIndex].pos.y = 7;
 				//printf("DOWN");
 			}
 		}
@@ -171,6 +202,12 @@ DWORD WINAPI PlayerSoketThread(LPVOID arg)
 	closesocket(client_sock);
 	g_playerSocket = NULL;
 
+	clientAddList[playerIndex].cliensSock = NULL;
+	clientAddList[playerIndex].use = false;
+
+	g_worldData.playerInfo[playerIndex].Id = playerIndex;
+	g_worldData.playerInfo[playerIndex].login = false;
+
 	return 0;
 }
 
@@ -182,11 +219,15 @@ DWORD WINAPI WorldDataBroadCastThread(LPVOID arg)
 		if( g_playerSocket != NULL )
 		{
 			// Send Player Position Information to Client
-			retval = send( g_playerSocket, (char*)&g_playerPos, sizeof( g_playerPos ), 0 );
-			if( retval == SOCKET_ERROR ) {
-				if( WSAGetLastError() != WSAEWOULDBLOCK ) {
-					err_display( "send()" );
-					continue;
+			for( int i = 0; i < 20; i++ ){
+				if( clientAddList[i].use ) {
+					retval = send( *( clientAddList[i].cliensSock ), (char*)&g_worldData, sizeof( WorldData ), 0 );
+					if( retval == SOCKET_ERROR ) {
+						if( WSAGetLastError() != WSAEWOULDBLOCK ) {
+							err_display( "send()" );
+							continue;
+						}
+					}
 				}
 			}
 			//printf("complete send packet %d\n", count++);

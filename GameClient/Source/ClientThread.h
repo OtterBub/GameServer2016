@@ -9,7 +9,9 @@
 #define BUFSIZE 512
 
 extern SOCKET serverSock;
-extern Player g_Player;
+extern Player g_Player[20];
+extern WorldData g_worldData;
+extern int playerID;
 
 DWORD WINAPI ClientMain(LPVOID arg);
 
