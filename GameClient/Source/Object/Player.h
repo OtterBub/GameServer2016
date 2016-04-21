@@ -16,6 +16,7 @@ public:
 	void SetWorldposition( Vector2i pos );
 	void SetPlayerID( int id );
 	Vector2i GetWorldPos();
+	Vector3f GetPlayerPos();
 
 private:
 	Vector3f mPosition;

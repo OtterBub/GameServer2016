@@ -3,6 +3,8 @@
 #include "Object\World.h"
 #include "Object\Player.h"
 
+
+
 void drawStrokeText( char *string, float x, float y, float z, float scale ){
 	char *c;
 	glPushMatrix();
@@ -30,6 +32,12 @@ static World g_World;
 Player g_Player[20];
 WorldData g_worldData;
 
+Vector3f g_playerCameraPos;
+Vector3f g_playerPos;
+
+float distCameraZ = 130;
+float distCameraY = 100;
+
 int main()
 {
 	glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH );
@@ -48,11 +56,18 @@ int main()
 	srand( (unsigned int)time( NULL ) );
 
 	g_World.Start();
-
 	for( int i = 0; i < 20; i++ )
 	{
 		g_Player[i].Start();
 	}
+
+	g_playerCameraPos.x = 70;
+	g_playerCameraPos.y = 100;
+	g_playerCameraPos.z = 200;
+
+	g_playerPos.x = 70;
+	g_playerPos.y = 0;
+	g_playerPos.z = 70;
 
 	HANDLE hThread;
 
@@ -83,7 +98,11 @@ GLvoid Display( GLvoid )
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	glLoadIdentity();
-	gluLookAt( 70, 100, 200, 70, 0, 70, 0, 1, 0 );
+	gluLookAt(g_playerCameraPos.x, g_playerCameraPos.y, g_playerCameraPos.z,
+		g_playerPos.x, g_playerPos.y, g_playerPos.z,
+		0, 1, 0);
+	
+
 
 	glEnable( GL_DEPTH_TEST );
 
@@ -168,6 +187,14 @@ GLvoid Timer( int val )
 			playerPos.y = g_worldData.playerInfo[i].pos.y;
 			worldPos = g_World.GetWorldPosition( playerPos );
 			g_Player[i].SetPosition( worldPos );
+
+			if (i == playerID)
+			{
+				g_playerPos =  g_Player[playerID].GetPlayerPos();
+				g_playerCameraPos = g_playerPos;
+				g_playerCameraPos.y = distCameraY;
+				g_playerCameraPos.z += distCameraZ;
+			}
 		}
 	}
 

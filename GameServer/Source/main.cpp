@@ -24,7 +24,7 @@ int main(int argc, char** argv){
 
 	while(1)
 	{
-		Sleep(0);
+		Sleep(5000);
 	}
 
 	WSACleanup();

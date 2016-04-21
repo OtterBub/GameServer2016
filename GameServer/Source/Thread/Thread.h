@@ -10,6 +10,7 @@
 
 #define BUFSIZE 1024
 #define SERVERPOTR 9000
+#define WORLDSIZE 100
 
 // 소켓 함수 오류 출력 후 종료
 void err_quit(char* msg);

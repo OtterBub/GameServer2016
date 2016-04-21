@@ -85,3 +85,8 @@ Vector2i Player::GetWorldPos()
 {
 	return mWorldPos;
 }
+
+Vector3f Player::GetPlayerPos()
+{
+	return mPosition;
+}

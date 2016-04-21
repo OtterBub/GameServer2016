@@ -1,7 +1,7 @@
 #include "ClientThread.h"
 
 SOCKET serverSock;
-int playerID;
+int playerID = -1;
 
 DWORD WINAPI ClientMain(LPVOID arg)
 {	

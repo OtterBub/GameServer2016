@@ -154,7 +154,7 @@ DWORD WINAPI PlayerSoketThread(LPVOID arg)
 
 	while(1){
 		int dir;
-		retval = recv(client_sock, (char*)&dir, sizeof(dir), 0);
+		retval = recvn(client_sock, (char*)&dir, sizeof(dir), 0);
 		if(retval == SOCKET_ERROR){
 			if(WSAGetLastError() != WSAEWOULDBLOCK) {
 				err_display("recv()");
@@ -169,8 +169,8 @@ DWORD WINAPI PlayerSoketThread(LPVOID arg)
 			// Get Key Input by Client
 			if(dir & MOVE_RIGHT){
 				g_worldData.playerInfo[playerIndex].pos.x++;
-				if( g_worldData.playerInfo[playerIndex].pos.x > 7 )
-					g_worldData.playerInfo[playerIndex].pos.x = 7;
+				if( g_worldData.playerInfo[playerIndex].pos.x > WORLDSIZE)
+					g_worldData.playerInfo[playerIndex].pos.x = WORLDSIZE;
 				//printf("RIGHT");
 			}
 			if(dir & MOVE_LEFT){
@@ -187,8 +187,8 @@ DWORD WINAPI PlayerSoketThread(LPVOID arg)
 			}
 			if(dir & MOVE_DOWN){
 				g_worldData.playerInfo[playerIndex].pos.y++;
-				if( g_worldData.playerInfo[playerIndex].pos.y > 7 )
-					g_worldData.playerInfo[playerIndex].pos.y = 7;
+				if( g_worldData.playerInfo[playerIndex].pos.y > WORLDSIZE)
+					g_worldData.playerInfo[playerIndex].pos.y = WORLDSIZE;
 				//printf("DOWN");
 			}
 		}
@@ -231,7 +231,7 @@ DWORD WINAPI WorldDataBroadCastThread(LPVOID arg)
 				}
 			}
 			//printf("complete send packet %d\n", count++);
-			_sleep( 2 );
+			_sleep( 100 );
 		}
 	}
 	return 0;

@@ -4,12 +4,36 @@
 #define TYPE_LOGIN 1
 #define TYPE_WORLD 2
 
+#pragma pack (push, 1)
+
 enum moveDir {
 	MOVE_RIGHT = 0x0001,
 	MOVE_LEFT = 0x0002,
 	MOVE_UP = 0x0004 ,
 	MOVE_DOWN = 0x0008
 };
+
+struct packet_header
+{
+	BYTE size;
+	BYTE type;
+};
+
+// client to server
+struct cs_packet_move
+{
+	packet_header header;
+	unsigned int moveDir;
+};
+
+// server to client
+struct sc_packet_plsyer_pos
+{
+	packet_header header;
+	int x, y;
+};
+
+
 
 struct playerPos
 {
@@ -27,5 +51,7 @@ struct WorldData {
 	char type;
 	playerInfo playerInfo[20];
 };
+
+#pragma pack (pop)
 
 #endif 
