@@ -4,8 +4,9 @@ struct clientListInfo
 {
 	SOCKET* cliensSock;
 	bool use;
+	WorldData worldData;
 };
-clientListInfo clientAddList[50] = {0,};
+clientListInfo clientAddList[MAX_VIEW_USER] = {0,};
 
 playerPos g_playerPos;
 SOCKET g_playerSocket;
@@ -60,11 +61,32 @@ int recvn(SOCKET s, char *buf, int len, int flags)
 
 		if (-1 == left)
 			left = ptr[0];
-		printf("%d\n", left);
+		//printf("%d\n", left);
 		left -= received;
 		ptr += received;
 	}
 	return 0;
+}
+
+bool RadiusCheck(playerPos apos, playerPos bpos, float Radius)
+{
+	float dist =
+		(apos.x - bpos.x) * (apos.x - bpos.x)
+		+
+		(apos.y - bpos.y) * (apos.y - bpos.y);
+
+	return (dist <= (Radius * Radius));
+}
+
+bool SquareCheck(playerPos pos, playerPos target, float halfsize)
+{
+	bool result =
+		(pos.x + halfsize >= target.x) &&
+		(pos.x - halfsize <= target.x) &&
+		(pos.y + halfsize >= target.y) &&
+		(pos.y - halfsize <= target.y);
+
+	return result;
 }
 
 DWORD WINAPI CreatePlayerSocket(LPVOID arg)
@@ -147,6 +169,27 @@ DWORD WINAPI PlayerSoketThread(LPVOID arg)
 	}
 	g_worldData.playerInfo[playerIndex].Id = playerIndex;
 	g_worldData.playerInfo[playerIndex].login = true;
+	g_worldData.playerInfo[playerIndex].view = true;
+	g_worldData.playerInfo[playerIndex].pos.x = 3;
+	g_worldData.playerInfo[playerIndex].pos.y = 3;
+
+	clientAddList[playerIndex].worldData = g_worldData;
+
+	for (int i = 0; i < MAX_VIEW_USER; ++i)
+	{
+		if (i == playerIndex) continue;
+
+		clientAddList[i].worldData.playerInfo[playerIndex] = g_worldData.playerInfo[playerIndex];
+		if (SquareCheck(g_worldData.playerInfo[playerIndex].pos, g_worldData.playerInfo[i].pos, 3)) {
+			clientAddList[playerIndex].worldData.playerInfo[i].view = true;
+			clientAddList[i].worldData.playerInfo[playerIndex].view = true;
+		}
+		else {
+			clientAddList[playerIndex].worldData.playerInfo[i].view = false;
+			clientAddList[i].worldData.playerInfo[playerIndex].view = false;
+		}
+	}
+	clientAddList[playerIndex].worldData.playerInfo[playerIndex].view = true;
 
 	BOOL bPotVal = TRUE;
 	int bOptLen = sizeof(BOOL);
@@ -173,41 +216,49 @@ DWORD WINAPI PlayerSoketThread(LPVOID arg)
 		switch (buffer[1])
 		{
 		case CS_TYPE_MOVE:
-			printf( "move\n" );
+			cs_packet_move* move_packet = reinterpret_cast<cs_packet_move*>(buffer);
+			unsigned int dir = move_packet->moveDir;
+
+			// Get Key Input by Client
+			if (dir & MOVE_RIGHT) {
+				g_worldData.playerInfo[playerIndex].pos.x++;
+				if (g_worldData.playerInfo[playerIndex].pos.x >= WORLDSIZE)
+					g_worldData.playerInfo[playerIndex].pos.x = WORLDSIZE - 1;
+				//printf("RIGHT");
+			}
+			if (dir & MOVE_LEFT) {
+				g_worldData.playerInfo[playerIndex].pos.x--;
+				if (g_worldData.playerInfo[playerIndex].pos.x < 0)
+					g_worldData.playerInfo[playerIndex].pos.x = 0;
+				//printf("LEFT");
+			}
+			if (dir & MOVE_UP) {
+				g_worldData.playerInfo[playerIndex].pos.y--;
+				if (g_worldData.playerInfo[playerIndex].pos.y < 0)
+					g_worldData.playerInfo[playerIndex].pos.y = 0;
+				//printf("UP");
+			}
+			if (dir & MOVE_DOWN) {
+				g_worldData.playerInfo[playerIndex].pos.y++;
+				if (g_worldData.playerInfo[playerIndex].pos.y >= WORLDSIZE)
+					g_worldData.playerInfo[playerIndex].pos.y = WORLDSIZE - 1;
+				//printf("DOWN");
+			}
+			clientAddList[playerIndex].worldData = g_worldData;
+			for (int i = 0; i < MAX_VIEW_USER; ++i)
+			{
+				clientAddList[i].worldData.playerInfo[playerIndex].pos = g_worldData.playerInfo[playerIndex].pos;
+				if (SquareCheck(g_worldData.playerInfo[playerIndex].pos, g_worldData.playerInfo[i].pos, 3)) {
+					clientAddList[playerIndex].worldData.playerInfo[i].view = true;
+					clientAddList[i].worldData.playerInfo[playerIndex].view = true;
+				}
+				else {
+					clientAddList[playerIndex].worldData.playerInfo[i].view = false;
+					clientAddList[i].worldData.playerInfo[playerIndex].view = false;
+				}
+			}
 			break;
 		}
-
-		//else 
-		//{
-
-		//	//static int CHAR_SPEED = 1;
-		//	
-		//	// Get Key Input by Client
-		//	if(dir & MOVE_RIGHT){
-		//		g_worldData.playerInfo[playerIndex].pos.x++;
-		//		if( g_worldData.playerInfo[playerIndex].pos.x > WORLDSIZE)
-		//			g_worldData.playerInfo[playerIndex].pos.x = WORLDSIZE;
-		//		//printf("RIGHT");
-		//	}
-		//	if(dir & MOVE_LEFT){
-		//		g_worldData.playerInfo[playerIndex].pos.x--;
-		//		if( g_worldData.playerInfo[playerIndex].pos.x < 0 )
-		//			g_worldData.playerInfo[playerIndex].pos.x = 0;
-		//		//printf("LEFT");
-		//	}
-		//	if(dir & MOVE_UP){
-		//		g_worldData.playerInfo[playerIndex].pos.y--;
-		//		if( g_worldData.playerInfo[playerIndex].pos.y < 0 )
-		//			g_worldData.playerInfo[playerIndex].pos.y = 0;
-		//		//printf("UP");
-		//	}
-		//	if(dir & MOVE_DOWN){
-		//		g_worldData.playerInfo[playerIndex].pos.y++;
-		//		if( g_worldData.playerInfo[playerIndex].pos.y > WORLDSIZE)
-		//			g_worldData.playerInfo[playerIndex].pos.y = WORLDSIZE;
-		//		//printf("DOWN");
-		//	}
-		//}
 	}
 
 	/*WaitForSingleObject(hLogInOutEvent, INFINITE);
@@ -223,7 +274,7 @@ DWORD WINAPI PlayerSoketThread(LPVOID arg)
 
 	g_worldData.playerInfo[playerIndex].Id = playerIndex;
 	g_worldData.playerInfo[playerIndex].login = false;
-
+	g_worldData.playerInfo[playerIndex].view = false;
 	return 0;
 }
 
@@ -235,9 +286,9 @@ DWORD WINAPI WorldDataBroadCastThread(LPVOID arg)
 		if( g_playerSocket != NULL )
 		{
 			// Send Player Position Information to Client
-			for( int i = 0; i < 20; i++ ){
+			for( int i = 0; i < MAX_VIEW_USER; i++ ){
 				if( clientAddList[i].use ) {
-					retval = send( *( clientAddList[i].cliensSock ), (char*)&g_worldData, sizeof( WorldData ), 0 );
+					retval = send( *( clientAddList[i].cliensSock ), (char*)&clientAddList[i].worldData, sizeof( WorldData ), 0 );
 					if( retval == SOCKET_ERROR ) {
 						if( WSAGetLastError() != WSAEWOULDBLOCK ) {
 							err_display( "send()" );

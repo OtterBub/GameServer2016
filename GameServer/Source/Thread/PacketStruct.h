@@ -3,6 +3,8 @@
 
 #define CS_TYPE_MOVE 1
 
+#define MAX_VIEW_USER 20
+
 #pragma pack (push, 1)
 
 enum moveDir {
@@ -32,8 +34,6 @@ struct sc_packet_plsyer_pos
 	int x, y;
 };
 
-
-
 struct playerPos
 {
 	int x, y;
@@ -43,12 +43,13 @@ struct playerInfo
 {
 	int Id;
 	bool login;
+	bool view;
 	playerPos pos;
 };
 
 struct WorldData {
 	char type;
-	playerInfo playerInfo[20];
+	playerInfo playerInfo[MAX_VIEW_USER];
 };
 
 #pragma pack (pop)

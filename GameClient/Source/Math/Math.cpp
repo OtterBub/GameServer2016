@@ -9,3 +9,14 @@ bool RadiusCheck(Vector2i apos, Vector2i bpos, float Radius)
 
 	return (dist <= (Radius * Radius));
 }
+
+bool SquareCheck(Vector2i pos, Vector2i target, float halfsize)
+{
+	bool result =
+		(pos.x + halfsize >= target.x) &&
+		(pos.x - halfsize <= target.x) &&
+		(pos.y + halfsize >= target.y) &&
+		(pos.y - halfsize <= target.y);
+
+	return result;
+}

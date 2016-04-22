@@ -23,5 +23,6 @@ public:
 typedef Vector3<float> Vector3f;
 
 bool RadiusCheck(Vector2i apos, Vector2i bpos, float Radius);
+bool SquareCheck(Vector2i pos, Vector2i target, float halfsize);
 
 #endif 

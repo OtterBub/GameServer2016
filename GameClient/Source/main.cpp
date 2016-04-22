@@ -10,10 +10,10 @@ void drawStrokeText(char *string, float x, float y, float z, float scale) {
 	glPushMatrix();
 	{
 		glTranslatef(x, y, z);
-		glColor3f(1.0, 1.0, 1.0);
+		//glColor3f(1.0, 1.0, 1.0);
 		glScalef(scale, scale, scale);
 		for (c = string; *c != '\0'; c++)
-			glutStrokeCharacter(GLUT_STROKE_ROMAN, *c);
+			glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, *c);
 	}
 	glPopMatrix();
 }
@@ -102,19 +102,41 @@ GLvoid Display(GLvoid)
 		g_playerPos.x, g_playerPos.y, g_playerPos.z,
 		0, 1, 0);
 
-
-
 	glEnable(GL_DEPTH_TEST);
 
-	g_World.Draw();
+	
+	Vector2i playerPos = { 0, };
+	if (playerID != -1)
+	{
+		
+		playerPos.x = g_worldData.playerInfo[playerID].pos.x;
+		playerPos.y = g_worldData.playerInfo[playerID].pos.y;
+		g_World.Draw(playerPos, 5);
+	}
+	else
+		g_World.Draw();
 
 	for (int i = 0; i < 20; i++)
 	{
-		if (g_worldData.playerInfo[i].login)
+		if (g_worldData.playerInfo[i].view && g_worldData.playerInfo[i].login)
 		{
-			g_Player[i].Draw();
+			g_Player[i].Draw(  );
 		}
 	}
+
+	// UI Draw
+
+	glDisable(GL_DEPTH_TEST);
+
+	char string[300] = { 0, };
+	sprintf(string, "( %d, %d )", playerPos.x, playerPos.y );
+	glPushMatrix();
+	{
+		glColor3f( 1,1,1 );
+		glTranslatef(g_playerPos.x, g_playerPos.y, g_playerPos.z);
+		drawStrokeText(string, 0, 0, 0, 0.08);
+	}
+	glPopMatrix();
 
 	glutSwapBuffers();
 }

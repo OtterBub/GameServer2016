@@ -27,10 +27,10 @@ void World::Draw()
 	{
 		for(int j = 0; j < WORLDSIZE_X; j++)
 		{
-			if( ( i + j ) % 2 )
-				glColor3f( 0, 0, 0 );
+			if ((i + j) % 2)
+				glColor3f(0.2, 0.2, 0.2);
 			else
-				glColor3f( 1, 1, 1 );
+				glColor3f(0.5, 0.5, 0.5);
 
 			glBegin(GL_QUADS);
 			glVertex3f( mWorldPos[j][i].x - mTileHalfSize, mWorldPos[j][i].y, mWorldPos[j][i].z - mTileHalfSize );
@@ -43,17 +43,28 @@ void World::Draw()
 	glPopMatrix();
 }
 
-void World::Draw( Vector3f pos, int ViewRange )
+void World::Draw( Vector2i pos, int ViewRange )
 {
 	glPushMatrix();
 	for (int i = 0; i < WORLDSIZE_Y; i++)
 	{
 		for (int j = 0; j < WORLDSIZE_X; j++)
 		{
-			if ((i + j) % 2)
-				glColor3f(0, 0, 0);
+			Vector2i tilepos;
+			tilepos.x = j;
+			tilepos.y = i;
+
+			if (!SquareCheck(pos, tilepos, ViewRange))
+			{
+				glColor3f(0.0, 0.0, 0.0);
+			}
 			else
-				glColor3f(1, 1, 1);
+			{
+				if ((i + j) % 2)
+					glColor3f(0.2, 0.2, 0.2);
+				else
+					glColor3f(0.5, 0.5, 0.5);
+			}
 
 			glBegin(GL_QUADS);
 			glVertex3f(mWorldPos[j][i].x - mTileHalfSize, mWorldPos[j][i].y, mWorldPos[j][i].z - mTileHalfSize);
