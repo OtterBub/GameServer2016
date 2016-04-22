@@ -1,5 +1,8 @@
 #include <iostream>
 
+#ifndef __MATH_H__
+#define __MATH_H__
+
 template <typename T>
 class Vector2
 {
@@ -18,3 +21,7 @@ public:
 };
 
 typedef Vector3<float> Vector3f;
+
+bool RadiusCheck(Vector2i apos, Vector2i bpos, float Radius);
+
+#endif 

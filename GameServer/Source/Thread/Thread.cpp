@@ -45,18 +45,26 @@ int recvn(SOCKET s, char *buf, int len, int flags)
 {
 	int received;
 	char *ptr = buf;
-	int left = len;
+	int left = -1;
 
-	while(left > 0) {
-		received = recv(s, ptr, left, flags);
+	while(( left > 0) || ( -1 == left )) {
+		if( -1 == left )
+			received = recv(s, ptr, sizeof(ptr), flags);
+		else
+			received = recv(s, ptr, left, flags);
+
 		if(received == SOCKET_ERROR)
 			return SOCKET_ERROR;
 		else if(received == 0)
 			break;
+
+		if (-1 == left)
+			left = ptr[0];
+		printf("%d\n", left);
 		left -= received;
 		ptr += received;
 	}
-	return (len - left);
+	return 0;
 }
 
 DWORD WINAPI CreatePlayerSocket(LPVOID arg)
@@ -152,46 +160,54 @@ DWORD WINAPI PlayerSoketThread(LPVOID arg)
 	addrlen = sizeof(clientaddr);
 	getpeername(client_sock, (SOCKADDR *)&clientaddr, &addrlen);
 
-	while(1){
-		int dir;
-		retval = recvn(client_sock, (char*)&dir, sizeof(dir), 0);
+	while(1){ // process
+		unsigned char buffer[4000] = { 0, };
+		retval = recvn(client_sock, reinterpret_cast<char*>(buffer), sizeof(buffer), 0);
 		if(retval == SOCKET_ERROR){
 			if(WSAGetLastError() != WSAEWOULDBLOCK) {
 				err_display("recv()");
 				break;
 			}
-		} else if(retval == 0)
-			break;
-		else {
-
-			//static int CHAR_SPEED = 1;
-			
-			// Get Key Input by Client
-			if(dir & MOVE_RIGHT){
-				g_worldData.playerInfo[playerIndex].pos.x++;
-				if( g_worldData.playerInfo[playerIndex].pos.x > WORLDSIZE)
-					g_worldData.playerInfo[playerIndex].pos.x = WORLDSIZE;
-				//printf("RIGHT");
-			}
-			if(dir & MOVE_LEFT){
-				g_worldData.playerInfo[playerIndex].pos.x--;
-				if( g_worldData.playerInfo[playerIndex].pos.x < 0 )
-					g_worldData.playerInfo[playerIndex].pos.x = 0;
-				//printf("LEFT");
-			}
-			if(dir & MOVE_UP){
-				g_worldData.playerInfo[playerIndex].pos.y--;
-				if( g_worldData.playerInfo[playerIndex].pos.y < 0 )
-					g_worldData.playerInfo[playerIndex].pos.y = 0;
-				//printf("UP");
-			}
-			if(dir & MOVE_DOWN){
-				g_worldData.playerInfo[playerIndex].pos.y++;
-				if( g_worldData.playerInfo[playerIndex].pos.y > WORLDSIZE)
-					g_worldData.playerInfo[playerIndex].pos.y = WORLDSIZE;
-				//printf("DOWN");
-			}
 		}
+
+		switch (buffer[1])
+		{
+		case CS_TYPE_MOVE:
+			printf( "move\n" );
+			break;
+		}
+
+		//else 
+		//{
+
+		//	//static int CHAR_SPEED = 1;
+		//	
+		//	// Get Key Input by Client
+		//	if(dir & MOVE_RIGHT){
+		//		g_worldData.playerInfo[playerIndex].pos.x++;
+		//		if( g_worldData.playerInfo[playerIndex].pos.x > WORLDSIZE)
+		//			g_worldData.playerInfo[playerIndex].pos.x = WORLDSIZE;
+		//		//printf("RIGHT");
+		//	}
+		//	if(dir & MOVE_LEFT){
+		//		g_worldData.playerInfo[playerIndex].pos.x--;
+		//		if( g_worldData.playerInfo[playerIndex].pos.x < 0 )
+		//			g_worldData.playerInfo[playerIndex].pos.x = 0;
+		//		//printf("LEFT");
+		//	}
+		//	if(dir & MOVE_UP){
+		//		g_worldData.playerInfo[playerIndex].pos.y--;
+		//		if( g_worldData.playerInfo[playerIndex].pos.y < 0 )
+		//			g_worldData.playerInfo[playerIndex].pos.y = 0;
+		//		//printf("UP");
+		//	}
+		//	if(dir & MOVE_DOWN){
+		//		g_worldData.playerInfo[playerIndex].pos.y++;
+		//		if( g_worldData.playerInfo[playerIndex].pos.y > WORLDSIZE)
+		//			g_worldData.playerInfo[playerIndex].pos.y = WORLDSIZE;
+		//		//printf("DOWN");
+		//	}
+		//}
 	}
 
 	/*WaitForSingleObject(hLogInOutEvent, INFINITE);

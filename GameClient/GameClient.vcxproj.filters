@@ -18,6 +18,9 @@
     </ClCompile>
     <ClCompile Include="Source\ClientThread.cpp" />
     <ClCompile Include="Source\Common.cpp" />
+    <ClCompile Include="Source\Math\Math.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Object\Object.h">

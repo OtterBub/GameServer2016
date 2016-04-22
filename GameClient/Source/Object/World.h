@@ -11,6 +11,7 @@ public:
 	virtual void Start();
 	virtual void Update( float dt );
 	virtual void Draw();
+	void Draw(Vector3f pos, int ViewRange);
 
 	Vector3f GetWorldPosition( Vector2i pos );
 

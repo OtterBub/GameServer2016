@@ -1,15 +1,14 @@
 #ifndef PACKETSTRUCT_H
 #define PACKETSTRUCT_H
 
-#define TYPE_LOGIN 1
-#define TYPE_WORLD 2
+#define CS_TYPE_MOVE 1
 
 #pragma pack (push, 1)
 
 enum moveDir {
 	MOVE_RIGHT = 0x0001,
 	MOVE_LEFT = 0x0002,
-	MOVE_UP = 0x0004 ,
+	MOVE_UP = 0x0004,
 	MOVE_DOWN = 0x0008
 };
 

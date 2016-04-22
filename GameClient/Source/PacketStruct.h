@@ -1,8 +1,7 @@
 #ifndef PACKETSTRUCT_H
 #define PACKETSTRUCT_H
 
-#define TYPE_LOGIN 1
-#define TYPE_WORLD 2
+#define CS_TYPE_MOVE 1
 
 #pragma pack (push, 1)
 
