@@ -3,7 +3,7 @@
 #include "../Thread/Thread.h"
 
 
-class WorkerThreadMgr
+class ThreadMgr
 {
 public:
 	void PushThread(std::thread *&&_Val);

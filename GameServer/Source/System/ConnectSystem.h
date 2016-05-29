@@ -18,11 +18,6 @@ public:
 	static void AcceptThread();
 	static void WorkerThread();
 
-	void TestFunc()
-	{
-		std::cout << "hello " << mOverlap.operation << std::endl;
-	}
-
 public:
 
 private:

@@ -22,6 +22,7 @@ void ClientMgr::DeleteClient(unsigned int index)
 	if (mClientList.count(index) == 1)
 	{
 		closesocket(mClientList[index].s);
+		mClientList[index].is_connected = false;
 		mClientList.erase(index);
 	}
 }

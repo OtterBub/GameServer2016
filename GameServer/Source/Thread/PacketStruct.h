@@ -9,6 +9,10 @@
 #define SERVER_PORT 4000
 #define MAX_USER 1000
 
+#define OP_RECV 1
+#define OP_SEND 2
+
+
 #pragma pack (push, 1)
 
 enum moveDir {

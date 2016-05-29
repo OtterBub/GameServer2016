@@ -179,12 +179,22 @@ GLvoid SpecialKeyBoard(int key, int x, int y)
 	{
 		// Send Player Key Input to Server
 		if (serverSock != NULL) {
-			cs_packet_move movPacket;
-			movPacket.header.size = sizeof(movPacket);
-			movPacket.header.type = CS_TYPE_MOVE;
-			movPacket.moveDir = movedir;
+			WSABUF send_wsabuf;
+			DWORD iobyte;
+			char sendbuffer[255];
 
-			send(serverSock, (char*)&movPacket, sizeof(movPacket), 0);
+			cs_packet_move *movePacket = reinterpret_cast<cs_packet_move*>(sendbuffer);
+			movePacket->header.size = sizeof(movePacket);
+			movePacket->header.type = CS_TYPE_MOVE;
+			movePacket->moveDir = movedir;
+
+			send_wsabuf.buf = sendbuffer;
+			send_wsabuf.len = sizeof(movePacket);
+
+			WSASend(serverSock, &send_wsabuf, 1, &iobyte, 0, NULL, NULL);
+
+			send_wsabuf.buf = 0;
+			send_wsabuf.len = 0;
 		}
 	}
 

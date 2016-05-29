@@ -14,6 +14,15 @@ struct Client
 	{
 		s = NULL;
 		is_connected = false;
+		recv_overlap.operation = OP_RECV;
+		recv_overlap.wsabuf.buf = reinterpret_cast<char*>(recv_overlap.iocp_buff);
+		recv_overlap.wsabuf.len = sizeof(recv_overlap.iocp_buff);
+		memset(&recv_overlap.OriginalOverlap, 0, sizeof(recv_overlap.OriginalOverlap));
+	}
+
+	Client(const Client& tmp)
+	{
+		std::cout << "copy" << std::endl;
 	}
 
 	SOCKET s;

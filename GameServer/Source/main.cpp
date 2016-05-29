@@ -1,9 +1,9 @@
 #include "Thread\Thread.h"
-#include "System\WorkerThreadMgr.h"
+#include "System\ThreadMgr.h"
 #include "System\ConnectSystem.h"
 
 int main(int argc, char** argv){
-	WorkerThreadMgr lWorkerThreadMgr;
+	ThreadMgr lWorkerThreadMgr;
 
 	ConnectSystem::ConnectInitialize();
 	lWorkerThreadMgr.PushThread(new std::thread{ ConnectSystem::AcceptThread });

@@ -5,7 +5,7 @@
 #include "PacketStruct.h"
 #include "Object\Player.h"
 
-#define SERVERPORT 9000
+#define SERVERPORT 4000
 #define BUFSIZE 512
 
 extern SOCKET serverSock;

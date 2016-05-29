@@ -14,17 +14,17 @@ void ConnectSystem::AcceptThread()
 {
 	sockaddr_in listen_addr;
 
-	SOCKET accept_socket = WSASocket( AF_INET, SOCK_STREAM,
-		IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED );
+	SOCKET accept_socket = WSASocket(AF_INET, SOCK_STREAM,
+		IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
 
 	memset(&listen_addr, 0, sizeof(listen_addr));
 	listen_addr.sin_family = AF_INET;
 	listen_addr.sin_addr.s_addr = htonl(ADDR_ANY);
-	listen_addr.sin_port = htons( SERVER_PORT );
+	listen_addr.sin_port = htons(SERVER_PORT);
 
 	//bind
-	::bind( accept_socket, reinterpret_cast<sockaddr*>(&listen_addr), sizeof(listen_addr) );
-	listen( accept_socket, 10 );
+	::bind(accept_socket, reinterpret_cast<sockaddr*>(&listen_addr), sizeof(listen_addr));
+	listen(accept_socket, 10);
 
 	// g_isShutdown
 	while (false == GLOBAL.mShutdown)
@@ -32,11 +32,12 @@ void ConnectSystem::AcceptThread()
 		sockaddr_in client_addr;
 		int addr_size = sizeof(client_addr);
 		SOCKET new_client = WSAAccept(accept_socket,
-			reinterpret_cast<sockaddr*>(&client_addr), &addr_size, NULL, NULL );
-		
+			reinterpret_cast<sockaddr*>(&client_addr), &addr_size, NULL, NULL);
+
 		if (INVALID_SOCKET == new_client)
 		{
-			//error process
+			//error
+			err_display("WSAAccept()");
 		}
 
 		int new_id = -1;
@@ -48,7 +49,7 @@ void ConnectSystem::AcceptThread()
 				break;
 			}
 		}
-		
+
 		if (-1 == new_id)
 		{
 			std::cout << "MAX user\n";
@@ -60,20 +61,22 @@ void ConnectSystem::AcceptThread()
 		CLIENT(new_id).s = new_client;
 
 		CreateIoCompletionPort(reinterpret_cast<HANDLE>(new_client), GLOBAL.mhIocp, new_id, 0);
+		std::cout << "Connect User id: " << new_id << std::endl;
 
 		// put player message
 
 		CLIENT(new_id).is_connected = true;
 
 		DWORD flags = 0;
-		int ret = WSARecv( new_client, &CLIENT(new_id).recv_overlap.wsabuf/* wsabuf */, 1, NULL,
+		int ret = WSARecv(new_client, &CLIENT(new_id).recv_overlap.wsabuf/* wsabuf */, 1, NULL,
 			&flags, &CLIENT(new_id).recv_overlap.OriginalOverlap/*original_overlap*/, NULL);
 
 		if (0 != ret)
 		{
 			if (WSA_IO_PENDING != WSAGetLastError())
 			{
-				// error process
+				// error
+				err_display("WSARecv()");
 			}
 		}
 	}
@@ -81,9 +84,92 @@ void ConnectSystem::AcceptThread()
 
 void ConnectSystem::WorkerThread()
 {
-	static int count = 0;
-	ConnectSystem lConnect;
+	//ConnectSystem lConnect;
 
-	lConnect.mOverlap.operation = count++;
-	lConnect.TestFunc();
+	while (false == GLOBAL.mShutdown)
+	{
+		DWORD iosize;
+		DWORD key;
+		OverlapEx *my_overlap;
+		BOOL result = GetQueuedCompletionStatus(GLOBAL.mhIocp, &iosize, &key, reinterpret_cast<LPOVERLAPPED*>(&my_overlap), INFINITE);
+
+		if (FALSE == result)
+		{
+			// error
+			if (WSA_IO_PENDING != WSAGetLastError())
+			{
+				err_display("GetQueuedCompletionStatus()");
+			}
+		}
+
+		// disconnect
+		if (0 == iosize)
+		{
+			CLIENTMGR.DeleteClient(key);
+			std::cout << "clientNum: " << key << " logout:: " << std::endl;
+		}
+		std::cout << "clientNum: " << key << " operation:: " << my_overlap->operation << std::endl;
+		
+		switch (my_overlap->operation)
+		{
+		case OP_RECV:
+		{
+			unsigned char *buf_ptr = CLIENT(key).recv_overlap.iocp_buff;
+			int remained = iosize;
+			while (0 < remained)
+			{
+				if (0 == CLIENT(key).packet_size)
+				{
+					CLIENT(key).packet_size = buf_ptr[0];
+				}
+
+				int required = CLIENT(key).packet_size =
+					CLIENT(key).packet_size - CLIENT(key).previous_size;
+
+				if (remained >= required)
+				{
+					memcpy(CLIENT(key).packet_buff + CLIENT(key).previous_size,
+						buf_ptr, required);
+
+					// ProcessPacket
+					std::cout << "clientNum: " << key << " buff[0]:: " << (int)CLIENT(key).packet_buff[0] << std::endl;
+
+					buf_ptr += required;
+					remained -= required;
+					CLIENT(key).packet_size = 0;
+					CLIENT(key).previous_size = 0;
+				}
+				else
+				{
+					memcpy(CLIENT(key).packet_buff + CLIENT(key).previous_size,
+						buf_ptr, remained);
+					buf_ptr += remained;
+					CLIENT(key).previous_size += remained;
+					remained = 0;
+				}
+				DWORD flags = 0;
+				int ret = WSARecv(CLIENT(key).s, &CLIENT(key).recv_overlap.wsabuf, 1, NULL, &flags, 
+					&CLIENT(key).recv_overlap.OriginalOverlap, NULL);
+				if (0 != ret)
+				{
+					if (WSA_IO_PENDING != WSAGetLastError())
+					{
+						err_display("WorkerThread::Recv()");
+					}
+				}
+			}
+			break;
+		}
+		case OP_SEND:
+		{
+			delete my_overlap;
+			break;
+		}
+		
+		default:
+			std::cout << "Unkown IOCP event! [ " << my_overlap->operation << " ]\n";
+			break;
+		}
+	}
+
 }

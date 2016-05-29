@@ -37,7 +37,7 @@ DWORD WINAPI ClientMain(LPVOID arg)
 
 	ZeroMemory( &g_worldData, sizeof(g_worldData) );
 
-	retval = recvn( serverSock, (char*)&playerID, sizeof( playerID ), 0 );
+	/*retval = recvn( serverSock, (char*)&playerID, sizeof( playerID ), 0 );
 	if( retval == SOCKET_ERROR ) {
 		err_display( "recv()" );
 	}
@@ -45,16 +45,16 @@ DWORD WINAPI ClientMain(LPVOID arg)
 	{
 		printf("Player ID %d\n", playerID);
 	}
-
+*/
 	while( 1 ){
 		// Get Player Position Information by Server
-		retval = recvn( serverSock, (char*)&g_worldData, sizeof( g_worldData ), 0 );
+		/*retval = recvn( serverSock, (char*)&g_worldData, sizeof( g_worldData ), 0 );
 		if( retval == SOCKET_ERROR ) {
 			err_display( "recv()" );
 			break;
 		}
 		else if( retval == 0 )
-			break;
+			break;*/
 
 		/*Vector2i setPos;
 		setPos.x = g_worldData.playerInfo[playerID].pos.x;
