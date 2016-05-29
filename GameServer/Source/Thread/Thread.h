@@ -6,6 +6,9 @@
 #include <winsock2.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
+#include <thread>
+#include <vector>
 #include "PacketStruct.h"
 
 #define BUFSIZE 1024

@@ -1,32 +1,32 @@
 #include "Thread\Thread.h"
+#include "System\WorkerThreadMgr.h"
+#include "System\ConnectSystem.h"
+
+void print(int num)
+{
+	int myNum = num;
+
+	while (1)
+	{
+		std::wcout << L"HelloWorld >> " << myNum << L" << \n";
+		Sleep(1);
+	}
+	
+}
+
 
 int main(int argc, char** argv){
-	WSADATA wsa;
-	if( WSAStartup( MAKEWORD( 2, 2 ), &wsa ) != 0 )
-		return -1;
+	WorkerThreadMgr lWorkerThreadMgr;
 
-	HANDLE hThread;
-	DWORD ThreadId;
+	lWorkerThreadMgr.PushThread(new std::thread{ ConnectSystem::WorkerThread });
+	lWorkerThreadMgr.PushThread(new std::thread{ ConnectSystem::WorkerThread });
+	lWorkerThreadMgr.PushThread(new std::thread{ ConnectSystem::WorkerThread });
+	lWorkerThreadMgr.PushThread(new std::thread{ ConnectSystem::WorkerThread });
+	lWorkerThreadMgr.PushThread(new std::thread{ ConnectSystem::WorkerThread });
 
-	hThread = CreateThread(NULL, 0, CreatePlayerSocket,
-		NULL, 0, &ThreadId);
-	if(hThread == NULL)
-		printf("[오류] 스레드 생성 실패!\r\n");
-	else
-		CloseHandle(hThread);
 
-	hThread = CreateThread(NULL, 0, WorldDataBroadCastThread,
-		NULL, 0, &ThreadId);
-	if(hThread == NULL)
-		printf("[오류] 스레드 생성 실패!\r\n");
-	else
-		CloseHandle(hThread);
+	lWorkerThreadMgr.Join();
+	lWorkerThreadMgr.Clear();
 
-	while(1)
-	{
-		Sleep(5000);
-	}
-
-	WSACleanup();
 	return 0;
 }

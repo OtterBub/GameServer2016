@@ -4,6 +4,7 @@
 #define CS_TYPE_MOVE 1
 
 #define MAX_VIEW_USER 20
+#define MAX_BUFF_SIZE 4000
 
 #pragma pack (push, 1)
 

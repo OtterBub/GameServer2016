@@ -5,10 +5,19 @@
     <ClCompile Include="Source\Thread\Thread.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
+    <ClCompile Include="Source\System\WorkerThreadMgr.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\ConnectSystem.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Thread">
       <UniqueIdentifier>{8d18bc7d-8c47-417a-94fd-58426a31ae79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{79b56711-f4ca-4152-b7c9-04e3b76cbf9a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -17,6 +26,12 @@
     </ClInclude>
     <ClInclude Include="Source\Thread\PacketStruct.h">
       <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\WorkerThreadMgr.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\ConnectSystem.h">
+      <Filter>System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
