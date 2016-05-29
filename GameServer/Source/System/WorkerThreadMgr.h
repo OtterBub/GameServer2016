@@ -1,6 +1,7 @@
 #ifndef __WORKERTHREAD_MGR_H__
-#include "../Thread/Thread.h"
 #define __WORKERTHREAD_MGR_H__
+#include "../Thread/Thread.h"
+
 
 class WorkerThreadMgr
 {

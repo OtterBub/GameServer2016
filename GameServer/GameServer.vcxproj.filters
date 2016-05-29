@@ -11,6 +11,12 @@
     <ClCompile Include="Source\System\ConnectSystem.cpp">
       <Filter>System</Filter>
     </ClCompile>
+    <ClCompile Include="Source\System\ClientMgr.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\Player.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Thread">
@@ -18,6 +24,9 @@
     </Filter>
     <Filter Include="System">
       <UniqueIdentifier>{79b56711-f4ca-4152-b7c9-04e3b76cbf9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{d7ca43ae-fee2-470b-a809-151e61fa3cbe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -33,5 +42,12 @@
     <ClInclude Include="Source\System\ConnectSystem.h">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="Source\System\ClientMgr.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Object\Player.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Global.h" />
   </ItemGroup>
 </Project>

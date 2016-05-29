@@ -1,6 +1,7 @@
 #ifndef __CONNECTSYS_H__
-#include "../Thread/Thread.h"
 #define __CONNECTSYS_H__
+#include "../Thread/Thread.h"
+
 
 struct OverlapEx
 {
@@ -13,12 +14,16 @@ struct OverlapEx
 class ConnectSystem
 {
 public:
+	static void ConnectInitialize();
+	static void AcceptThread();
 	static void WorkerThread();
 
 	void TestFunc()
 	{
 		std::cout << "hello " << mOverlap.operation << std::endl;
 	}
+
+public:
 
 private:
 	OverlapEx mOverlap;
