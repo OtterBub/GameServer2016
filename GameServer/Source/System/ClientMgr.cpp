@@ -14,7 +14,12 @@ Client& ClientMgr::GetClient(unsigned int index)
 
 bool ClientMgr::ExistClient(unsigned int index)
 {
-	return ( mClientList.count(index) == 1 );
+	if (mClientList.count(index) == 1)
+	{
+		return mClientList[index].is_connected;
+	}
+	else
+		return false;
 }
 
 void ClientMgr::DeleteClient(unsigned int index)
