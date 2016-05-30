@@ -132,6 +132,7 @@ void ConnectSystem::WorkerThread()
 						buf_ptr, required);
 
 					// ProcessPacket
+
 					std::cout << "clientNum: " << key << " buff[0]:: " << (int)CLIENT(key).packet_buff[0] << std::endl;
 
 					buf_ptr += required;

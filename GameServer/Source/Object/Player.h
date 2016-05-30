@@ -4,7 +4,8 @@
 class Player
 {
 public:
-
+	int num[100];
+	
 private:
 
 };

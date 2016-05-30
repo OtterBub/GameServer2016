@@ -18,6 +18,9 @@ struct Client
 		recv_overlap.wsabuf.buf = reinterpret_cast<char*>(recv_overlap.iocp_buff);
 		recv_overlap.wsabuf.len = sizeof(recv_overlap.iocp_buff);
 		memset(&recv_overlap.OriginalOverlap, 0, sizeof(recv_overlap.OriginalOverlap));
+		memset(&packet_buff, 0, sizeof(packet_buff));
+		packet_size = 0;
+		previous_size = 0;
 	}
 
 	Client(const Client& tmp)
@@ -53,6 +56,7 @@ private:
 
 private:
 	std::map<unsigned int, Client> mClientList;
+	std::mutex mLock;
 };
 
 

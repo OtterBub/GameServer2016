@@ -1,8 +1,10 @@
 #include "Thread\Thread.h"
 #include "System\ThreadMgr.h"
 #include "System\ConnectSystem.h"
+#include "Object\Player.h"
 
-int main(int argc, char** argv){
+int main(int argc, char** argv){	
+
 	ThreadMgr lWorkerThreadMgr;
 
 	ConnectSystem::ConnectInitialize();

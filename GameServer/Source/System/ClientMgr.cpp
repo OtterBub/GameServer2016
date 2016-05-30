@@ -14,20 +14,28 @@ Client& ClientMgr::GetClient(unsigned int index)
 
 bool ClientMgr::ExistClient(unsigned int index)
 {
+	bool result = false;
+	mLock.lock();
 	if (mClientList.count(index) == 1)
 	{
-		return mClientList[index].is_connected;
+		result = mClientList[index].is_connected;
 	}
 	else
-		return false;
+	{
+		result = false;
+	}
+	mLock.unlock();
+	return result;
 }
 
 void ClientMgr::DeleteClient(unsigned int index)
 {
+	mLock.lock();
 	if (mClientList.count(index) == 1)
 	{
 		closesocket(mClientList[index].s);
 		mClientList[index].is_connected = false;
 		mClientList.erase(index);
 	}
+	mLock.unlock();
 }
