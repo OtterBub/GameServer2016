@@ -7,6 +7,9 @@
     <Filter Include="Math">
       <UniqueIdentifier>{1753958f-4c48-4100-bf87-0588af0c8ded}</UniqueIdentifier>
     </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{570c4aca-7407-483e-b7b0-4a59465da163}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp" />
@@ -20,6 +23,9 @@
     <ClCompile Include="Source\Common.cpp" />
     <ClCompile Include="Source\Math\Math.cpp">
       <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\ThreadMgr.cpp">
+      <Filter>System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -41,5 +47,8 @@
     </ClInclude>
     <ClInclude Include="Source\ClientThread.h" />
     <ClInclude Include="Source\PacketStruct.h" />
+    <ClInclude Include="Source\System\ThreadMgr.h">
+      <Filter>System</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

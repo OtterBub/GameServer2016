@@ -107,6 +107,7 @@ void ConnectSystem::WorkerThread()
 		{
 			CLIENTMGR.DeleteClient(key);
 			std::cout << "clientNum: " << key << " logout:: " << std::endl;
+			continue;
 		}
 		std::cout << "clientNum: " << key << " operation:: " << my_overlap->operation << std::endl;
 		

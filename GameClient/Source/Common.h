@@ -7,8 +7,20 @@
 
 #include <iostream>
 #include <stdlib.h>
+
 #include <time.h>
 #include <glut.h>
+
+#include <thread>
+#include <vector>
+
+#include <unordered_map>
+#include <map>
+
+#include <unordered_set>
+#include <set>
+
+#include <mutex>
 
 #include "Math\Math.h"
 #include "PacketStruct.h"
