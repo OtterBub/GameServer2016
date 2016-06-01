@@ -5,9 +5,6 @@
     <ClCompile Include="Source\Thread\Thread.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
-    <ClCompile Include="Source\System\ConnectSystem.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
     <ClCompile Include="Source\System\ClientMgr.cpp">
       <Filter>System</Filter>
     </ClCompile>
@@ -15,6 +12,9 @@
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="Source\System\ThreadMgr.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Connect.cpp">
       <Filter>System</Filter>
     </ClCompile>
   </ItemGroup>
@@ -36,9 +36,6 @@
     <ClInclude Include="Source\Thread\PacketStruct.h">
       <Filter>Thread</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\ConnectSystem.h">
-      <Filter>System</Filter>
-    </ClInclude>
     <ClInclude Include="Source\System\ClientMgr.h">
       <Filter>System</Filter>
     </ClInclude>
@@ -47,6 +44,9 @@
     </ClInclude>
     <ClInclude Include="Source\Global.h" />
     <ClInclude Include="Source\System\ThreadMgr.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Connect.h">
       <Filter>System</Filter>
     </ClInclude>
   </ItemGroup>

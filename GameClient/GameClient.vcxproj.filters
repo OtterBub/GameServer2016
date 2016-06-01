@@ -27,6 +27,12 @@
     <ClCompile Include="Source\System\ThreadMgr.cpp">
       <Filter>System</Filter>
     </ClCompile>
+    <ClCompile Include="Source\System\Display.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\ClientConnect.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Object\Object.h">
@@ -48,6 +54,12 @@
     <ClInclude Include="Source\ClientThread.h" />
     <ClInclude Include="Source\PacketStruct.h" />
     <ClInclude Include="Source\System\ThreadMgr.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Display.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\ClientConnect.h">
       <Filter>System</Filter>
     </ClInclude>
   </ItemGroup>

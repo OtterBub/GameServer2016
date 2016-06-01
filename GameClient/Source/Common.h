@@ -5,8 +5,10 @@
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 
-#include <iostream>
 #include <stdlib.h>
+
+#include <iostream>
+#include <string>
 
 #include <time.h>
 #include <glut.h>
@@ -24,6 +26,8 @@
 
 #include "Math\Math.h"
 #include "PacketStruct.h"
+#include "Object\World.h"
+#include "Object\Player.h"
 
 DWORD WINAPI ClientMain(LPVOID arg);
 
@@ -33,4 +37,6 @@ void err_quit(char* msg);
 void err_display(char *msg);
 
 int recvn(SOCKET s, char *buf, int len, int flags);
+
+void drawStrokeText(char *string, float x, float y, float z, float scale);
 #endif

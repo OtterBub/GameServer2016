@@ -2,7 +2,7 @@
 #define __CLIENT_MGR_H__
 #include "../Thread/Thread.h"
 #include "../Object/Player.h"
-#include "ConnectSystem.h"
+#include "Connect.h"
 
 
 #define CLIENTMGR ClientMgr::GetInstance()

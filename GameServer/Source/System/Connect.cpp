@@ -1,8 +1,8 @@
-#include "ConnectSystem.h"
+#include "Connect.h"
 #include "../Global.h"
 #include "../System/ClientMgr.h"
 
-void ConnectSystem::ConnectInitialize()
+void Connect::ConnectInitialize()
 {
 	WSADATA	wsadata;
 	WSAStartup(MAKEWORD(2, 2), &wsadata);
@@ -10,7 +10,7 @@ void ConnectSystem::ConnectInitialize()
 	GLOBAL.mShutdown = false;
 }
 
-void ConnectSystem::AcceptThread()
+void Connect::AcceptThread()
 {
 	sockaddr_in listen_addr;
 
@@ -82,9 +82,9 @@ void ConnectSystem::AcceptThread()
 	}
 }
 
-void ConnectSystem::WorkerThread()
+void Connect::WorkerThread()
 {
-	//ConnectSystem lConnect;
+	//Connect lConnect;
 
 	while (false == GLOBAL.mShutdown)
 	{

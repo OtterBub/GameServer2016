@@ -35,7 +35,7 @@ DWORD WINAPI ClientMain(LPVOID arg)
 
 	char readString[BUFSIZE+1];
 
-	ZeroMemory( &g_worldData, sizeof(g_worldData) );
+	//ZeroMemory( &g_worldData, sizeof(g_worldData) );
 
 	/*retval = recvn( serverSock, (char*)&playerID, sizeof( playerID ), 0 );
 	if( retval == SOCKET_ERROR ) {

@@ -17,6 +17,8 @@
     <ClCompile Include="Source\Math\Math.cpp" />
     <ClCompile Include="Source\Object\Player.cpp" />
     <ClCompile Include="Source\Object\World.cpp" />
+    <ClCompile Include="Source\System\ClientConnect.cpp" />
+    <ClCompile Include="Source\System\Display.cpp" />
     <ClCompile Include="Source\System\ThreadMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -28,6 +30,8 @@
     <ClInclude Include="Source\Object\Player.h" />
     <ClInclude Include="Source\Object\World.h" />
     <ClInclude Include="Source\PacketStruct.h" />
+    <ClInclude Include="Source\System\ClientConnect.h" />
+    <ClInclude Include="Source\System\Display.h" />
     <ClInclude Include="Source\System\ThreadMgr.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

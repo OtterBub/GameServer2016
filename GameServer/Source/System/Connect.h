@@ -11,7 +11,7 @@ struct OverlapEx
 	unsigned char iocp_buff[MAX_BUFF_SIZE];
 };
 
-class ConnectSystem
+class Connect
 {
 public:
 	static void ConnectInitialize();

@@ -48,3 +48,16 @@ int recvn(SOCKET s, char *buf, int len, int flags)
 
 	return (len - left);
 }
+
+void drawStrokeText(char *string, float x, float y, float z, float scale) {
+	char *c;
+	glPushMatrix();
+	{
+		glTranslatef(x, y, z);
+		//glColor3f(1.0, 1.0, 1.0);
+		glScalef(scale, scale, scale);
+		for (c = string; *c != '\0'; c++)
+			glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, *c);
+	}
+	glPopMatrix();
+}
