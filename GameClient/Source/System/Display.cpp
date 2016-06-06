@@ -1,6 +1,7 @@
 #include "Display.h"
-#include "../ClientThread.h"
 #include "ClientConnect.h"
+
+World Display::mWorld;
 
 void Display::Initialize()
 {
@@ -17,6 +18,9 @@ void Display::Initialize()
 	glutMotionFunc(MouseMotion);
 
 	glutTimerFunc(3, Timer, 0);
+
+	// init
+	mWorld.Start();
 
 	glutMainLoop();
 }
@@ -35,7 +39,7 @@ GLvoid Display::Draw(GLvoid)
 	/*gluLookAt(g_playerCameraPos.x, g_playerCameraPos.y, g_playerCameraPos.z,
 		g_playerPos.x, g_playerPos.y, g_playerPos.z,
 		0, 1, 0);*/
-	gluLookAt(100, 100, 100,
+	gluLookAt(0, 100, 500,
 		0, 0, 0,
 		0, 1, 0);
 
@@ -53,6 +57,8 @@ GLvoid Display::Draw(GLvoid)
 		drawStrokeText(string, 0, 0, 0, 0.08);
 	}
 	glPopMatrix();
+
+	mWorld.Draw();
 
 	glutSwapBuffers();
 }
@@ -115,9 +121,29 @@ GLvoid Display::MouseMotion(int x, int y)
 }
 GLvoid Display::Timer(int val)
 {
-	static float deltaTime = 0;
-	static float currentTime = clock();
+	using namespace std::chrono;
+	static bool init = false;
+	static steady_clock::time_point t1 = steady_clock::now();
+	static steady_clock::time_point t2 = steady_clock::now();
+	static duration<double> time_span = duration_cast<duration<double>>(t2 - t1);
 
-	glutTimerFunc(3, Timer, 0);
+	t2 = steady_clock::now();
+
+	if (!init)
+	{
+		// Initialize
+		init = true;
+	}
+	else
+	{
+		// Update
+		time_span = duration_cast<duration<double>>(t2 - t1);
+		double dt = time_span.count();
+		mWorld.Update(dt);
+	}
+
+	t1 = steady_clock::now();
+
+	glutTimerFunc(100, Timer, 0);
 	glutPostRedisplay();
 }

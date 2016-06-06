@@ -19,7 +19,6 @@
     <ClCompile Include="Source\Object\World.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ClientThread.cpp" />
     <ClCompile Include="Source\Common.cpp" />
     <ClCompile Include="Source\Math\Math.cpp">
       <Filter>Math</Filter>
@@ -54,7 +53,6 @@
     <ClInclude Include="Source\Object\World.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ClientThread.h" />
     <ClInclude Include="Source\PacketStruct.h" />
     <ClInclude Include="Source\System\ThreadMgr.h">
       <Filter>System</Filter>

@@ -29,6 +29,8 @@ private:
 
 	static float distCameraZ;
 	static float distCameraY;*/
+
+	static World mWorld;
 };
 
 #endif

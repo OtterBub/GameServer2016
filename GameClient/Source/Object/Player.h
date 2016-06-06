@@ -1,6 +1,6 @@
-#include "Object3D.h"
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
+#include "Object3D.h"
 
 class Player : public Object3D
 {
@@ -8,7 +8,7 @@ public:
 	Player();
 
 	virtual void Start();
-	virtual void Update( float dt );
+	virtual void Update( double dt );
 	virtual void Draw();
 	void Draw( int x, int y );
 

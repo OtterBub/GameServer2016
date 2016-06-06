@@ -6,7 +6,7 @@ class Object3D : public Object
 {
 public:
 	void Start() {};
-	void Update( float dt ) {};
+	void Update( double dt ) {};
 	void Draw() {};
 
 private:

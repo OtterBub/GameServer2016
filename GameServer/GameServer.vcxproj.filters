@@ -20,6 +20,9 @@
     <ClCompile Include="Source\System\mdump.cpp">
       <Filter>System</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Math\Math.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Thread">
@@ -30,6 +33,9 @@
     </Filter>
     <Filter Include="System">
       <UniqueIdentifier>{79b56711-f4ca-4152-b7c9-04e3b76cbf9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{24a6a032-4a84-4394-91ee-cc8f891038b8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +60,9 @@
     </ClInclude>
     <ClInclude Include="Source\System\mdump.h">
       <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Math.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

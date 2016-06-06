@@ -1,6 +1,6 @@
-#include "Object3D.h"
 #ifndef __WORLD_H__
 #define __WORLD_H__
+#include "Object3D.h"
 
 #define WORLDSIZE_X 100
 #define WORLDSIZE_Y 100
@@ -9,7 +9,7 @@ class World : public Object3D
 {
 public:
 	virtual void Start();
-	virtual void Update( float dt );
+	virtual void Update( double dt );
 	virtual void Draw();
 	void Draw(Vector2i pos, int ViewRange);
 

@@ -193,9 +193,9 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 	{
 	case CS_TYPE_MOVE:
 	{
-		cs_packet_move *packet = reinterpret_cast<cs_packet_move*>(packet);
+		cs_packet_move *movePacket = reinterpret_cast<cs_packet_move*>(packet);
 #if DEBUG
-		std::cout << "TYPE MOVE: " << packet->moveDir << std::endl;
+		std::cout << "TYPE MOVE: " << movePacket->moveDir << std::endl;
 #endif
 		break;
 	}

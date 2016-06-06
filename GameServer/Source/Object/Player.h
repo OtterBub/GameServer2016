@@ -1,10 +1,12 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
+#include "../Math/Math.h"
+
 class Player
 {
 public:
-	int num[100];
+	Vector3f mPos;
 	
 private:
 

@@ -14,7 +14,7 @@ void Player::Start()
 	mWorldPos.x = 4;
 	mWorldPos.y = 4;
 }
-void Player::Update( float dt )
+void Player::Update( double dt )
 {}
 void Player::Draw()
 {
