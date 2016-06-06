@@ -2,8 +2,11 @@
 #include "System\ThreadMgr.h"
 #include "System\Connect.h"
 #include "Object\Player.h"
+#include "System\mdump.h"
 
 int main(int argc, char** argv){	
+
+	CMiniDump::Begin();
 
 	ThreadMgr lWorkerThreadMgr;
 
@@ -16,5 +19,6 @@ int main(int argc, char** argv){
 	lWorkerThreadMgr.Join();
 	lWorkerThreadMgr.Clear();
 
+	CMiniDump::End();
 	return 0;
 }

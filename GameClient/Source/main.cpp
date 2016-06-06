@@ -33,7 +33,6 @@ int main()
 	lThreadMgr.PushThread(new std::thread{ Display::Initialize });
 	lThreadMgr.Join();
 
-
 	CMiniDump::End();
 	return 0;
 }
