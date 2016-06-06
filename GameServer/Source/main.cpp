@@ -1,4 +1,4 @@
-#include "Thread\Thread.h"
+#include "Common.h"
 #include "System\ThreadMgr.h"
 #include "System\Connect.h"
 #include "Object\Player.h"

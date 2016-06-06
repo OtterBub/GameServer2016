@@ -1,6 +1,6 @@
 #ifndef __GLOBAL_H__
 #define __GLOBAL_H__
-#include "Thread\Thread.h"
+#include "Common.h"
 
 #define DEBUG 1
 #define GLOBAL Global::GetInstance()

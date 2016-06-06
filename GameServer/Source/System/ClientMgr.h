@@ -1,6 +1,6 @@
 #ifndef __CLIENT_MGR_H__
 #define __CLIENT_MGR_H__
-#include "../Thread/Thread.h"
+#include "../Common.h"
 #include "../Object/Player.h"
 #include "Connect.h"
 

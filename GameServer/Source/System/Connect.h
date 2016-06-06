@@ -1,6 +1,6 @@
 #ifndef __CONNECTSYS_H__
 #define __CONNECTSYS_H__
-#include "../Thread/Thread.h"
+#include "../Common.h"
 
 
 struct OverlapEx

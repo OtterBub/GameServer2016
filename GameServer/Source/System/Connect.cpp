@@ -37,7 +37,7 @@ void Connect::AcceptThread()
 		if (INVALID_SOCKET == new_client)
 		{
 			//error
-			err_display("WSAAccept()");
+			//err_display("WSAAccept()");
 		}
 
 		int new_id = -1;
@@ -76,7 +76,7 @@ void Connect::AcceptThread()
 			if (WSA_IO_PENDING != WSAGetLastError())
 			{
 				// error
-				err_display("WSARecv()");
+				//err_display("WSARecv()");
 			}
 		}
 	}
@@ -98,7 +98,7 @@ void Connect::WorkerThread()
 			// error
 			if (WSA_IO_PENDING != WSAGetLastError())
 			{
-				err_display("GetQueuedCompletionStatus()");
+				//err_display("GetQueuedCompletionStatus()");
 			}
 		}
 
@@ -159,7 +159,7 @@ void Connect::WorkerThread()
 				{
 					if (WSA_IO_PENDING != WSAGetLastError())
 					{
-						err_display("WorkerThread::Recv()");
+						//err_display("WorkerThread::Recv()");
 					}
 				}
 			}
