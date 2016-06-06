@@ -3,23 +3,37 @@
 #include "Object\World.h"
 #include "Object\Player.h"
 #include "System\Display.h"
+#include "System\ThreadMgr.h"
+#include "System\ClientConnect.h"
+#include "System\mdump.h"
 
 int main()
 {
-	
+	CMiniDump::Begin();
+
+	ThreadMgr lThreadMgr;
+
 	srand((unsigned int)time(NULL));
 
-	char SERVERIP[20];
-	char gameid[255];
-	char gamepass[255];
-	printf("서버 ip 주소를 입력하시오: ");
-	scanf("%s", SERVERIP);
+	std::string SERVERIP;
+	std::string gameid;
+	std::string gamepass;
+	std::cout << "서버 ip 주소를 입력하시오: ";
+	std::cin >> SERVERIP;
 
-	printf("GAME ID를 입력하시오: ");
-	scanf("%s", gameid);
+	std::cout << "GAME ID를 입력하시오: ";
+	std::cin >> gameid;
 
-	printf("GAME PASSWORD를 입력하시오: ");
-	scanf("%s", gamepass);
+	std::cout << "GAME PASSWORD를 입력하시오: ";
+	std::cin >> gamepass;
 
+	CONNECT.Initialize();
+	CONNECT.Connect( SERVERIP.c_str() );
+
+	lThreadMgr.PushThread(new std::thread{ Display::Initialize });
+	lThreadMgr.Join();
+
+
+	CMiniDump::End();
 	return 0;
 }

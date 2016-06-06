@@ -4,6 +4,14 @@
 #define CS_TYPE_MOVE 1
 
 #define MAX_VIEW_USER 20
+#define MAX_BUFF_SIZE 4000
+#define MAX_PACKET_SIZE 255
+#define SERVER_PORT 4000
+#define MAX_USER 1000
+
+#define OP_RECV 1
+#define OP_SEND 2
+
 
 #pragma pack (push, 1)
 

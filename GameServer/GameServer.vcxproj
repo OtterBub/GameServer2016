@@ -15,6 +15,7 @@
     <ClCompile Include="Source\Object\Player.cpp" />
     <ClCompile Include="Source\System\ClientMgr.cpp" />
     <ClCompile Include="Source\System\Connect.cpp" />
+    <ClCompile Include="Source\System\mdump.cpp" />
     <ClCompile Include="Source\System\ThreadMgr.cpp" />
     <ClCompile Include="Source\Thread\Thread.cpp" />
   </ItemGroup>
@@ -23,6 +24,7 @@
     <ClInclude Include="Source\Object\Player.h" />
     <ClInclude Include="Source\System\ClientMgr.h" />
     <ClInclude Include="Source\System\Connect.h" />
+    <ClInclude Include="Source\System\mdump.h" />
     <ClInclude Include="Source\System\ThreadMgr.h" />
     <ClInclude Include="Source\Thread\PacketStruct.h" />
     <ClInclude Include="Source\Thread\Thread.h" />

@@ -4,7 +4,7 @@
 #define CS_TYPE_MOVE 1
 
 #define MAX_VIEW_USER 20
-#define MAX_BUFF_SIZE 4000
+#define MAX_BUFF_SIZE 1024
 #define MAX_PACKET_SIZE 255
 #define SERVER_PORT 4000
 #define MAX_USER 1000

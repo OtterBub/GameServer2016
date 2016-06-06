@@ -17,6 +17,9 @@
     <ClCompile Include="Source\System\Connect.cpp">
       <Filter>System</Filter>
     </ClCompile>
+    <ClCompile Include="Source\System\mdump.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Thread">
@@ -47,6 +50,9 @@
       <Filter>System</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\Connect.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\mdump.h">
       <Filter>System</Filter>
     </ClInclude>
   </ItemGroup>

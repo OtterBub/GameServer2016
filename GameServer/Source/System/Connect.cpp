@@ -109,7 +109,9 @@ void Connect::WorkerThread()
 			std::cout << "clientNum: " << key << " logout:: " << std::endl;
 			continue;
 		}
+#if DEBUG
 		std::cout << "clientNum: " << key << " operation:: " << my_overlap->operation << std::endl;
+#endif
 		
 		switch (my_overlap->operation)
 		{
@@ -133,8 +135,9 @@ void Connect::WorkerThread()
 						buf_ptr, required);
 
 					// ProcessPacket
+					ProcessPacket(reinterpret_cast<unsigned char*>(CLIENT(key).packet_buff), key);
 
-					std::cout << "clientNum: " << key << " buff[0]:: " << (int)CLIENT(key).packet_buff[0] << std::endl;
+					
 
 					buf_ptr += required;
 					remained -= required;
@@ -174,4 +177,31 @@ void Connect::WorkerThread()
 		}
 	}
 
+}
+
+
+void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
+{
+	packet_header *header = reinterpret_cast<packet_header*>(packet);
+
+#if DEBUG
+	std::cout << "[" << key << "] size: " << (int)header->size
+		<< " type: " << (int)header->type << " ";
+#endif
+
+	switch ( header->type )
+	{
+	case CS_TYPE_MOVE:
+	{
+		cs_packet_move *packet = reinterpret_cast<cs_packet_move*>(packet);
+#if DEBUG
+		std::cout << "TYPE MOVE: " << packet->moveDir << std::endl;
+#endif
+		break;
+	}
+
+	default:
+		std::cout << "[" << key << "]" << " UnkownPacket \n";
+		break;
+	}
 }

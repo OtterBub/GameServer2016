@@ -7,6 +7,7 @@ class Display
 {
 public:
 	static void Initialize();
+	static void OpenGLLoop();
 
 	static GLvoid Draw(GLvoid);
 	static GLvoid Reshape(int w, int h);

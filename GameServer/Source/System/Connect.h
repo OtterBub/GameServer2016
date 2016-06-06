@@ -18,6 +18,7 @@ public:
 	static void AcceptThread();
 	static void WorkerThread();
 
+	static void ProcessPacket(unsigned char* packet, unsigned int key);
 public:
 
 private:

@@ -1,5 +1,6 @@
 #include "Display.h"
 #include "../ClientThread.h"
+#include "ClientConnect.h"
 
 void Display::Initialize()
 {
@@ -20,6 +21,11 @@ void Display::Initialize()
 	glutMainLoop();
 }
 
+void Display::OpenGLLoop()
+{
+	glutMainLoop();
+}
+
 GLvoid Display::Draw(GLvoid)
 {
 	glClearColor(0.1, 0.8, 0.9, 1);
@@ -33,11 +39,10 @@ GLvoid Display::Draw(GLvoid)
 		0, 0, 0,
 		0, 1, 0);
 
-	glEnable(GL_DEPTH_TEST);
-
+	glDisable(GL_DEPTH_TEST);
 	// UI Draw
 
-	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 
 	char string[300] = { 0, };
 	sprintf(string, "( %d, %d )", 100, 100);
@@ -89,24 +94,11 @@ GLvoid Display::SpecialKeyBoard(int key, int x, int y)
 	if (movedir != 0)
 	{
 		// Send Player Key Input to Server
-		if (serverSock != NULL) {
-			WSABUF send_wsabuf;
-			DWORD iobyte;
-			char sendbuffer[255];
+		cs_packet_move* movePacket = reinterpret_cast<cs_packet_move*>(CONNECT.GetSendBuffAddr());
+		movePacket->moveDir = movedir;
+		movePacket->header.type = CS_TYPE_MOVE;
 
-			cs_packet_move *movePacket = reinterpret_cast<cs_packet_move*>(sendbuffer);
-			movePacket->header.size = sizeof(movePacket);
-			movePacket->header.type = CS_TYPE_MOVE;
-			movePacket->moveDir = movedir;
-
-			send_wsabuf.buf = sendbuffer;
-			send_wsabuf.len = sizeof(movePacket);
-
-			WSASend(serverSock, &send_wsabuf, 1, &iobyte, 0, NULL, NULL);
-
-			send_wsabuf.buf = 0;
-			send_wsabuf.len = 0;
-		}
+		CONNECT.SendPacket(sizeof(movePacket));
 	}
 
 	//g_Player.SetWorldposition( currentPos );
