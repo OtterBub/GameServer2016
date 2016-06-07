@@ -1,7 +1,11 @@
 #ifndef PACKETSTRUCT_H
 #define PACKETSTRUCT_H
 
+// client to server
 #define CS_TYPE_MOVE 1
+
+// server to client
+#define SC_TYPE_MOVE 1
 
 #define MAX_VIEW_USER 20
 #define MAX_BUFF_SIZE 1024
@@ -36,7 +40,7 @@ struct cs_packet_move
 };
 
 // server to client
-struct sc_packet_plsyer_pos
+struct sc_packet_player_pos
 {
 	packet_header header;
 	int x, y;

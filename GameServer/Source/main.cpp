@@ -1,5 +1,5 @@
 #include "Common.h"
-#include "System\ThreadMgr.h"
+#include "System\MGR\ThreadMgr.h"
 #include "System\Connect.h"
 #include "Object\Player.h"
 #include "System\mdump.h"

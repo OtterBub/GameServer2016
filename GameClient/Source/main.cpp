@@ -35,8 +35,8 @@ int main()
 #else
 	CONNECT.Connect("127.0.0.1");
 #endif
-
 	lThreadMgr.PushThread(new std::thread{ Display::Initialize });
+	lThreadMgr.PushThread(new std::thread{ ClientConnect::ReadPacket });
 	lThreadMgr.Join();
 
 	CMiniDump::End();

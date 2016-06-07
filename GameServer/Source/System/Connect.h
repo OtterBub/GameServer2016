@@ -17,7 +17,8 @@ public:
 	static void ConnectInitialize();
 	static void AcceptThread();
 	static void WorkerThread();
-
+	
+	static void SendPacket(unsigned char *packet, unsigned int key);
 	static void ProcessPacket(unsigned char* packet, unsigned int key);
 public:
 

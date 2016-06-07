@@ -14,10 +14,11 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Math\Math.cpp" />
     <ClCompile Include="Source\Object\Player.cpp" />
-    <ClCompile Include="Source\System\ClientMgr.cpp" />
     <ClCompile Include="Source\System\Connect.cpp" />
     <ClCompile Include="Source\System\mdump.cpp" />
-    <ClCompile Include="Source\System\ThreadMgr.cpp" />
+    <ClCompile Include="Source\System\MGR\ClientMgr.cpp" />
+    <ClCompile Include="Source\System\MGR\NPCMgr.cpp" />
+    <ClCompile Include="Source\System\MGR\ThreadMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Common.h" />
@@ -25,10 +26,11 @@
     <ClInclude Include="Source\Math\Math.h" />
     <ClInclude Include="Source\Object\Player.h" />
     <ClInclude Include="Source\PacketStruct.h" />
-    <ClInclude Include="Source\System\ClientMgr.h" />
     <ClInclude Include="Source\System\Connect.h" />
     <ClInclude Include="Source\System\mdump.h" />
-    <ClInclude Include="Source\System\ThreadMgr.h" />
+    <ClInclude Include="Source\System\MGR\ClientMgr.h" />
+    <ClInclude Include="Source\System\MGR\NPCMgr.h" />
+    <ClInclude Include="Source\System\MGR\ThreadMgr.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C7A1E937-04E8-4353-B04C-558C5BDBBA77}</ProjectGuid>

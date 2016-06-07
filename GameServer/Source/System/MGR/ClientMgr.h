@@ -1,8 +1,8 @@
 #ifndef __CLIENT_MGR_H__
 #define __CLIENT_MGR_H__
-#include "../Common.h"
-#include "../Object/Player.h"
-#include "Connect.h"
+#include "../../Common.h"
+#include "../../Object/Player.h"
+#include "../Connect.h"
 
 
 #define CLIENTMGR ClientMgr::GetInstance()
@@ -23,11 +23,6 @@ struct Client
 		previous_size = 0;
 	}
 
-	Client(const Client& tmp)
-	{
-		std::cout << "copy" << std::endl;
-	}
-
 	SOCKET s;
 	bool is_connected;
 	std::unordered_set<int> view_list;
@@ -39,6 +34,12 @@ struct Client
 	int packet_size;
 	int previous_size;
 	unsigned char packet_buff[MAX_PACKET_SIZE];
+
+private:
+	Client(const Client& tmp)
+	{
+		std::cout << "copy" << std::endl;
+	}
 };
 
 class ClientMgr

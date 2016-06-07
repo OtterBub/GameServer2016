@@ -16,6 +16,9 @@ public:
 		return inst;
 	}
 
+	static void ReadPacket();
+	static void ProcessPacket( char *packet );
+
 	void Initialize();
 	void Connect( std::string ipAddr );
 
@@ -39,6 +42,8 @@ private:
 
 	DWORD mInPacketSize;
 	int mSavedPacketSize;
+
+	bool mShutDown;
 };
 
 #endif

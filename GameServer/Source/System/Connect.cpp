@@ -1,6 +1,6 @@
 #include "Connect.h"
-#include "../Global.h"
-#include "../System/ClientMgr.h"
+#include "..\Global.h"
+#include "..\System\MGR\ClientMgr.h"
 
 void Connect::ConnectInitialize()
 {
@@ -60,10 +60,27 @@ void Connect::AcceptThread()
 		// client initialize
 		CLIENT(new_id).s = new_client;
 
+		CLIENT(new_id).info.mPos.x = 0;
+		CLIENT(new_id).info.mPos.y = 0;
+
 		CreateIoCompletionPort(reinterpret_cast<HANDLE>(new_client), GLOBAL.mhIocp, new_id, 0);
 		std::cout << "Connect User id: " << new_id << std::endl;
 
 		// put player message
+		sc_packet_player_pos playerPosPacket;
+		playerPosPacket.header.size = sizeof(playerPosPacket);
+		playerPosPacket.header.type = 5;
+		playerPosPacket.x = 0;
+		playerPosPacket.y = 0;
+		Connect::SendPacket( reinterpret_cast<unsigned char*>(&playerPosPacket), new_id );
+
+		playerPosPacket.x = 110;
+		playerPosPacket.y = 110;
+		Connect::SendPacket(reinterpret_cast<unsigned char*>(&playerPosPacket), new_id);
+
+		playerPosPacket.x = 220;
+		playerPosPacket.y = 220;
+		Connect::SendPacket(reinterpret_cast<unsigned char*>(&playerPosPacket), new_id);
 
 		CLIENT(new_id).is_connected = true;
 
@@ -179,6 +196,27 @@ void Connect::WorkerThread()
 
 }
 
+void Connect::SendPacket(unsigned char *packet, unsigned int key)
+{
+	packet_header *header = reinterpret_cast<packet_header*>(packet);
+	OverlapEx *over = new OverlapEx;
+
+	memset(over, 0, sizeof(OverlapEx));
+	over->operation = OP_SEND;
+	over->wsabuf.buf = reinterpret_cast<CHAR*>(over->iocp_buff);
+	over->wsabuf.len = header->size;
+
+	memcpy(over->iocp_buff, packet, header->size);
+
+	int ret = WSASend(CLIENT(key).s, &over->wsabuf, 1, NULL, 0,
+		&over->OriginalOverlap, NULL);
+
+	if (0 != ret)
+	{
+		int errorcode = WSAGetLastError();
+		std::cout << "WSASend ErrorCode: " << errorcode << std::endl;
+	}
+}
 
 void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 {
