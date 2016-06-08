@@ -69,7 +69,7 @@ void Connect::AcceptThread()
 		// put player message
 		sc_packet_player_pos playerPosPacket;
 		playerPosPacket.header.size = sizeof(playerPosPacket);
-		playerPosPacket.header.type = 5;
+		playerPosPacket.header.type = SC_TYPE_MOVE;
 		playerPosPacket.x = 0;
 		playerPosPacket.y = 0;
 		Connect::SendPacket( reinterpret_cast<unsigned char*>(&playerPosPacket), new_id );

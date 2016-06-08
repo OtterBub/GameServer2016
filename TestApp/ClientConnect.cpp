@@ -42,6 +42,30 @@ void ClientConnect::ReadPacket()
 		}
 
 		_sleep(100);
+
+		/*int received;
+		char *ptr = CONNECT.mRecvBuffer;
+		int left = -1;
+
+		while ((-1 == left) || (left > 0))
+		{
+			if (-1 == left)
+			{
+				received = recv(CONNECT.mSocket, ptr, sizeof(packet_header::size), 0);
+				left = ptr[0];
+				ptr += received;
+			}
+			else
+			{
+				received = recv(CONNECT.mSocket, ptr, left, 0);
+				if (0 == received)
+					break;
+				left -= received;
+				ptr += received;
+			}
+		}
+
+		ClientConnect::ProcessPacket(CONNECT.mPacketBuffer);*/
 	}
 }
 
@@ -57,6 +81,7 @@ void ClientConnect::ProcessPacket(char *packet)
 		std::cout << "SC_TYPE_MOVE (" <<
 			posPacket->x << ", " <<
 			posPacket->y << ") \n";
+
 
 		break;
 	}
@@ -200,4 +225,10 @@ void ClientConnect::SendPacket(unsigned long packetSize)
 		int errorCode = WSAGetLastError();
 		std::cout << "Error Code [" << errorCode << "] \n";
 	}
+
+	for (int i = 0; i < 10; ++i)
+	{
+		std::cout << i;
+	}
+	std::cout << "\n";
 }

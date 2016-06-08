@@ -1,7 +1,12 @@
 #ifndef  __CLIENT_CONNECT_H__
 #define __CLIENT_CONNECT_H__
 
-#include "../Common.h"
+#pragma comment( lib, "ws2_32" )
+#include <WinSock2.h>
+#include <WS2tcpip.h>
+#include <string>
+#include <iostream>
+#include "PacketStruct.h"
 
 #define BUF_SIZE 1024
 #define SERVERPORT 
