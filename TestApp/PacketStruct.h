@@ -30,6 +30,11 @@ struct packet_header
 {
 	BYTE size;
 	BYTE type;
+	packet_header()
+	{
+		size = 0;
+		type = -1;
+	}
 };
 
 // client to server

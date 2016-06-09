@@ -26,11 +26,9 @@
 #include <mutex>
 
 #include "Math\Math.h"
-#include "PacketStruct.h"
+#include "..\..\GameServer\Source\PacketStruct.h"
 #include "Object\World.h"
 #include "Object\Player.h"
-
-DWORD WINAPI ClientMain(LPVOID arg);
 
 // 소켓 함수 오류 출력 후 종료
 void err_quit(char* msg);

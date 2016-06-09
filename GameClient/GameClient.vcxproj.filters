@@ -53,7 +53,6 @@
     <ClInclude Include="Source\Object\World.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="Source\PacketStruct.h" />
     <ClInclude Include="Source\System\ThreadMgr.h">
       <Filter>System</Filter>
     </ClInclude>
@@ -66,5 +65,6 @@
     <ClInclude Include="Source\System\mdump.h">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="..\GameServer\Source\PacketStruct.h" />
   </ItemGroup>
 </Project>

@@ -17,6 +17,7 @@ int main()
 
 		cs_packet_move *packet = reinterpret_cast<cs_packet_move*>(CONNECT.GetSendBuffAddr());
 		
+		packet->header.type = 1;
 		packet->moveDir = ++move;
 
 		CONNECT.SendPacket( sizeof(cs_packet_move) );

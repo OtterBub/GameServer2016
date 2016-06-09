@@ -17,11 +17,13 @@ void ClientConnect::ReadPacket()
 			std::cout << "Recv Error [" << err_code << "]\n";
 		}
 
+		packet_header *header = reinterpret_cast<packet_header*>(CONNECT.mRecvBuffer);
 		BYTE *ptr = reinterpret_cast<BYTE*>(CONNECT.mRecvBuffer);
 
 		while (0 != iobyte)
 		{
-			if (0 == CONNECT.mInPacketSize) CONNECT.mInPacketSize = ptr[0];
+			if (0 == CONNECT.mInPacketSize) CONNECT.mInPacketSize = header->size;
+			//if (0 == CONNECT.mInPacketSize) CONNECT.mInPacketSize = ptr[0];
 			if (iobyte + CONNECT.mSavedPacketSize >= CONNECT.mInPacketSize)
 			{
 				memcpy(CONNECT.mPacketBuffer + CONNECT.mSavedPacketSize, ptr, CONNECT.mInPacketSize - CONNECT.mSavedPacketSize);
@@ -154,7 +156,7 @@ void ClientConnect::Connect(std::string ipAddr)
 
 	u_long iMode = 1;
 
-	iResult == ioctlsocket( mSocket, FIONBIO, &iMode );
+	iResult = ioctlsocket( mSocket, FIONBIO, &iMode );
 	if (SOCKET_ERROR == iResult)
 	{
 		std::cout << "ioctlsocket failed error code: " << iResult << std::endl;

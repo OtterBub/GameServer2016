@@ -22,13 +22,13 @@
     <ClCompile Include="Source\System\ThreadMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\GameServer\Source\PacketStruct.h" />
     <ClInclude Include="Source\Common.h" />
     <ClInclude Include="Source\Math\Math.h" />
     <ClInclude Include="Source\Object\Object3D.h" />
     <ClInclude Include="Source\Object\Object.h" />
     <ClInclude Include="Source\Object\Player.h" />
     <ClInclude Include="Source\Object\World.h" />
-    <ClInclude Include="Source\PacketStruct.h" />
     <ClInclude Include="Source\System\ClientConnect.h" />
     <ClInclude Include="Source\System\Display.h" />
     <ClInclude Include="Source\System\mdump.h" />
