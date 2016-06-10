@@ -14,6 +14,7 @@ void Display::Initialize()
 	glutKeyboardFunc(KeyBoard);
 	glutKeyboardUpFunc(KeyBoardUp);
 	glutSpecialFunc(SpecialKeyBoard);
+	glutSpecialUpFunc(SpecialKeyBoardUp);
 	glutMouseFunc(Mouse);
 	glutMotionFunc(MouseMotion);
 
