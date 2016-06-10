@@ -18,15 +18,12 @@
     <ClCompile Include="TestMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClientConnect.cpp">
+    <ClCompile Include="..\GameClient\Source\System\ClientConnect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ClientConnect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PacketStruct.h">
+    <ClInclude Include="..\GameClient\Source\System\ClientConnect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,7 +1,7 @@
 #include <string>
 #include <thread>
 
-#include "ClientConnect.h"
+#include "../GameClient/Source/System/ClientConnect.h"
 
 int main()
 {
@@ -15,7 +15,8 @@ int main()
 	{
 		static int move = 0;;
 
-		cs_packet_move *packet = reinterpret_cast<cs_packet_move*>(CONNECT.GetSendBuffAddr());
+		//cs_packet_move *packet = reinterpret_cast<cs_packet_move*>(CONNECT.GetSendBuffAddr());
+		cs_packet_move *packet = CONNECT.GetSendBuffAddr<cs_packet_move>();
 		
 		packet->header.type = 1;
 		packet->moveDir = ++move;

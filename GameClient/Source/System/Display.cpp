@@ -100,7 +100,8 @@ GLvoid Display::SpecialKeyBoard(int key, int x, int y)
 	if (movedir != 0)
 	{
 		// Send Player Key Input to Server
-		cs_packet_move* movePacket = reinterpret_cast<cs_packet_move*>(CONNECT.GetSendBuffAddr());
+		//cs_packet_move* movePacket = reinterpret_cast<cs_packet_move*>(CONNECT.GetSendBuffAddr());
+		cs_packet_move* movePacket = CONNECT.GetSendBuffAddr<cs_packet_move>();
 		movePacket->moveDir = movedir;
 		movePacket->header.type = CS_TYPE_MOVE;
 

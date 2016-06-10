@@ -24,6 +24,13 @@ public:
 	void Connect( std::string ipAddr );
 
 	char* GetSendBuffAddr();
+
+	template <class T>
+	T* GetSendBuffAddr()
+	{
+		return reinterpret_cast<T*>(mSendBuffer);
+	}
+
 	void SendPacket( unsigned long packetSize );
 
 private:

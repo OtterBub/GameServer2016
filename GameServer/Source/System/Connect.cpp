@@ -72,15 +72,15 @@ void Connect::AcceptThread()
 		playerPosPacket.header.type = SC_TYPE_MOVE;
 		playerPosPacket.x = 0;
 		playerPosPacket.y = 0;
-		Connect::SendPacket( reinterpret_cast<unsigned char*>(&playerPosPacket), new_id );
+		Connect::SendPacket(&playerPosPacket, new_id);
 
 		playerPosPacket.x = 110;
 		playerPosPacket.y = 110;
-		Connect::SendPacket(reinterpret_cast<unsigned char*>(&playerPosPacket), new_id);
+		Connect::SendPacket(&playerPosPacket, new_id);
 
 		playerPosPacket.x = 220;
 		playerPosPacket.y = 220;
-		Connect::SendPacket(reinterpret_cast<unsigned char*>(&playerPosPacket), new_id);
+		Connect::SendPacket(&playerPosPacket, new_id);
 
 		CLIENT(new_id).is_connected = true;
 
@@ -196,8 +196,9 @@ void Connect::WorkerThread()
 
 }
 
-void Connect::SendPacket(unsigned char *packet, unsigned int key)
+void Connect::SendPacket(void *dataPtr, unsigned int key)
 {
+	unsigned char* packet = reinterpret_cast<unsigned char*>(dataPtr);
 	packet_header *header = reinterpret_cast<packet_header*>(packet);
 	OverlapEx *over = new OverlapEx;
 
