@@ -16,8 +16,6 @@
     <ClCompile Include="Source\Object\Player.cpp" />
     <ClCompile Include="Source\System\Connect.cpp" />
     <ClCompile Include="Source\System\mdump.cpp" />
-    <ClCompile Include="Source\System\MGR\ClientMgr.cpp" />
-    <ClCompile Include="Source\System\MGR\NPCMgr.cpp" />
     <ClCompile Include="Source\System\MGR\ThreadMgr.cpp" />
     <ClCompile Include="Source\System\RWLock.cpp" />
   </ItemGroup>
@@ -29,9 +27,8 @@
     <ClInclude Include="Source\PacketStruct.h" />
     <ClInclude Include="Source\System\Connect.h" />
     <ClInclude Include="Source\System\mdump.h" />
-    <ClInclude Include="Source\System\MGR\ClientMgr.h" />
+    <ClInclude Include="Source\System\MGR\ObjectMgrList.h" />
     <ClInclude Include="Source\System\MGR\MTObjectMgr.h" />
-    <ClInclude Include="Source\System\MGR\NPCMgr.h" />
     <ClInclude Include="Source\System\MGR\ThreadMgr.h" />
     <ClInclude Include="Source\System\RWLock.h" />
   </ItemGroup>

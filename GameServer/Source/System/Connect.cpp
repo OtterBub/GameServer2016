@@ -1,6 +1,6 @@
 #include "Connect.h"
 #include "..\Global.h"
-#include "..\System\MGR\ClientMgr.h"
+#include "..\System\MGR\ObjectMgrList.h"
 
 void Connect::ConnectInitialize()
 {

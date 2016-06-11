@@ -42,27 +42,17 @@ private:
 	}
 };
 
+class NPC
+{
+public:
+	bool is_active;
+};
+
 #define CLIENTMGR MTObjectMGR<unsigned int, Client>::GetInstance()
 #define CLIENT(x) MTObjectMGR<unsigned int, Client>::GetInstance().GetObj(x)
 
-//class ClientMgr
-//{
-//public:
-//	static ClientMgr& GetInstance();
-//	
-//	Client& GetClient(unsigned int index);
-//	bool ExistClient(unsigned int index);
-//	void DeleteClient(unsigned int index);
-//
-//private:
-//	ClientMgr() {}
-//	ClientMgr(const ClientMgr& tmp) {}
-//
-//private:
-//	std::map<unsigned int, Client> mClientList;
-//	std::mutex mLock;
-//	RWLock mRWLock;
-//};
+#define NPCMGR MTObjectMGR<unsigned int, NPC>::GetInstance()
+#define NPC(x) MTObjectMGR<unsigned int, NPC>::GetInstance().GetObj(x)
 
 
 #endif

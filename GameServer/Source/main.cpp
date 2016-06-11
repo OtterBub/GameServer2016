@@ -1,6 +1,5 @@
 #include "Common.h"
-#include "System\MGR\ClientMgr.h"
-#include "System\MGR\NPCMgr.h"
+#include "System\MGR\ObjectMgrList.h"
 #include "System\MGR\ThreadMgr.h"
 #include "System\Connect.h"
 #include "Object\Player.h"
@@ -36,7 +35,6 @@ int main(int argc, char** argv){
 			}
 		}
 	}
-
 
 	Connect::ConnectInitialize();
 	lWorkerThreadMgr.PushThread(new std::thread{ Connect::AcceptThread });

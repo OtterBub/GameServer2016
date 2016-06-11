@@ -14,13 +14,7 @@
     <ClCompile Include="Source\Math\Math.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="Source\System\MGR\NPCMgr.cpp">
-      <Filter>System\MGR</Filter>
-    </ClCompile>
     <ClCompile Include="Source\System\MGR\ThreadMgr.cpp">
-      <Filter>System\MGR</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\System\MGR\ClientMgr.cpp">
       <Filter>System\MGR</Filter>
     </ClCompile>
     <ClCompile Include="Source\System\RWLock.cpp">
@@ -57,12 +51,6 @@
     </ClInclude>
     <ClInclude Include="Source\Common.h" />
     <ClInclude Include="Source\PacketStruct.h" />
-    <ClInclude Include="Source\System\MGR\NPCMgr.h">
-      <Filter>System\MGR</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\MGR\ClientMgr.h">
-      <Filter>System\MGR</Filter>
-    </ClInclude>
     <ClInclude Include="Source\System\MGR\ThreadMgr.h">
       <Filter>System\MGR</Filter>
     </ClInclude>
@@ -70,6 +58,9 @@
       <Filter>System</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\MGR\MTObjectMgr.h">
+      <Filter>System\MGR</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\MGR\ObjectMgrList.h">
       <Filter>System\MGR</Filter>
     </ClInclude>
   </ItemGroup>
