@@ -10,14 +10,14 @@ template <class key, class T>
 class MTObjectMGR
 {
 public:
-	static MTObjectMGR<key, T>& GetInstance();
+	static MTObjectMGR<key, T>& GetInstance( unsigned int index = 0 );
 
 	T& GetObj(key index);
 	bool ExistClient(key index);
 	void DeleteClient(key index);
 
-private:
 	MTObjectMGR() {}
+private:
 	MTObjectMGR(const MTObjectMGR& tmp) {}
 
 private:
@@ -26,11 +26,11 @@ private:
 };
 
 template <class key, class T>
-MTObjectMGR<key, T>& MTObjectMGR<key, T>::GetInstance()
+MTObjectMGR<key, T>& MTObjectMGR<key, T>::GetInstance(unsigned int index)
 {
-	static MTObjectMGR<key, T> instance;
+	static std::map<unsigned int, MTObjectMGR<key, T>> instance;
 
-	return instance;
+	return instance[index];
 }
 
 template <class key, class T>
