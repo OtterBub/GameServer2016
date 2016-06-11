@@ -26,6 +26,9 @@
     <ClCompile Include="Source\System\RWLock.cpp">
       <Filter>System</Filter>
     </ClCompile>
+    <ClCompile Include="Source\System\MGR\EventMgr.cpp">
+      <Filter>System\MGR</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Object">
@@ -70,6 +73,9 @@
       <Filter>System</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\MGR\MTObjectMgr.h">
+      <Filter>System\MGR</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\MGR\EventMgr.h">
       <Filter>System\MGR</Filter>
     </ClInclude>
   </ItemGroup>

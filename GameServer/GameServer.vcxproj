@@ -17,6 +17,7 @@
     <ClCompile Include="Source\System\Connect.cpp" />
     <ClCompile Include="Source\System\mdump.cpp" />
     <ClCompile Include="Source\System\MGR\ClientMgr.cpp" />
+    <ClCompile Include="Source\System\MGR\EventMgr.cpp" />
     <ClCompile Include="Source\System\MGR\NPCMgr.cpp" />
     <ClCompile Include="Source\System\MGR\ThreadMgr.cpp" />
     <ClCompile Include="Source\System\RWLock.cpp" />
@@ -30,6 +31,7 @@
     <ClInclude Include="Source\System\Connect.h" />
     <ClInclude Include="Source\System\mdump.h" />
     <ClInclude Include="Source\System\MGR\ClientMgr.h" />
+    <ClInclude Include="Source\System\MGR\EventMgr.h" />
     <ClInclude Include="Source\System\MGR\MTObjectMgr.h" />
     <ClInclude Include="Source\System\MGR\NPCMgr.h" />
     <ClInclude Include="Source\System\MGR\ThreadMgr.h" />
@@ -76,7 +78,7 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)\lib;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <LibraryPath>$(SolutionDir)\lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)\Output</OutDir>
+    <OutDir>$(SolutionDir)\Output\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

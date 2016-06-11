@@ -25,7 +25,7 @@ int main(int argc, char** argv){
 	CMiniDump::Begin();
 
 	ThreadMgr lWorkerThreadMgr;
-
+	
 	//init test
 	{
 		for (unsigned int i = 0; i < 10000; ++i)
@@ -34,7 +34,7 @@ int main(int argc, char** argv){
 			{
 				NPC(i).is_active = true;
 			}
-		}
+		}		
 	}
 
 
