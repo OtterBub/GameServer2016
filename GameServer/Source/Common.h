@@ -20,7 +20,9 @@
 
 #include <mutex>
 
+// custum header
 #include "PacketStruct.h"
+#include "Global.h"
 
 #define BUFSIZE 1024
 #define SERVERPOTR 9000

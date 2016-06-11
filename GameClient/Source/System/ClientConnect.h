@@ -52,6 +52,8 @@ private:
 	int mSavedPacketSize;
 
 	bool mShutDown;
+
+	std::queue<char[BUF_SIZE]> mDataQueue;
 };
 
 #endif

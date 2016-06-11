@@ -16,6 +16,7 @@
 
 #include <thread>
 #include <vector>
+#include <queue>
 
 #include <unordered_map>
 #include <map>

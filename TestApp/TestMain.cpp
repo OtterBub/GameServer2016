@@ -1,9 +1,20 @@
 #include <string>
 #include <thread>
+#include <map>
+#include <stdlib.h>
+#include <mutex>
+#include "../GameServer/Source/System/RWLock.h"
 
 #include "../GameClient/Source/System/ClientConnect.h"
 
-int main()
+// Lock Test
+void LockTest()
+{
+	
+}
+
+// CONNECT Test
+void ConnectTest()
 {
 	CONNECT.Initialize();
 
@@ -27,6 +38,12 @@ int main()
 
 	readPacketThread->join();
 	delete readPacketThread;
+}
+
+int main()
+{
+	//ConnectTest();
+	LockTest;
 
 	return 0;
 }

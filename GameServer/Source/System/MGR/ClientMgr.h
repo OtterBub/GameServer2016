@@ -3,10 +3,10 @@
 #include "../../Common.h"
 #include "../../Object/Player.h"
 #include "../Connect.h"
+#include "MTObjectMgr.h"
 
-
-#define CLIENTMGR ClientMgr::GetInstance()
-#define CLIENT(x) ClientMgr::GetInstance().GetClient(x)
+//#define CLIENTMGR ClientMgr::GetInstance()
+//#define CLIENT(x) ClientMgr::GetInstance().GetClient(x)
 
 struct Client
 {
@@ -42,23 +42,27 @@ private:
 	}
 };
 
-class ClientMgr
-{
-public:
-	static ClientMgr& GetInstance();
-	
-	Client& GetClient(unsigned int index);
-	bool ExistClient(unsigned int index);
-	void DeleteClient(unsigned int index);
+#define CLIENTMGR MTObjectMGR<unsigned int, Client>::GetInstance()
+#define CLIENT(x) MTObjectMGR<unsigned int, Client>::GetInstance().GetObj(x)
 
-private:
-	ClientMgr() {}
-	ClientMgr(const ClientMgr& tmp) {}
-
-private:
-	std::map<unsigned int, Client> mClientList;
-	std::mutex mLock;
-};
+//class ClientMgr
+//{
+//public:
+//	static ClientMgr& GetInstance();
+//	
+//	Client& GetClient(unsigned int index);
+//	bool ExistClient(unsigned int index);
+//	void DeleteClient(unsigned int index);
+//
+//private:
+//	ClientMgr() {}
+//	ClientMgr(const ClientMgr& tmp) {}
+//
+//private:
+//	std::map<unsigned int, Client> mClientList;
+//	std::mutex mLock;
+//	RWLock mRWLock;
+//};
 
 
 #endif

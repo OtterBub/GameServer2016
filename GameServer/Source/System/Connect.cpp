@@ -127,7 +127,8 @@ void Connect::WorkerThread()
 			continue;
 		}
 #if DEBUG
-		std::cout << "clientNum: " << key << " operation:: " << my_overlap->operation << std::endl;
+		if( OP_TEST != my_overlap->operation )
+			std::cout << "clientNum: " << key << " operation:: " << my_overlap->operation << std::endl;
 #endif
 		
 		switch (my_overlap->operation)
@@ -184,6 +185,14 @@ void Connect::WorkerThread()
 		}
 		case OP_SEND:
 		{
+			delete my_overlap;
+			break;
+		}
+		case OP_TEST:
+		{
+			std::cout << "opTest" << std::endl;
+
+			//Connect::SendPacket();
 			delete my_overlap;
 			break;
 		}
