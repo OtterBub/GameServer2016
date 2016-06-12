@@ -10,23 +10,23 @@
     <Filter Include="System">
       <UniqueIdentifier>{570c4aca-7407-483e-b7b0-4a59465da163}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ClientFrame">
+      <UniqueIdentifier>{2f0304ef-f476-4622-9fd4-32dc027e9239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ClientFrame\ClientSystem">
+      <UniqueIdentifier>{280d1faa-23ac-4b0d-94a7-2951ea651a94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ClientFrame\ClientSystem\Scene">
+      <UniqueIdentifier>{431fe14a-fce0-4ab2-8702-14ddee85ea78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ClientFrame\Object">
+      <UniqueIdentifier>{2a5ae7be-1e9f-4e55-af3c-5b550c496f05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp" />
-    <ClCompile Include="Source\Object\Player.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Object\World.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Common.cpp" />
-    <ClCompile Include="Source\Math\Math.cpp">
-      <Filter>Math</Filter>
-    </ClCompile>
     <ClCompile Include="Source\System\ThreadMgr.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\System\Display.cpp">
       <Filter>System</Filter>
     </ClCompile>
     <ClCompile Include="Source\System\ClientConnect.cpp">
@@ -35,28 +35,79 @@
     <ClCompile Include="Source\System\mdump.cpp">
       <Filter>System</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ClientFrame\MathUtill.cpp">
+      <Filter>ClientFrame</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\UtillFunc.cpp">
+      <Filter>ClientFrame</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\Object\Object.cpp">
+      <Filter>ClientFrame\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\Object\ObjectFireworkEffect.cpp">
+      <Filter>ClientFrame\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\Object\ObjectOutLineCube.cpp">
+      <Filter>ClientFrame\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\Object\ObjectSkier.cpp">
+      <Filter>ClientFrame\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\Object\ObjectSnowEffect.cpp">
+      <Filter>ClientFrame\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\Scene.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneCollisionTest.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneCurveLine.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneCurveTest.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneFireworkTest.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneLineTest.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneMainMenu.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneMultiCurveLine.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneSkiingBonusStage.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneSkiingMainStage.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneSkiingTestStage.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\ButtonUI.cpp">
+      <Filter>ClientFrame\ClientSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\ConsoleSystem.cpp">
+      <Filter>ClientFrame\ClientSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\DrawSystem.cpp">
+      <Filter>ClientFrame\ClientSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\GameSystem.cpp">
+      <Filter>ClientFrame\ClientSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\SceneManager.cpp">
+      <Filter>ClientFrame\ClientSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Object\Object.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common.h" />
-    <ClInclude Include="Source\Object\Object3D.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Object\Player.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Math\Math.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Object\World.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="Source\System\ThreadMgr.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\Display.h">
       <Filter>System</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\ClientConnect.h">
@@ -66,5 +117,74 @@
       <Filter>System</Filter>
     </ClInclude>
     <ClInclude Include="..\GameServer\Source\PacketStruct.h" />
+    <ClInclude Include="Source\ClientFrame\MathUtill.h">
+      <Filter>ClientFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\UtillFunc.h">
+      <Filter>ClientFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\Object\Object.h">
+      <Filter>ClientFrame\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\Object\ObjectFireworkEffect.h">
+      <Filter>ClientFrame\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\Object\ObjectOutLineCube.h">
+      <Filter>ClientFrame\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\Object\ObjectSkier.h">
+      <Filter>ClientFrame\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\Object\ObjectSnowEffect.h">
+      <Filter>ClientFrame\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\Scene.h">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneCollisionTest.h">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneCurveLine.h">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneCurveTest.h">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneFireworkTest.h">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneLineTest.h">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneMainMenu.h">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneMultiCurveLine.h">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneSkiingBonusStage.h">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneSkiingMainStage.h">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneSkiingTestStage.h">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\ButtonUI.h">
+      <Filter>ClientFrame\ClientSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\ConsoleSystem.h">
+      <Filter>ClientFrame\ClientSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\DrawSystem.h">
+      <Filter>ClientFrame\ClientSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\GameSystem.h">
+      <Filter>ClientFrame\ClientSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\SceneManager.h">
+      <Filter>ClientFrame\ClientSystem</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

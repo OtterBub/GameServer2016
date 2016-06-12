@@ -73,8 +73,9 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)\lib;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <LibraryPath>$(SolutionDir)\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
-    <OutDir>$(SolutionDir)\Output</OutDir>
+    <OutDir>$(SolutionDir)\Output\</OutDir>
     <TargetName>D_$(ProjectName)</TargetName>
+    <IntDir>$(SolutionDir)\bin\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -84,6 +85,7 @@
     <IncludePath>$(SolutionDir)\lib;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <LibraryPath>$(SolutionDir)\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
     <OutDir>$(SolutionDir)\Output\</OutDir>
+    <IntDir>$(SolutionDir)\bin\$(ProjectName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -149,10 +151,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\GameClient\Source\ClientFrame\System\ConsoleSystem.cpp" />
+    <ClCompile Include="..\GameClient\Source\ClientFrame\UtillFunc.cpp" />
     <ClCompile Include="..\GameClient\Source\System\ClientConnect.cpp" />
     <ClCompile Include="TestMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\GameClient\Source\ClientFrame\System\ConsoleSystem.h" />
+    <ClInclude Include="..\GameClient\Source\ClientFrame\UtillFunc.h" />
     <ClInclude Include="..\GameClient\Source\System\ClientConnect.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

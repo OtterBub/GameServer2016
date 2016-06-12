@@ -2,70 +2,72 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Source\main.cpp" />
-    <ClCompile Include="Source\Object\Player.cpp">
-      <Filter>Object</Filter>
+    <ClCompile Include="Source\Math\Math.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="Source\System\Connect.cpp">
+    <ClCompile Include="Source\System\RWLock.cpp">
       <Filter>System</Filter>
     </ClCompile>
     <ClCompile Include="Source\System\mdump.cpp">
       <Filter>System</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Math\Math.cpp">
-      <Filter>Math</Filter>
+    <ClCompile Include="Source\System\Connect.cpp">
+      <Filter>System</Filter>
     </ClCompile>
     <ClCompile Include="Source\System\MGR\ThreadMgr.cpp">
       <Filter>System\MGR</Filter>
     </ClCompile>
-    <ClCompile Include="Source\System\RWLock.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
     <ClCompile Include="Source\System\MGR\EventMgr.cpp">
       <Filter>System\MGR</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Object">
-      <UniqueIdentifier>{d7ca43ae-fee2-470b-a809-151e61fa3cbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="System">
-      <UniqueIdentifier>{79b56711-f4ca-4152-b7c9-04e3b76cbf9a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Math">
-      <UniqueIdentifier>{24a6a032-4a84-4394-91ee-cc8f891038b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="System\MGR">
-      <UniqueIdentifier>{1690a67a-9d20-4630-84f2-7a608163600d}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Source\Object\Player.h">
+    <ClCompile Include="Source\Object\Player.cpp">
       <Filter>Object</Filter>
-    </ClInclude>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Common.h" />
     <ClInclude Include="Source\Global.h" />
-    <ClInclude Include="Source\System\Connect.h">
+    <ClInclude Include="Source\PacketStruct.h" />
+    <ClInclude Include="Source\Math\Math.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\RWLock.h">
       <Filter>System</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\mdump.h">
       <Filter>System</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Math\Math.h">
-      <Filter>Math</Filter>
+    <ClInclude Include="Source\System\Connect.h">
+      <Filter>System</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common.h" />
-    <ClInclude Include="Source\PacketStruct.h" />
     <ClInclude Include="Source\System\MGR\ThreadMgr.h">
       <Filter>System\MGR</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\RWLock.h">
-      <Filter>System</Filter>
+    <ClInclude Include="Source\System\MGR\ObjectMgrList.h">
+      <Filter>System\MGR</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\MGR\MTObjectMgr.h">
       <Filter>System\MGR</Filter>
     </ClInclude>
-    <ClInclude Include="Source\System\MGR\ObjectMgrList.h">
     <ClInclude Include="Source\System\MGR\EventMgr.h">
       <Filter>System\MGR</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Object\Player.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Math">
+      <UniqueIdentifier>{22e74c1e-0fed-41ed-9bc2-3e3a7842b9cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{76417616-6615-4eb3-b752-9c5984cab942}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\MGR">
+      <UniqueIdentifier>{056c85ab-4791-4dba-94e1-7599714fa693}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{c3901a7e-46bf-4938-b178-12d473313dca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

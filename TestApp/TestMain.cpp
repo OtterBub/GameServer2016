@@ -43,7 +43,7 @@ void ConnectTest()
 int main()
 {
 	//ConnectTest();
-	LockTest;
+	//LockTest;
 
 	return 0;
 }

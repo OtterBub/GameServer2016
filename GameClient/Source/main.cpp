@@ -1,10 +1,8 @@
 #include "Common.h"
-#include "Object\World.h"
-#include "Object\Player.h"
-#include "System\Display.h"
 #include "System\ThreadMgr.h"
 #include "System\ClientConnect.h"
 #include "System\mdump.h"
+#include "ClientFrame\System\DrawSystem.h"
 
 #define LOCALTEST 1
 
@@ -35,8 +33,13 @@ int main()
 #else
 	CONNECT.Connect("127.0.0.1");
 #endif
+
+	DrawSystem sys;
+	sys.Init();
+
 	lThreadMgr.PushThread(new std::thread{ ClientConnect::ReadPacket });
-	lThreadMgr.PushThread(new std::thread{ Display::Initialize });
+	sys.Run();
+
 	lThreadMgr.Join();
 
 	CMiniDump::End();

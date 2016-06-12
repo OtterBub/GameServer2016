@@ -56,10 +56,10 @@ void ClientConnect::ProcessPacket(char *packet)
 	case SC_TYPE_MOVE:
 	{
 		sc_packet_player_pos *posPacket = reinterpret_cast<sc_packet_player_pos*>(packet);
-		std::cout << "SC_TYPE_MOVE (" <<
-			posPacket->x << ", " <<
-			posPacket->y << ") \n";
-
+		std::string str = "SC_TYPE_MOVE (" +
+			std::to_string(posPacket->x) + std::string(", ") +
+			std::to_string(posPacket->y) + std::string(")");
+		SKCONSOLE << str;
 		break;
 	}
 	default:

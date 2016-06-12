@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\MathUtill.cpp" />
+    <ClCompile Include="Source\UtillFunc.cpp" />
+    <ClCompile Include="Source\Object\Object.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\ObjectFireworkEffect.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\ObjectOutLineCube.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\ObjectSkier.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object\ObjectSnowEffect.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Scene\Scene.cpp">
+      <Filter>System\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Scene\SceneCollisionTest.cpp">
+      <Filter>System\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Scene\SceneCurveLine.cpp">
+      <Filter>System\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Scene\SceneCurveTest.cpp">
+      <Filter>System\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Scene\SceneFireworkTest.cpp">
+      <Filter>System\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Scene\SceneLineTest.cpp">
+      <Filter>System\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Scene\SceneMainMenu.cpp">
+      <Filter>System\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Scene\SceneMultiCurveLine.cpp">
+      <Filter>System\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Scene\SceneSkiingBonusStage.cpp">
+      <Filter>System\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Scene\SceneSkiingMainStage.cpp">
+      <Filter>System\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\Scene\SceneSkiingTestStage.cpp">
+      <Filter>System\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\ConsoleSystem.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\DrawSystem.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\GameSystem.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\ButtonUI.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\SceneManager.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\MathUtill.h" />
+    <ClInclude Include="Source\UtillFunc.h" />
+    <ClInclude Include="Source\Object\Object.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Object\ObjectFireworkEffect.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Object\ObjectOutLineCube.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Object\ObjectSkier.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Object\ObjectSnowEffect.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Scene\Scene.h">
+      <Filter>System\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Scene\SceneCollisionTest.h">
+      <Filter>System\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Scene\SceneCurveLine.h">
+      <Filter>System\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Scene\SceneCurveTest.h">
+      <Filter>System\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Scene\SceneFireworkTest.h">
+      <Filter>System\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Scene\SceneLineTest.h">
+      <Filter>System\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Scene\SceneMainMenu.h">
+      <Filter>System\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Scene\SceneMultiCurveLine.h">
+      <Filter>System\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Scene\SceneSkiingBonusStage.h">
+      <Filter>System\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Scene\SceneSkiingMainStage.h">
+      <Filter>System\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\Scene\SceneSkiingTestStage.h">
+      <Filter>System\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\GameSystem.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\ConsoleSystem.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\DrawSystem.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\ButtonUI.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\SceneManager.h">
+      <Filter>System</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="System">
+      <UniqueIdentifier>{99ee6a3c-56d8-4e11-99c7-4984ef1acd0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Scene">
+      <UniqueIdentifier>{68761441-74ba-4fb2-9053-19b442d089b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{5923d94e-e498-40d4-95cb-69a84755024c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -21,9 +21,21 @@
     <ClCompile Include="..\GameClient\Source\System\ClientConnect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\GameClient\Source\ClientFrame\System\ConsoleSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameClient\Source\ClientFrame\UtillFunc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\GameClient\Source\System\ClientConnect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameClient\Source\ClientFrame\System\ConsoleSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameClient\Source\ClientFrame\UtillFunc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
