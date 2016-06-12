@@ -284,3 +284,4 @@ $RECYCLE.BIN/
 D_*.*
 *.iobj
 *.ipdb
+*.dmp
