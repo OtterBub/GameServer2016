@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Object">
-      <UniqueIdentifier>{979e892a-b892-4798-bc2e-c4dbb658c544}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Math">
-      <UniqueIdentifier>{1753958f-4c48-4100-bf87-0588af0c8ded}</UniqueIdentifier>
-    </Filter>
     <Filter Include="System">
       <UniqueIdentifier>{570c4aca-7407-483e-b7b0-4a59465da163}</UniqueIdentifier>
     </Filter>
@@ -21,6 +15,9 @@
     </Filter>
     <Filter Include="ClientFrame\Object">
       <UniqueIdentifier>{2a5ae7be-1e9f-4e55-af3c-5b550c496f05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ClientFrame\ClientSystem\MGR">
+      <UniqueIdentifier>{54e22504-aba6-4902-a304-57e58234ec9b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +101,13 @@
     <ClCompile Include="Source\ClientFrame\System\SceneManager.cpp">
       <Filter>ClientFrame\ClientSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\RWLock.cpp">
+      <Filter>ClientFrame\ClientSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneMMO.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\Object\ObjectWorld.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Common.h" />
@@ -185,6 +189,18 @@
     </ClInclude>
     <ClInclude Include="Source\ClientFrame\System\SceneManager.h">
       <Filter>ClientFrame\ClientSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneMMO.h">
+      <Filter>ClientFrame\ClientSystem\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\RWLock.h">
+      <Filter>ClientFrame\ClientSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\MGR\MTObjectMgr.h">
+      <Filter>ClientFrame\ClientSystem\MGR</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\Object\ObjectWorld.h">
+      <Filter>ClientFrame\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

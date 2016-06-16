@@ -51,6 +51,12 @@ void ClientConnect::ProcessPacket(char *packet)
 {
 	packet_header *header = reinterpret_cast<packet_header*> (packet);
 	std::cout << "[Recv] type: " << (int)header->type << " size: " << (int)header->size << std::endl;
+	
+	//char lTempData[BUF_SIZE];
+
+	//memcpy_s(lTempData, sizeof(lTempData), header, header->size);
+
+	//CONNECT.mDataQueue.push(lTempData);
 	switch (header->type)
 	{
 	case SC_TYPE_MOVE:

@@ -17,10 +17,12 @@
     <ClCompile Include="Source\ClientFrame\Object\ObjectOutLineCube.cpp" />
     <ClCompile Include="Source\ClientFrame\Object\ObjectSkier.cpp" />
     <ClCompile Include="Source\ClientFrame\Object\ObjectSnowEffect.cpp" />
+    <ClCompile Include="Source\ClientFrame\Object\ObjectWorld.cpp" />
     <ClCompile Include="Source\ClientFrame\System\ButtonUI.cpp" />
     <ClCompile Include="Source\ClientFrame\System\ConsoleSystem.cpp" />
     <ClCompile Include="Source\ClientFrame\System\DrawSystem.cpp" />
     <ClCompile Include="Source\ClientFrame\System\GameSystem.cpp" />
+    <ClCompile Include="Source\ClientFrame\System\RWLock.cpp" />
     <ClCompile Include="Source\ClientFrame\System\SceneManager.cpp" />
     <ClCompile Include="Source\ClientFrame\System\Scene\Scene.cpp" />
     <ClCompile Include="Source\ClientFrame\System\Scene\SceneCollisionTest.cpp" />
@@ -29,6 +31,7 @@
     <ClCompile Include="Source\ClientFrame\System\Scene\SceneFireworkTest.cpp" />
     <ClCompile Include="Source\ClientFrame\System\Scene\SceneLineTest.cpp" />
     <ClCompile Include="Source\ClientFrame\System\Scene\SceneMainMenu.cpp" />
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneMMO.cpp" />
     <ClCompile Include="Source\ClientFrame\System\Scene\SceneMultiCurveLine.cpp" />
     <ClCompile Include="Source\ClientFrame\System\Scene\SceneSkiingBonusStage.cpp" />
     <ClCompile Include="Source\ClientFrame\System\Scene\SceneSkiingMainStage.cpp" />
@@ -48,10 +51,13 @@
     <ClInclude Include="Source\ClientFrame\Object\ObjectOutLineCube.h" />
     <ClInclude Include="Source\ClientFrame\Object\ObjectSkier.h" />
     <ClInclude Include="Source\ClientFrame\Object\ObjectSnowEffect.h" />
+    <ClInclude Include="Source\ClientFrame\Object\ObjectWorld.h" />
     <ClInclude Include="Source\ClientFrame\System\ButtonUI.h" />
     <ClInclude Include="Source\ClientFrame\System\ConsoleSystem.h" />
     <ClInclude Include="Source\ClientFrame\System\DrawSystem.h" />
     <ClInclude Include="Source\ClientFrame\System\GameSystem.h" />
+    <ClInclude Include="Source\ClientFrame\System\MGR\MTObjectMgr.h" />
+    <ClInclude Include="Source\ClientFrame\System\RWLock.h" />
     <ClInclude Include="Source\ClientFrame\System\SceneManager.h" />
     <ClInclude Include="Source\ClientFrame\System\Scene\Scene.h" />
     <ClInclude Include="Source\ClientFrame\System\Scene\SceneCollisionTest.h" />
@@ -60,6 +66,7 @@
     <ClInclude Include="Source\ClientFrame\System\Scene\SceneFireworkTest.h" />
     <ClInclude Include="Source\ClientFrame\System\Scene\SceneLineTest.h" />
     <ClInclude Include="Source\ClientFrame\System\Scene\SceneMainMenu.h" />
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneMMO.h" />
     <ClInclude Include="Source\ClientFrame\System\Scene\SceneMultiCurveLine.h" />
     <ClInclude Include="Source\ClientFrame\System\Scene\SceneSkiingBonusStage.h" />
     <ClInclude Include="Source\ClientFrame\System\Scene\SceneSkiingMainStage.h" />

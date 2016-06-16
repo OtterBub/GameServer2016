@@ -33,11 +33,10 @@ int main()
 #else
 	CONNECT.Connect("127.0.0.1");
 #endif
+	lThreadMgr.PushThread(new std::thread{ ClientConnect::ReadPacket });
 
 	DrawSystem sys;
 	sys.Init();
-
-	lThreadMgr.PushThread(new std::thread{ ClientConnect::ReadPacket });
 	sys.Run();
 
 	lThreadMgr.Join();

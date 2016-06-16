@@ -13,6 +13,7 @@
 #include "Scene/SceneMainMenu.h"
 #include "Scene/SceneLineTest.h"
 #include "Scene/SceneFireworkTest.h"
+#include "Scene/SceneMMO.h"
 
 
 SceneManager::SceneManager()
@@ -182,6 +183,10 @@ bool SceneManager::SceneChangeByName( std::string SceneName )
 	else if( SceneName == "Firework" )
 	{
 		lResult = SceneChange( std::make_shared< SceneFireworkTest >() );
+	}
+	else if ( SceneName == "MMO" )
+	{
+		lResult = SceneChange( std::make_shared< SceneMMO >() );
 	}
 	else
 	{
