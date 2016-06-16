@@ -23,7 +23,7 @@ void ClientConnect::ReadPacket()
 
 		while (0 != iobyte)
 		{
-			if (0 == CONNECT.mInPacketSize) CONNECT.mInPacketSize = header->size;
+			if (0 == CONNECT.mInPacketSize) CONNECT.mInPacketSize = ptr[0];
 			//if (0 == CONNECT.mInPacketSize) CONNECT.mInPacketSize = ptr[0];
 			if (iobyte + CONNECT.mSavedPacketSize >= CONNECT.mInPacketSize)
 			{

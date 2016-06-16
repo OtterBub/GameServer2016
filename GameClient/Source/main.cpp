@@ -32,6 +32,7 @@ int main()
 
 #else
 	CONNECT.Connect("127.0.0.1");
+	//CONNECT.Connect("222.120.172.245");
 #endif
 	lThreadMgr.PushThread(new std::thread{ ClientConnect::ReadPacket });
 
