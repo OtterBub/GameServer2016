@@ -5,6 +5,7 @@
 #include "Object\Player.h"
 #include "System\mdump.h"
 #include "System\MGR\EventMgr.h"
+#include "System\MGR\DataBaseMgr.h"
 
 // keyinput
 #include <conio.h>
@@ -46,6 +47,7 @@ int main(int argc, char** argv){
 
 	lWorkerThreadMgr.PushThread(new std::thread{ TimerEventMgr::TimerThread });
 	lWorkerThreadMgr.PushThread(new std::thread{ keyboardTest });
+	lWorkerThreadMgr.PushThread(new std::thread{ DataBaseMgr::Test });
 
 	lWorkerThreadMgr.Join();
 	lWorkerThreadMgr.Clear();

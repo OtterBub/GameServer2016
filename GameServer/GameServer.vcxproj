@@ -28,6 +28,7 @@
     <ClInclude Include="Source\PacketStruct.h" />
     <ClInclude Include="Source\System\Connect.h" />
     <ClInclude Include="Source\System\mdump.h" />
+    <ClInclude Include="Source\System\MGR\DataBaseMgr.h" />
     <ClInclude Include="Source\System\MGR\ObjectMgrList.h" />
     <ClInclude Include="Source\System\MGR\EventMgr.h" />
     <ClInclude Include="Source\System\MGR\MTObjectMgr.h" />

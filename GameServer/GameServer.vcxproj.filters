@@ -55,6 +55,9 @@
     <ClInclude Include="Source\Object\Player.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="Source\System\MGR\DataBaseMgr.h">
+      <Filter>System\MGR</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Math">
