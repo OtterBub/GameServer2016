@@ -62,35 +62,69 @@ void ClientConnect::ProcessPacket(char *packet)
 
 	switch (header->type)
 	{
-	case SC_TYPE_MOVE:
+	case SC_LOGIN_OK:
 	{
-		static bool first = true;
-		sc_packet_player_pos *posPacket = reinterpret_cast<sc_packet_player_pos*>(header);
-		std::string str = "SC_TYPE_MOVE (" +
-			std::to_string(posPacket->x) + std::string(", ") +
-			std::to_string(posPacket->y) + std::string(")") +
-			"[" + std::to_string(posPacket->id) + "]";
-		SKCONSOLE << str;
-
+		sc_packet_login_ok *okPacket = reinterpret_cast<sc_packet_login_ok*>(packet);
 		CONNECT.mConnectLock.WriteLock();
-		if (first) {
-			PLAYER(posPacket->id).SetColor(Vector4(0, 0, 1, 1));
-			first = false;
-		}
-		PLAYER(posPacket->id).SetPosition(Vector3(posPacket->x, 0, posPacket->y));
+		PLAYER(okPacket->id).SetColor(Vector4(0, 0, 1, 1));
+		PLAYER(okPacket->id).SetPosition(Vector3(okPacket->x_pos, 0, okPacket->y_pos));
 		CONNECT.mConnectLock.WriteUnLock();
+
+		std::string str = "LOGIN SUCCESS!! Your Id: " + std::to_string(okPacket->id);
+		SKCONSOLE << str;
 		break;
 	}
-	case SC_TYPE_PLAYER_REMOVE:
+	case SC_ADD_OBJECT:
 	{
-		sc_packet_player_remove *removePacket = reinterpret_cast<sc_packet_player_remove*>(header);
-
-		std::string str = "SC_TYPE_PLAYER_REMOVE [" + std::to_string(removePacket->id) + "]";
-		SKCONSOLE << str;
-
+		sc_packet_add_object *addPacket = reinterpret_cast<sc_packet_add_object*>(packet);
 		CONNECT.mConnectLock.WriteLock();
-		PLAYERMGR.DeleteClient(removePacket->id);
+		switch (addPacket->objType)
+		{
+		case TYPE_PLAYER:
+		{
+			PLAYER(addPacket->id).SetPosition(Vector3(addPacket->x_pos, 0, addPacket->y_pos));
+			break;
+		}
+		default:
+			break;
+		}
 		CONNECT.mConnectLock.WriteUnLock();
+		
+		std::string str = "AddObject Id: " + std::to_string(addPacket->id);
+		SKCONSOLE << str;
+		break;
+	}
+	case SC_REMOVE_OBJECT:
+	{
+		sc_packet_remove_object *removePacket = reinterpret_cast<sc_packet_remove_object*>(packet);
+		CONNECT.mConnectLock.WriteLock();
+		switch (removePacket->objType)
+		{
+		case TYPE_PLAYER:
+		{
+			PLAYERMGR.DeleteClient(removePacket->id);
+			break;
+		}
+		default:
+			break;
+		}
+		CONNECT.mConnectLock.WriteUnLock();
+
+		std::string str = "Remove Id: " + std::to_string(removePacket->id);
+		SKCONSOLE << str;
+		break;
+	}
+	case SC_POSITION_INFO:
+	{
+		sc_packet_position_info *infoPacket = reinterpret_cast<sc_packet_position_info*>(packet);
+		switch (infoPacket->objType)
+		{
+		case TYPE_PLAYER:
+		{
+			PLAYER(infoPacket->id).SetPosition(Vector3(infoPacket->x_pos, 0, infoPacket->y_pos));
+			break;
+		}
+		}
 		break;
 	}
 	default:

@@ -20,3 +20,14 @@ bool SquareCheck(Vector2i pos, Vector2i target, float halfsize)
 
 	return result;
 }
+
+bool SquareCheck(Vector2f pos, Vector2f target, float halfsize)
+{
+	bool result =
+		(pos.x + halfsize >= target.x) &&
+		(pos.x - halfsize <= target.x) &&
+		(pos.y + halfsize >= target.y) &&
+		(pos.y - halfsize <= target.y);
+
+	return result;
+}

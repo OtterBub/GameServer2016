@@ -79,7 +79,7 @@ void SceneMMO::Draw()
 		if(mMouseLDown)
 			mPickPos = PickMouse( mMouseClickPos.x, mMouseClickPos.y );
 
-		//mTestCube.Draw();
+		mTestCube.Draw();
 		// Lock Please
 		CONNECT.mConnectLock.ReadLock();
 		for (auto it = PLAYERMGR.GetList().begin(); it != PLAYERMGR.GetList().end(); ++it)
@@ -105,17 +105,6 @@ void SceneMMO::Update(double dt)
 	if (mPickCal)
 	{
 		mTestCube.SetPosition(mPickPos);		
-		cs_packet_player_pos *packet = CONNECT.GetSendBuffAddr<cs_packet_player_pos>();
-		packet->header.type = CS_TYPE_PLAYER_POS;
-		packet->x = mPickPos.x;
-		packet->y = mPickPos.z;
-		
-		std::string str;
-		str += std::to_string(mPickPos.x) + ", " + std::to_string(mPickPos.y);
-
-		SKCONSOLE << str;
-
-		CONNECT.SendPacket(sizeof(cs_packet_player_pos));
 
 		mPickCal = false;
 	}
@@ -126,11 +115,11 @@ void SceneMMO::Update(double dt)
 		mKey['w'] || 
 		mKey['s'] )
 	{
-		static const float keyDelay = 1.0;
+		static const float keyDelay = 0.5;
 		if (mKeyTime >= keyDelay)
 		{
 			mKeyTime = 0;
-			unsigned int lDir = 0;
+			BYTE lDir = 0;
 
 			if (mKey['a'])
 			{
@@ -152,8 +141,8 @@ void SceneMMO::Update(double dt)
 			if (lDir)
 			{
 				cs_packet_move *movePacket = CONNECT.GetSendBuffAddr<cs_packet_move>();
-				movePacket->header.type = CS_TYPE_MOVE;
 				movePacket->moveDir = lDir;
+				movePacket->header.type = CS_MOVE;
 
 				CONNECT.SendPacket(sizeof(cs_packet_move));
 			}

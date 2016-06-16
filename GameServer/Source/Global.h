@@ -5,6 +5,9 @@
 #define DEBUG 0
 #define GLOBAL Global::GetInstance()
 
+#define USERMAX 5000
+#define VIEWDIST 4
+
 class Global
 {
 public:
