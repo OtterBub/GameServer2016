@@ -6,6 +6,7 @@
 #include "System\mdump.h"
 #include "System\MGR\EventMgr.h"
 #include "System\MGR\DataBaseMgr.h"
+#include <string>
 
 // keyinput
 #include <conio.h>
@@ -14,11 +15,14 @@ void keyboardTest()
 	char key = 0;
 	while (false == GLOBAL.mShutdown)
 	{
-		key = _getch();
+		/*key = _getch();
 		OverlapEx *over = new OverlapEx;
 		over->operation = OP_TEST;
-		PostQueuedCompletionStatus(GLOBAL.mhIocp, 1, key, &over->OriginalOverlap);
-		DBMGR.Query("SELECT * FROM dbo.exp_user_table WHERE Nick = 'Hello'");
+		PostQueuedCompletionStatus(GLOBAL.mhIocp, 1, key, &over->OriginalOverlap);*/
+		std::string nickQuery = "SELECT * FROM dbo.user_table WHERE Nick = '";
+		std::string nick;
+		std::cin >> nick;
+		DBMGR.SearchNick(nick);
 	}
 }
 

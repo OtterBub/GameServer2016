@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <sqlext.h>
 #include <iostream>
+#include <string>
 
 void HandleDiagnosticRecord(SQLHANDLE      hHandle,
 	SQLSMALLINT    hType,
@@ -181,7 +182,72 @@ public:
 		SQLFreeHandle(SQL_HANDLE_ENV, henv);
 	}
 
-	void Query(std::string str)
+	SQLRETURN SearchNick(const std::string nick)
+	{
+		std::string nickQuery = "SELECT * FROM dbo.user_table WHERE Nick = '";
+		nickQuery += nick + "'";
+
+		if (Query(nickQuery) == SQL_NO_DATA)
+		{
+			int num = 0;
+			std::string SearchID = "SELECT * FROM dbo.user_table WHERE ID = " + std::to_string(num);
+			while (ThereIsQuery(SearchID) != SQL_NO_DATA)
+			{
+				SearchID = "SELECT * FROM dbo.user_table WHERE ID = " + std::to_string(++num);
+			}
+
+			std::string CreateQuery = "INSERT INTO dbo.user_table VALUES ("+ std::to_string(num) +", '" + nick + "', 1, 50.0, 50.0, 1, 1, 1, 100)";
+			Query(CreateQuery);
+		}
+
+		return SQL_SUCCESS;
+	}
+	SQLRETURN ThereIsQuery(std::string str)
+	{
+		mNodata = true;
+
+		SQLINTEGER  pIndicators[10];
+
+		retcode = SQLAllocHandle(SQL_HANDLE_STMT, hdbc, &hstmt);
+
+		// Process data
+		if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
+
+			retcode = SQLExecDirect(hstmt,
+				// ID -> 1, Name -> 2, CLevel -> 3 column
+				//(SQLCHAR*)"INSERT INTO dbo.exp_user_table VALUES (2, 'Hello', 1, 2.2, 3.3, 3, 5, 8)",
+				//(SQLCHAR*)"SELECT ID, Nick, CLevel, XPos, YPos, EXP, Attack, Defence FROM dbo.exp_user_table",
+				//(SQLCHAR*)"SELECT ID, Nick, CLevel, XPos, YPos, EXP, Attack, Defence FROM dbo.exp_user_table",
+				//(SQLCHAR*)"EXEC dbo.SELECT_HIGHLEVEL 10",
+				//(SQLCHAR*)"SELECT * FROM dbo.user_table WHERE Nick = 'Hello'",
+				(SQLCHAR*)str.c_str(),
+				SQL_NTS);
+
+			if (retcode != SQL_ERROR)
+			{
+
+				if((retcode = SQLFetch(hstmt)) == SQL_SUCCESS)
+				{
+					mNodata = false;
+				}
+
+				if ((retcode == SQL_NO_DATA) && mNodata)
+				{
+					std::cout << "NO DATA" << std::endl;
+					return retcode;
+				}
+			}
+			else
+			{
+				// Error Handle
+				HandleDiagnosticRecord(hstmt, SQL_HANDLE_STMT, retcode);
+			}
+		}
+		SQLFreeHandle(SQL_HANDLE_STMT, hstmt);
+		return SQL_SUCCESS;
+	}
+
+	SQLRETURN Query(std::string str)
 	{
 		int char_id = 0;
 		wchar_t char_name[100] = { 0, };
@@ -192,7 +258,9 @@ public:
 		int def = 0;
 		int hp = 0;
 
-		SQLINTEGER  pIndicators[8];
+		mNodata = true;
+
+		SQLINTEGER  pIndicators[10];
 
 		retcode = SQLAllocHandle(SQL_HANDLE_STMT, hdbc, &hstmt);
 
@@ -239,7 +307,10 @@ public:
 				SQLBindCol(hstmt, 8, SQL_C_LONG, (SQLPOINTER)&def, sizeof(def),
 					&pIndicators[7]);
 
-				while (SQLFetch(hstmt) == SQL_SUCCESS)
+				SQLBindCol(hstmt, 9, SQL_C_LONG, (SQLPOINTER)&hp, sizeof(hp),
+					&pIndicators[8]);
+
+				while ((retcode = SQLFetch(hstmt)) == SQL_SUCCESS)
 				{
 					std::wcout << "char_id: " << char_id << "\n";
 					std::wcout << "char_name: " << char_name << "\n";
@@ -247,6 +318,14 @@ public:
 					std::wcout << "exp: " << exp << "\n";
 					std::wcout << "atk: " << atk << "\n";
 					std::wcout << "def: " << def << "\n";
+
+					mNodata = false;
+				}
+
+				if ((retcode == SQL_NO_DATA) && mNodata)
+				{
+					std::cout << "NO DATA" << std::endl;
+					return retcode;
 				}
 			}
 			else
@@ -256,6 +335,7 @@ public:
 			}
 		}
 		SQLFreeHandle(SQL_HANDLE_STMT, hstmt);
+		return SQL_SUCCESS;
 	}
 
 private:
@@ -266,6 +346,8 @@ private:
 	SQLHDBC hdbc;
 	SQLHSTMT hstmt;
 	SQLRETURN retcode;
+
+	bool mNodata;
 };
 
 #define DBMGR DataBaseMgr::GetInstance()
