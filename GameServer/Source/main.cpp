@@ -18,13 +18,14 @@ void keyboardTest()
 		OverlapEx *over = new OverlapEx;
 		over->operation = OP_TEST;
 		PostQueuedCompletionStatus(GLOBAL.mhIocp, 1, key, &over->OriginalOverlap);
+		DBMGR.Query("SELECT * FROM dbo.exp_user_table WHERE Nick = 'Hello'");
 	}
 }
 
 int main(int argc, char** argv){	
 
 	CMiniDump::Begin();
-
+	DBMGR.Init();
 	ThreadMgr lWorkerThreadMgr;
 	
 	//init test
@@ -47,7 +48,6 @@ int main(int argc, char** argv){
 
 	lWorkerThreadMgr.PushThread(new std::thread{ TimerEventMgr::TimerThread });
 	lWorkerThreadMgr.PushThread(new std::thread{ keyboardTest });
-	lWorkerThreadMgr.PushThread(new std::thread{ DataBaseMgr::Test });
 
 	lWorkerThreadMgr.Join();
 	lWorkerThreadMgr.Clear();
