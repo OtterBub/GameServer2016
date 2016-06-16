@@ -6,6 +6,8 @@
 #define CS_TYPE_PLAYER_POS 2
 
 // server to client
+#define SC_LOGIN_OK 1;
+
 #define SC_TYPE_MOVE 101
 #define SC_TYPE_PLAYER_REMOVE 102
 
@@ -55,6 +57,17 @@ struct cs_packet_player_pos
 };
 
 // server to client
+struct sc_packet_login_ok
+{
+	packet_header header;
+	WORD id;
+	WORD x_pos;
+	WORD y_pos;
+	WORD HP;
+	WORD LEVEL;
+	WORD EXP;
+};
+
 struct sc_packet_player_pos
 {
 	packet_header header;

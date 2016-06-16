@@ -2,6 +2,8 @@
 #include "..\Global.h"
 #include "..\System\MGR\ObjectMgrList.h"
 
+RWLock Connect::connectLock;
+
 void Connect::ConnectInitialize()
 {
 	WSADATA	wsadata;
@@ -63,22 +65,28 @@ void Connect::AcceptThread()
 		CLIENT(new_id).info.mPos.x = 0;
 		CLIENT(new_id).info.mPos.y = 0;
 
+		CLIENT(new_id).is_connected = true;
+
 		CreateIoCompletionPort(reinterpret_cast<HANDLE>(new_client), GLOBAL.mhIocp, new_id, 0);
 		std::cout << "Connect User id: " << new_id << std::endl;
 
 		// put player message
+
+		CLIENT(new_id).viewlist_lock.lock();
+		CLIENT(new_id).view_list.clear();
+		CLIENT(new_id).viewlist_lock.unlock();
+
+
 		sc_packet_player_pos playerPosPacket;
 		playerPosPacket.header.size = sizeof(playerPosPacket);
 		playerPosPacket.header.type = SC_TYPE_MOVE;
 
-		playerPosPacket.x = 110;
-		playerPosPacket.y = 110;
+		playerPosPacket.x = 50;
+		playerPosPacket.y = 50;
 		playerPosPacket.id = new_id;
 		Connect::SendPacket(&playerPosPacket, new_id);
 
 		SendBroadCasting(&playerPosPacket, new_id);
-
-		CLIENT(new_id).is_connected = true;
 
 		DWORD flags = 0;
 		int ret = WSARecv(new_client, &CLIENT(new_id).recv_overlap.wsabuf/* wsabuf */, 1, NULL,
@@ -120,6 +128,8 @@ void Connect::WorkerThread()
 		{
 			closesocket(CLIENT(key).s);
 			CLIENT(key).is_connected = false;
+
+			//connectLock.WriteLock();
 			CLIENTMGR.DeleteClient(key);
 
 			sc_packet_player_remove removePacket;
@@ -127,7 +137,7 @@ void Connect::WorkerThread()
 			removePacket.header.type = SC_TYPE_PLAYER_REMOVE;
 			removePacket.id = key;
 			SendBroadCasting(&removePacket);
-
+			//connectLock.WriteUnLock();
 			std::cout << "clientNum: " << key << " logout:: " << std::endl;
 			continue;
 		}
@@ -159,8 +169,6 @@ void Connect::WorkerThread()
 
 					// ProcessPacket
 					ProcessPacket(reinterpret_cast<unsigned char*>(CLIENT(key).packet_buff), key);
-
-					
 
 					buf_ptr += required;
 					remained -= required;
@@ -212,6 +220,8 @@ void Connect::WorkerThread()
 
 void Connect::SendPacket(void *dataPtr, unsigned int key)
 {
+	if (CLIENTMGR.ExistClient(key) == false) return;
+
 	unsigned char* packet = reinterpret_cast<unsigned char*>(dataPtr);
 	packet_header *header = reinterpret_cast<packet_header*>(packet);
 	OverlapEx *over = new OverlapEx;
@@ -235,7 +245,8 @@ void Connect::SendPacket(void *dataPtr, unsigned int key)
 
 void Connect::SendBroadCasting(void* packet, unsigned int except )
 {
-	for (auto it = CLIENTMGR.GetList().begin(); it != CLIENTMGR.GetList().end(); ++it)
+	std::map<unsigned int, ClientStruct> tempMap = CLIENTMGR.GetList();
+	for (auto it = tempMap.begin(); it != tempMap.end(); ++it)
 	{
 		if (it->first != except)
 			Connect::SendPacket(packet, it->first);
@@ -259,11 +270,11 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 #if DEBUG
 		std::cout << "TYPE MOVE: " << movePacket->moveDir << std::endl;
 #endif
-		static float speed = 0.1;
+		static float speed = 1;
 		CLIENT(key).info.mPos.x += (movePacket->moveDir & moveDir::MOVE_RIGHT) * speed;
-		CLIENT(key).info.mPos.x += (movePacket->moveDir & moveDir::MOVE_LEFT) * -speed;
-		CLIENT(key).info.mPos.y += (movePacket->moveDir & moveDir::MOVE_UP) * -speed;
-		CLIENT(key).info.mPos.y += (movePacket->moveDir & moveDir::MOVE_DOWN) * speed;
+		CLIENT(key).info.mPos.x += ((movePacket->moveDir & moveDir::MOVE_LEFT) >> 1)  * -speed;
+		CLIENT(key).info.mPos.y += ((movePacket->moveDir & moveDir::MOVE_UP) >> 2)  * -speed;
+		CLIENT(key).info.mPos.y += ((movePacket->moveDir & moveDir::MOVE_DOWN) >> 3) * speed;
 
 		Vector3f pos = CLIENT(key).info.mPos;
 

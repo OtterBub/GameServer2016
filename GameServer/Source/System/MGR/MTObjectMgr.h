@@ -17,6 +17,7 @@ public:
 	void DeleteClient(key index);
 
 	const std::map<key, T>& GetList();
+	const std::map<key, T> GetCopyList();
 
 	MTObjectMGR() {}
 private:
@@ -71,6 +72,11 @@ template <class key, class T>
 const std::map<key, T>& MTObjectMGR<key, T>::GetList()
 {
 	return mObjectList;
+}
+template <class key, class T>
+const std::map<key, T> MTObjectMGR<key, T>::GetCopyList()
+{
+	return std::map<key, T>(mObjectList);
 }
 
 #endif __MTOBJMGR_H__

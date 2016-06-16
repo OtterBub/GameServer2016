@@ -1,4 +1,5 @@
 #include "ClientConnect.h"
+#include "../ClientFrame/System/Scene/SceneMMO.h"
 
 void ClientConnect::ReadPacket()
 {
@@ -49,25 +50,47 @@ void ClientConnect::ReadPacket()
 
 void ClientConnect::ProcessPacket(char *packet)
 {
-	packet_header *header = reinterpret_cast<packet_header*> (packet);
-	std::cout << "[Recv] type: " << (int)header->type << " size: " << (int)header->size << std::endl;
+	//std::cout << "[Recv] type: " << (int)header->type << " size: " << (int)header->size << std::endl;
 
-	PacketStore lTempPacket;
+	/*PacketStore lTempPacket;
 	memcpy_s(&lTempPacket, BUF_SIZE, header, BUF_SIZE);
+	CONNECT.mDataQueueLock.WriteLock();
 	CONNECT.mDataQueue.push(lTempPacket);
+	CONNECT.mDataQueueLock.WriteUnLock();*/
 
-	packet_header *Test = reinterpret_cast<packet_header*> (&lTempPacket);
+	packet_header *header = reinterpret_cast<packet_header*> (packet);
 
 	switch (header->type)
 	{
 	case SC_TYPE_MOVE:
 	{
-		sc_packet_player_pos *posPacket = reinterpret_cast<sc_packet_player_pos*>(packet);
+		static bool first = true;
+		sc_packet_player_pos *posPacket = reinterpret_cast<sc_packet_player_pos*>(header);
 		std::string str = "SC_TYPE_MOVE (" +
 			std::to_string(posPacket->x) + std::string(", ") +
-			std::to_string(posPacket->y) + std::string(")") + 
+			std::to_string(posPacket->y) + std::string(")") +
 			"[" + std::to_string(posPacket->id) + "]";
-		//SKCONSOLE << str;
+		SKCONSOLE << str;
+
+		CONNECT.mConnectLock.WriteLock();
+		if (first) {
+			PLAYER(posPacket->id).SetColor(Vector4(0, 0, 1, 1));
+			first = false;
+		}
+		PLAYER(posPacket->id).SetPosition(Vector3(posPacket->x, 0, posPacket->y));
+		CONNECT.mConnectLock.WriteUnLock();
+		break;
+	}
+	case SC_TYPE_PLAYER_REMOVE:
+	{
+		sc_packet_player_remove *removePacket = reinterpret_cast<sc_packet_player_remove*>(header);
+
+		std::string str = "SC_TYPE_PLAYER_REMOVE [" + std::to_string(removePacket->id) + "]";
+		SKCONSOLE << str;
+
+		CONNECT.mConnectLock.WriteLock();
+		PLAYERMGR.DeleteClient(removePacket->id);
+		CONNECT.mConnectLock.WriteUnLock();
 		break;
 	}
 	default:
@@ -214,12 +237,19 @@ void ClientConnect::SendPacket(unsigned long packetSize)
 
 bool ClientConnect::ThereIsProcessPacket()
 {
-	return !mDataQueue.empty();
+	/*CONNECT.mDataQueueLock.ReadLock();
+	bool result = !mDataQueue.empty();
+	CONNECT.mDataQueueLock.ReadUnLock();
+	return result;*/
+	return false;
 }
 
 PacketStore ClientConnect::GetPacket()
 {
+	/*CONNECT.mDataQueueLock.WriteLock();
 	PacketStore packet= mDataQueue.back();
 	mDataQueue.pop();
-	return packet;
+	CONNECT.mDataQueueLock.WriteUnLock();
+	return packet;*/
+	return PacketStore();
 }

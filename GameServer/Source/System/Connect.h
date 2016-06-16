@@ -1,7 +1,7 @@
 #ifndef __CONNECTSYS_H__
 #define __CONNECTSYS_H__
 #include "../Common.h"
-
+#include "RWLock.h"
 
 struct OverlapEx
 {
@@ -27,6 +27,7 @@ public:
 
 private:
 	OverlapEx mOverlap;
+	static RWLock connectLock;
 };
 
 

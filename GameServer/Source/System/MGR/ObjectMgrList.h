@@ -35,11 +35,14 @@ struct ClientStruct
 	int previous_size;
 	unsigned char packet_buff[MAX_PACKET_SIZE];
 
-private:
 	ClientStruct(const ClientStruct& tmp)
 	{
-		std::cout << "copy" << std::endl;
+		this->s = tmp.s;
+		this->info = tmp.info;
 	}
+
+private:
+	
 };
 
 class NPCStruct

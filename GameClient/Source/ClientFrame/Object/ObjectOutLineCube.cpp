@@ -2,7 +2,7 @@
 
 ObjectOutLineCube::ObjectOutLineCube()
 {
-	mSize = 10;
+	mSize = 1;
 	mScale = Vector3( 1, 1, 1 );
 }
 

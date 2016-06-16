@@ -47,6 +47,9 @@ private:
 	bool mMouseLDown;
 	bool mPickCal;
 	bool mKey[UCHAR_MAX];
+
+	double mKeyTime;
+	bool mKeyDown;
 };
 
 #endif

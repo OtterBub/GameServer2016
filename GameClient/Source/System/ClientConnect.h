@@ -2,6 +2,7 @@
 #define __CLIENT_CONNECT_H__
 
 #include "../Common.h"
+#include "../ClientFrame/System/RWLock.h"
 
 #define BUF_SIZE 1024
 #define SERVERPORT 
@@ -41,6 +42,8 @@ public:
 	bool ThereIsProcessPacket();
 	PacketStore GetPacket();
 
+	RWLock mConnectLock;
+
 private:
 	ClientConnect() {};
 	ClientConnect(const ClientConnect& tmp) {};
@@ -61,7 +64,7 @@ private:
 
 	bool mShutDown;
 
-	std::queue<PacketStore> mDataQueue;
+	//std::queue<PacketStore> mDataQueue;
 };
 
 #endif

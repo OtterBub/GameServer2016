@@ -16,6 +16,7 @@ void SceneMMO::Enter()
 	mTestCube.SetColor(Vector4(0.5, 0.5, 1, 1));
 	mMouseLDown = false;
 	mPickCal = false;
+	mKeyTime = 0.0;
 
 	memset(mKey, 0, sizeof(mKey));
 }
@@ -26,24 +27,52 @@ void SceneMMO::Draw()
 {
 	glPushMatrix();
 	{
-		gluLookAt(0, 100, 300, 0, 0, 0, 0, 1, 0);
+		gluLookAt(50, 10, 100, 50, 0, 50, 0, 1, 0);
 
 		glGetDoublev(GL_MODELVIEW_MATRIX, modelView);
 		// Draw Ground
 		glPushMatrix();
 		{
-			float lGroundSize = 150;
-			float lGroundHeight = -80;
-			glBegin(GL_QUADS);
-			glColor4f(0.5, 0, 0.5, 1);
-			glVertex3fv(reinterpret_cast< GLfloat* >(&Vector3(lGroundSize, lGroundHeight, lGroundSize)));
-			glColor4f(0.5, 0, 1, 1);
-			glVertex3fv(reinterpret_cast< GLfloat* >(&Vector3(-lGroundSize, lGroundHeight, lGroundSize)));
-			glColor4f(1, 0, 0.5, 1);
-			glVertex3fv(reinterpret_cast< GLfloat* >(&Vector3(-lGroundSize, lGroundHeight, -lGroundSize)));
-			glColor4f(0.5, 1, 0.5, 1);
-			glVertex3fv(reinterpret_cast< GLfloat* >(&Vector3(lGroundSize, lGroundHeight, -lGroundSize)));
-			glEnd();
+			static int worldSize = 100;
+			static Vector4 color = Vector4(0.8, 0.8, 0.8, 0.8);
+			static Vector4 reColor = Vector4(1, 1, 1, 1) - color;
+			float lGroundSize = 0.5;
+			float lGroundHeight = 0;
+			for (int y = 0; y < worldSize; ++y)
+			{
+				for (int x = 0; x < worldSize; ++x)
+				{
+					glPushMatrix();
+					glTranslatef( x, 0, y );
+					if ((x + y) % 2)
+					{
+						glBegin(GL_QUADS);
+						glColor4fv(reinterpret_cast<GLfloat*>(&color));
+						glVertex3fv(reinterpret_cast<GLfloat*>(&Vector3(lGroundSize, lGroundHeight, lGroundSize)));
+						glColor4fv(reinterpret_cast<GLfloat*>(&color));
+						glVertex3fv(reinterpret_cast<GLfloat*>(&Vector3(-lGroundSize, lGroundHeight, lGroundSize)));
+						glColor4fv(reinterpret_cast<GLfloat*>(&color));
+						glVertex3fv(reinterpret_cast<GLfloat*>(&Vector3(-lGroundSize, lGroundHeight, -lGroundSize)));
+						glColor4fv(reinterpret_cast<GLfloat*>(&color));
+						glVertex3fv(reinterpret_cast<GLfloat*>(&Vector3(lGroundSize, lGroundHeight, -lGroundSize)));
+						glEnd();
+					}
+					else
+					{
+						glBegin(GL_QUADS);
+						glColor4fv(reinterpret_cast<GLfloat*>(&reColor));
+						glVertex3fv(reinterpret_cast<GLfloat*>(&Vector3(lGroundSize, lGroundHeight, lGroundSize)));
+						glColor4fv(reinterpret_cast<GLfloat*>(&reColor));
+						glVertex3fv(reinterpret_cast<GLfloat*>(&Vector3(-lGroundSize, lGroundHeight, lGroundSize)));
+						glColor4fv(reinterpret_cast<GLfloat*>(&reColor));
+						glVertex3fv(reinterpret_cast<GLfloat*>(&Vector3(-lGroundSize, lGroundHeight, -lGroundSize)));
+						glColor4fv(reinterpret_cast<GLfloat*>(&reColor));
+						glVertex3fv(reinterpret_cast<GLfloat*>(&Vector3(lGroundSize, lGroundHeight, -lGroundSize)));
+						glEnd();
+					}
+					glPopMatrix();
+				}
+			}
 		}
 		glPopMatrix();
 
@@ -51,10 +80,13 @@ void SceneMMO::Draw()
 			mPickPos = PickMouse( mMouseClickPos.x, mMouseClickPos.y );
 
 		//mTestCube.Draw();
+		// Lock Please
+		CONNECT.mConnectLock.ReadLock();
 		for (auto it = PLAYERMGR.GetList().begin(); it != PLAYERMGR.GetList().end(); ++it)
 		{
 			PLAYER(it->first).Draw();
 		}
+		CONNECT.mConnectLock.ReadUnLock();
 
 		glPushMatrix();
 		{
@@ -69,6 +101,7 @@ void SceneMMO::Draw()
 }
 void SceneMMO::Update(double dt)
 {
+	mKeyTime += dt;
 	if (mPickCal)
 	{
 		mTestCube.SetPosition(mPickPos);		
@@ -88,8 +121,47 @@ void SceneMMO::Update(double dt)
 	}
 
 	//cs_packet_move
+	if (mKey['a'] ||
+		mKey['d'] ||
+		mKey['w'] || 
+		mKey['s'] )
+	{
+		static const float keyDelay = 1.0;
+		if (mKeyTime >= keyDelay)
+		{
+			mKeyTime = 0;
+			unsigned int lDir = 0;
 
-	while (CONNECT.ThereIsProcessPacket())
+			if (mKey['a'])
+			{
+				lDir |= moveDir::MOVE_LEFT;
+			}
+			if (mKey['d'])
+			{
+				lDir |= moveDir::MOVE_RIGHT;
+			}
+			if (mKey['w'])
+			{
+				lDir |= moveDir::MOVE_UP;
+			}
+			if (mKey['s'])
+			{
+				lDir |= moveDir::MOVE_DOWN;
+			}
+
+			if (lDir)
+			{
+				cs_packet_move *movePacket = CONNECT.GetSendBuffAddr<cs_packet_move>();
+				movePacket->header.type = CS_TYPE_MOVE;
+				movePacket->moveDir = lDir;
+
+				CONNECT.SendPacket(sizeof(cs_packet_move));
+			}
+		}
+	}
+
+
+	/*while (CONNECT.ThereIsProcessPacket())
 	{
 		packet_header *header = reinterpret_cast<packet_header*> (&CONNECT.GetPacket());
 
@@ -122,35 +194,9 @@ void SceneMMO::Update(double dt)
 			std::cout << "UnKnown Packet Type: " << (int)header->type << std::endl;
 			break;
 		}
-	}
+	}*/
 	
-	unsigned int lDir = 0;
-
-	if(mKey['a'])
-	{
-		lDir |= moveDir::MOVE_LEFT;
-	}
-	if (mKey['d'])
-	{
-		lDir |= moveDir::MOVE_RIGHT;
-	}
-	if (mKey['w'])
-	{
-		lDir |= moveDir::MOVE_UP;
-	}
-	if (mKey['s'])
-	{
-		lDir |= moveDir::MOVE_DOWN;
-	}
-
-	if (0 != lDir)
-	{
-		cs_packet_move *movePacket = CONNECT.GetSendBuffAddr<cs_packet_move>();
-		movePacket->header.type = CS_TYPE_MOVE;
-		movePacket->moveDir = lDir;
-
-		CONNECT.SendPacket(sizeof(cs_packet_move));
-	}
+	
 }
 void SceneMMO::Reshape(int w, int h)
 {
