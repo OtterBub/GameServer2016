@@ -10,6 +10,19 @@
 
 struct ClientStruct
 {
+	SOCKET s;
+	bool is_connected;
+	std::unordered_set<int> view_list;
+	std::unordered_set<int> npc_view_list;
+	std::mutex viewlist_lock;
+
+	Player info;
+
+	OverlapEx recv_overlap;
+	int packet_size;
+	int previous_size;
+	unsigned char packet_buff[MAX_PACKET_SIZE];
+
 	ClientStruct()
 	{
 		s = NULL;
@@ -23,18 +36,6 @@ struct ClientStruct
 		previous_size = 0;
 	}
 
-	SOCKET s;
-	bool is_connected;
-	std::unordered_set<int> view_list;
-	std::mutex viewlist_lock;
-
-	Player info;
-
-	OverlapEx recv_overlap;
-	int packet_size;
-	int previous_size;
-	unsigned char packet_buff[MAX_PACKET_SIZE];
-
 	ClientStruct(const ClientStruct& tmp)
 	{
 		this->s = tmp.s;
@@ -45,10 +46,20 @@ private:
 	
 };
 
-class NPCStruct
+struct NPCStruct
 {
-public:
 	bool is_active;
+	Player info;
+	int last_move_time;
+	NPCStruct()
+	{
+		memset(this, 0, sizeof(NPCStruct));
+		is_active = false;
+	}
+	NPCStruct(const NPCStruct& tmp)
+	{
+		this->info = tmp.info;
+	}
 };
 
 #define CLIENTMGR MTObjectMGR<unsigned int, ClientStruct>::GetInstance()

@@ -10,12 +10,12 @@ struct EventType
 	unsigned int WakeUpTime;
 	int EventID;
 
-	EventType()
+	/*EventType()
 	{
 		KeyID = 0;
 		WakeUpTime = 0;
 		EventID = 0;
-	}
+	}*/
 };
 
 class EventComp
@@ -31,11 +31,26 @@ private:
 class TimerEventMgr
 {
 public:
+	static TimerEventMgr& GetInstance()
+	{
+		static TimerEventMgr instance;
+		return instance;
+	}
+
+	std::priority_queue<EventType, std::vector<EventType>, EventComp>& GetQueue();
 	void PushEvent( unsigned int keyID, unsigned int WakeTime, int EventID );
 
+	static void TimerThread();
+
 private:
+	TimerEventMgr() {};
+	TimerEventMgr(const TimerEventMgr& tmp) {};
+
 	std::priority_queue<EventType, std::vector<EventType>, EventComp> mTimerQueue;
 	std::mutex mTimerlock;
 };
+
+#define TIMERMGR TimerEventMgr::GetInstance() 
+#define TIMERQUEUE TimerEventMgr::GetInstance().GetQueue()
 
 #endif 

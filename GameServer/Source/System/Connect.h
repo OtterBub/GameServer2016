@@ -18,10 +18,11 @@ public:
 	static void AcceptThread();
 	static void WorkerThread();
 	
-	
 	static void SendPacket(void *packet, unsigned int key);
 	static void SendBroadCasting(void* packet, unsigned int except = MAX_USER);
 	static void ProcessPacket(unsigned char* packet, unsigned int key);
+
+	static void DoMove( unsigned int key );
 	
 public:
 

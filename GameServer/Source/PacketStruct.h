@@ -36,6 +36,7 @@
 
 #define OP_RECV 1
 #define OP_SEND 2
+#define OP_MOVE_AI 3
 
 #define OP_TEST 100
 

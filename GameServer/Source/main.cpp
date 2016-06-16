@@ -4,6 +4,7 @@
 #include "System\Connect.h"
 #include "Object\Player.h"
 #include "System\mdump.h"
+#include "System\MGR\EventMgr.h"
 
 // keyinput
 #include <conio.h>
@@ -27,11 +28,12 @@ int main(int argc, char** argv){
 	
 	//init test
 	{
-		for (unsigned int i = 0; i < 10000; ++i)
+		for (unsigned int i = 0; i < 1000; ++i)
 		{
 			if (false == NPCMGR.ExistClient(i))
 			{
-				NPC(i).is_active = true;
+				NPC(i).is_active = false;
+				NPC(i).info.mPos = Vector3f(rand() % 100, rand() % 100, 0);
 			}
 		}		
 	}
@@ -42,6 +44,7 @@ int main(int argc, char** argv){
 	for( auto i = 0; i < NUM_THREADS; ++i )
 		lWorkerThreadMgr.PushThread(new std::thread{ Connect::WorkerThread });
 
+	lWorkerThreadMgr.PushThread(new std::thread{ TimerEventMgr::TimerThread });
 	lWorkerThreadMgr.PushThread(new std::thread{ keyboardTest });
 
 	lWorkerThreadMgr.Join();

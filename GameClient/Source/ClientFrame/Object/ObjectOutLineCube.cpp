@@ -4,6 +4,7 @@ ObjectOutLineCube::ObjectOutLineCube()
 {
 	mSize = 1;
 	mScale = Vector3( 1, 1, 1 );
+	mDraw = true;
 }
 
 ObjectOutLineCube::~ObjectOutLineCube()

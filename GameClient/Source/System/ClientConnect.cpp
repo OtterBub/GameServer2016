@@ -43,8 +43,8 @@ void ClientConnect::ReadPacket()
 				iobyte = 0;
 			}
 		}
-
-		_sleep(10);
+		
+		//_sleep(0); // 절대 쉬게해서는 안됌!
 	}
 }
 
@@ -85,6 +85,12 @@ void ClientConnect::ProcessPacket(char *packet)
 			PLAYER(addPacket->id).SetPosition(Vector3(addPacket->x_pos, 0, addPacket->y_pos));
 			break;
 		}
+		case TYPE_MONSTER:
+		{
+			NPC(addPacket->id).SetPosition(Vector3(addPacket->x_pos, 0, addPacket->y_pos));
+			NPC(addPacket->id).SetColor(Vector4(1, 0.3, 0.3, 1));
+			break;
+		}
 		default:
 			break;
 		}
@@ -97,12 +103,18 @@ void ClientConnect::ProcessPacket(char *packet)
 	case SC_REMOVE_OBJECT:
 	{
 		sc_packet_remove_object *removePacket = reinterpret_cast<sc_packet_remove_object*>(packet);
+		
 		CONNECT.mConnectLock.WriteLock();
 		switch (removePacket->objType)
 		{
 		case TYPE_PLAYER:
 		{
 			PLAYERMGR.DeleteClient(removePacket->id);
+			break;
+		}
+		case TYPE_MONSTER:
+		{
+			NPCMGR.DeleteClient(removePacket->id);
 			break;
 		}
 		default:
@@ -124,6 +136,13 @@ void ClientConnect::ProcessPacket(char *packet)
 			PLAYER(infoPacket->id).SetPosition(Vector3(infoPacket->x_pos, 0, infoPacket->y_pos));
 			break;
 		}
+		case TYPE_MONSTER:
+		{
+			NPC(infoPacket->id).SetPosition(Vector3(infoPacket->x_pos, 0, infoPacket->y_pos));
+			break;
+		}
+		default:
+			break;
 		}
 		break;
 	}

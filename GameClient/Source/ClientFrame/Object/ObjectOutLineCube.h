@@ -22,6 +22,7 @@ public:
 	Vector4 GetColor();
 	double GetSize();
 
+	bool mDraw;
 private:
 	Vector3 mPosition;
 	Vector3 mScale;

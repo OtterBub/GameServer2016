@@ -86,6 +86,12 @@ void SceneMMO::Draw()
 		{
 			PLAYER(it->first).Draw();
 		}
+		for (auto it = NPCMGR.GetList().begin(); it != NPCMGR.GetList().end(); ++it)
+		{
+			if( NPC(it->first).mDraw )
+				NPC(it->first).Draw();
+		}
+		
 		CONNECT.mConnectLock.ReadUnLock();
 
 		glPushMatrix();
@@ -115,7 +121,7 @@ void SceneMMO::Update(double dt)
 		mKey['w'] || 
 		mKey['s'] )
 	{
-		static const float keyDelay = 0.5;
+		static const float keyDelay = 0.1;
 		if (mKeyTime >= keyDelay)
 		{
 			mKeyTime = 0;

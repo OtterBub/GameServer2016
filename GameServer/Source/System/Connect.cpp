@@ -1,6 +1,7 @@
 #include "Connect.h"
 #include "..\Global.h"
 #include "..\System\MGR\ObjectMgrList.h"
+#include "../System/MGR/EventMgr.h"
 
 RWLock Connect::connectLock;
 
@@ -134,6 +135,36 @@ void Connect::AcceptThread()
 				}
 			}
 		}
+
+		for (auto i = 0; i < NPCMAX; ++i)
+		{
+			if (NPCMGR.ExistClient(i))
+			{
+				if (NPC(i).is_active)
+				{
+					Vector2f newClientPos = Vector2f(CLIENT(new_id).info.mPos.x, CLIENT(new_id).info.mPos.y);
+					Vector2f targetClientPos = Vector2f(NPC(i).info.mPos.x, NPC(i).info.mPos.y);
+					if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
+					{
+						if (!NPC(i).is_active)
+						{
+							NPC(i).is_active = true;
+							TIMERMGR.PushEvent(i, GetTickCount() + 1000, OP_MOVE_AI);
+						}
+
+						CLIENT(new_id).viewlist_lock.lock();
+						CLIENT(new_id).npc_view_list.insert(i);
+						CLIENT(new_id).viewlist_lock.unlock();
+
+						addPacket.id = i;
+						addPacket.x_pos = NPC(i).info.mPos.x;
+						addPacket.y_pos = NPC(i).info.mPos.y;
+						addPacket.objType = TYPE_MONSTER;
+						Connect::SendPacket(&addPacket, new_id);
+					}
+				}
+			}
+		}
 		CLIENT(new_id).is_connected = true;
 
 
@@ -149,6 +180,101 @@ void Connect::AcceptThread()
 				//err_display("WSARecv()");
 			}
 		}
+	}
+}
+
+void Connect::DoMove(unsigned int key)
+{
+	if (NPCMGR.ExistClient(key))
+	{
+		if (false == NPC(key).is_active) return;
+		
+		std::unordered_set<unsigned int> view_list;
+		for (auto pl = 0; pl < USERMAX; ++pl)
+		{
+			if (CLIENTMGR.ExistClient(pl))
+			{
+				if (CLIENT(pl).is_connected)
+				{
+					Vector2f newClientPos = Vector2f(NPC(key).info.mPos.x, NPC(key).info.mPos.y);
+					Vector2f targetClientPos = Vector2f(CLIENT(pl).info.mPos.x, CLIENT(pl).info.mPos.y);
+					if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
+					{
+						view_list.insert(pl);
+					}
+				}
+			}
+		}
+
+		switch (rand() % 4)
+		{
+		case 0: NPC(key).info.mPos.x++; break;
+		case 1: NPC(key).info.mPos.x--; break;
+		case 2: NPC(key).info.mPos.y++; break;
+		case 3: NPC(key).info.mPos.y--; break;
+		default: break;
+		}
+
+		std::unordered_set<unsigned int> new_list;
+		for (auto pl = 0; pl < USERMAX; ++pl)
+		{
+			if (CLIENTMGR.ExistClient(pl))
+			{
+				if (CLIENT(pl).is_connected)
+				{
+					Vector2f newClientPos = Vector2f(NPC(key).info.mPos.x, NPC(key).info.mPos.y);
+					Vector2f targetClientPos = Vector2f(CLIENT(pl).info.mPos.x, CLIENT(pl).info.mPos.y);
+					if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
+					{
+						new_list.insert(pl);
+					}
+				}
+			}
+		}
+
+		for (auto pl : view_list)
+		{
+			if (0 == new_list.count(pl))
+			{
+				CLIENT(pl).viewlist_lock.lock();
+				CLIENT(pl).view_list.erase(key);
+				CLIENT(pl).viewlist_lock.unlock();
+
+				sc_packet_remove_object removePacket;
+				removePacket.id = key;
+				removePacket.objType = TYPE_MONSTER;
+				Connect::SendPacket(&removePacket, pl);
+			}
+			else
+			{
+				sc_packet_position_info posInfo;
+				posInfo.id = key;
+				posInfo.objType = TYPE_MONSTER;
+				posInfo.x_pos = NPC(key).info.mPos.x;
+				posInfo.y_pos = NPC(key).info.mPos.y;
+
+				Connect::SendPacket(&posInfo, pl);
+			}
+		}
+
+		for (auto pl : new_list)
+		{
+			if (0 != view_list.count(pl)) continue;
+			sc_packet_add_object addPacket;
+			addPacket.id = key;
+			addPacket.objType = TYPE_MONSTER;
+			addPacket.x_pos = NPC(key).info.mPos.x;
+			addPacket.y_pos = NPC(key).info.mPos.y;
+			Connect::SendPacket(&addPacket, pl);
+		}
+		int now = GetTickCount();
+		/*if (key > 0 && key < 100)
+			std::cout << "move time" << (now - NPC(key).last_move_time) << std::endl;*/
+		NPC(key).last_move_time = now;
+
+		TIMERMGR.PushEvent(key, GetTickCount() + 1000, OP_MOVE_AI);
+
+		if (true == new_list.empty()) NPC(key).is_active = false;
 	}
 }
 
@@ -250,6 +376,11 @@ void Connect::WorkerThread()
 			delete my_overlap;
 			break;
 		}
+		case OP_MOVE_AI:
+		{
+			Connect::DoMove(key);
+			break;
+		}
 		case OP_TEST:
 		{
 			std::cout << "opTest" << std::endl;
@@ -258,7 +389,6 @@ void Connect::WorkerThread()
 			delete my_overlap;
 			break;
 		}
-		
 		default:
 			std::cout << "Unkown IOCP event! [ " << my_overlap->operation << " ]\n";
 			break;
@@ -279,6 +409,8 @@ void Connect::SendPacket(void *dataPtr, unsigned int key)
 	over->operation = OP_SEND;
 	over->wsabuf.buf = reinterpret_cast<CHAR*>(over->iocp_buff);
 	over->wsabuf.len = header->size;
+
+	//std::cout << "type " << (unsigned int)header->type << std::endl;
 
 	memcpy(over->iocp_buff, packet, header->size);
 
@@ -417,6 +549,51 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 			}
 		}
 
+		std::unordered_set<unsigned int> npc_new_list;
+		for (auto i = 0; i < NPCMAX; ++i)
+		{
+			if (NPCMGR.ExistClient(i))
+			{
+				Vector2f newClientPos = Vector2f(CLIENT(key).info.mPos.x, CLIENT(key).info.mPos.y);
+				Vector2f targetClientPos = Vector2f(NPC(i).info.mPos.x, NPC(i).info.mPos.y);
+				if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
+				{
+					npc_new_list.insert(i);
+				}
+			}
+		}
+
+		for (auto i : npc_new_list)
+		{
+			CLIENT(key).viewlist_lock.lock();
+			if (0 == CLIENT(key).npc_view_list.count(i))
+			{
+				CLIENT(key).npc_view_list.insert(i);
+				CLIENT(key).viewlist_lock.unlock();
+
+				sc_packet_add_object npcAddPacket;
+				npcAddPacket.id = i;
+				npcAddPacket.objType = TYPE_MONSTER;
+				npcAddPacket.x_pos = NPC(i).info.mPos.x;
+				npcAddPacket.y_pos = NPC(i).info.mPos.y;
+
+				Connect::SendPacket(&npcAddPacket, key);
+
+				if (!NPC(i).is_active)
+				{
+					NPC(i).is_active = true;
+					TIMERMGR.PushEvent(i, GetTickCount() + 1000, OP_MOVE_AI);
+				}
+				
+				// add Timer
+			}
+			else
+			{
+				CLIENT(key).viewlist_lock.unlock();
+				// is npc continue;
+			}
+		}
+
 		// 리스트에서 나간다.
 		std::vector<unsigned int> remove_list;
 		CLIENT(key).viewlist_lock.lock();
@@ -432,6 +609,19 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 		{
 			CLIENT(key).view_list.erase(i);
 		}
+
+		std::vector<unsigned int> npc_remove_list;
+		for (auto i : CLIENT(key).npc_view_list)
+		{
+			if (0 == npc_new_list.count(i))
+			{
+				npc_remove_list.push_back(i);
+			}
+		}
+		for (auto i : npc_remove_list)
+		{
+			CLIENT(key).npc_view_list.erase(i);
+		}
 		CLIENT(key).viewlist_lock.unlock();
 
 		for (auto i : remove_list)
@@ -439,6 +629,15 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 			sc_packet_remove_object removePacket;
 			removePacket.id = i;
 			removePacket.objType = TYPE_PLAYER;
+			Connect::SendPacket(&removePacket, key);
+		}
+
+		for (auto i : npc_remove_list)
+		{
+			sc_packet_remove_object removePacket;
+			removePacket.header.size = sizeof(sc_packet_remove_object);
+			removePacket.id = i;
+			removePacket.objType = TYPE_MONSTER;
 			Connect::SendPacket(&removePacket, key);
 		}
 
