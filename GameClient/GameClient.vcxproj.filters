@@ -19,6 +19,9 @@
     <Filter Include="ClientFrame\ClientSystem\MGR">
       <UniqueIdentifier>{54e22504-aba6-4902-a304-57e58234ec9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ClientFrame\ClientSystem\Scene\Excluded">
+      <UniqueIdentifier>{dd9e11a6-58ee-4a17-9c53-855e3b0baaa2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp" />
@@ -59,31 +62,7 @@
     <ClCompile Include="Source\ClientFrame\System\Scene\SceneCollisionTest.cpp">
       <Filter>ClientFrame\ClientSystem\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ClientFrame\System\Scene\SceneCurveLine.cpp">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ClientFrame\System\Scene\SceneCurveTest.cpp">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ClientFrame\System\Scene\SceneFireworkTest.cpp">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ClientFrame\System\Scene\SceneLineTest.cpp">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ClientFrame\System\Scene\SceneMainMenu.cpp">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ClientFrame\System\Scene\SceneMultiCurveLine.cpp">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ClientFrame\System\Scene\SceneSkiingBonusStage.cpp">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ClientFrame\System\Scene\SceneSkiingMainStage.cpp">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ClientFrame\System\Scene\SceneSkiingTestStage.cpp">
       <Filter>ClientFrame\ClientSystem\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\ClientFrame\System\ButtonUI.cpp">
@@ -107,7 +86,33 @@
     <ClCompile Include="Source\ClientFrame\System\Scene\SceneMMO.cpp">
       <Filter>ClientFrame\ClientSystem\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ClientFrame\Object\ObjectWorld.cpp" />
+    <ClCompile Include="Source\ClientFrame\Object\ObjectWorld.cpp">
+      <Filter>ClientFrame\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneCurveLine.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneCurveTest.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneFireworkTest.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneLineTest.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneMultiCurveLine.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneSkiingBonusStage.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneSkiingMainStage.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientFrame\System\Scene\SceneSkiingTestStage.cpp">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Common.h" />
@@ -148,31 +153,7 @@
     <ClInclude Include="Source\ClientFrame\System\Scene\SceneCollisionTest.h">
       <Filter>ClientFrame\ClientSystem\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ClientFrame\System\Scene\SceneCurveLine.h">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ClientFrame\System\Scene\SceneCurveTest.h">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ClientFrame\System\Scene\SceneFireworkTest.h">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ClientFrame\System\Scene\SceneLineTest.h">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ClientFrame\System\Scene\SceneMainMenu.h">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ClientFrame\System\Scene\SceneMultiCurveLine.h">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ClientFrame\System\Scene\SceneSkiingBonusStage.h">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ClientFrame\System\Scene\SceneSkiingMainStage.h">
-      <Filter>ClientFrame\ClientSystem\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ClientFrame\System\Scene\SceneSkiingTestStage.h">
       <Filter>ClientFrame\ClientSystem\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\ClientFrame\System\ButtonUI.h">
@@ -201,6 +182,30 @@
     </ClInclude>
     <ClInclude Include="Source\ClientFrame\Object\ObjectWorld.h">
       <Filter>ClientFrame\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneCurveLine.h">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneCurveTest.h">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneFireworkTest.h">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneLineTest.h">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneMultiCurveLine.h">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneSkiingBonusStage.h">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneSkiingMainStage.h">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientFrame\System\Scene\SceneSkiingTestStage.h">
+      <Filter>ClientFrame\ClientSystem\Scene\Excluded</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

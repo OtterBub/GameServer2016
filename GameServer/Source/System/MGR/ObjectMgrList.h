@@ -8,9 +8,9 @@
 //#define CLIENTMGR ClientMgr::GetInstance()
 //#define CLIENT(x) ClientMgr::GetInstance().GetClient(x)
 
-struct Client
+struct ClientStruct
 {
-	Client()
+	ClientStruct()
 	{
 		s = NULL;
 		is_connected = false;
@@ -36,23 +36,23 @@ struct Client
 	unsigned char packet_buff[MAX_PACKET_SIZE];
 
 private:
-	Client(const Client& tmp)
+	ClientStruct(const ClientStruct& tmp)
 	{
 		std::cout << "copy" << std::endl;
 	}
 };
 
-class NPC
+class NPCStruct
 {
 public:
 	bool is_active;
 };
 
-#define CLIENTMGR MTObjectMGR<unsigned int, Client>::GetInstance()
-#define CLIENT(x) MTObjectMGR<unsigned int, Client>::GetInstance().GetObj(x)
+#define CLIENTMGR MTObjectMGR<unsigned int, ClientStruct>::GetInstance()
+#define CLIENT(x) MTObjectMGR<unsigned int, ClientStruct>::GetInstance().GetObj(x)
 
-#define NPCMGR MTObjectMGR<unsigned int, NPC>::GetInstance()
-#define NPC(x) MTObjectMGR<unsigned int, NPC>::GetInstance().GetObj(x)
+#define NPCMGR MTObjectMGR<unsigned int, NPCStruct>::GetInstance()
+#define NPC(x) MTObjectMGR<unsigned int, NPCStruct>::GetInstance().GetObj(x)
 
 
 #endif

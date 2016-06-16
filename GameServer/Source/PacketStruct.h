@@ -3,9 +3,11 @@
 
 // client to server
 #define CS_TYPE_MOVE 1
+#define CS_TYPE_PLAYER_POS 2
 
 // server to client
-#define SC_TYPE_MOVE 1
+#define SC_TYPE_MOVE 101
+#define SC_TYPE_PLAYER_REMOVE 102
 
 #define MAX_VIEW_USER 20
 #define MAX_BUFF_SIZE 1024
@@ -46,16 +48,29 @@ struct cs_packet_move
 	unsigned int moveDir;
 };
 
+struct cs_packet_player_pos
+{
+	packet_header header;	
+	float x, y;
+};
+
 // server to client
 struct sc_packet_player_pos
 {
 	packet_header header;
-	int x, y;
+	int id;
+	float x, y;
+};
+
+struct sc_packet_player_remove
+{
+	packet_header header;
+	int id;
 };
 
 struct playerPos
 {
-	int x, y;
+	float x, y;
 };
 
 struct playerInfo

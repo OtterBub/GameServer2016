@@ -4,6 +4,11 @@
 
 #include "Scene.h"
 #include "../ButtonUI.h"
+#include "../../Object/ObjectOutLineCube.h"
+#include "../MGR/MTObjectMgr.h"
+
+#define PLAYERMGR MTObjectMGR<unsigned int, ObjectOutLineCube>::GetInstance(0)
+#define PLAYER(x) MTObjectMGR<unsigned int, ObjectOutLineCube>::GetInstance(0).GetObj(x)
 
 class SceneMMO : public Scene
 {
@@ -20,15 +25,28 @@ public:
 	void Mouse(int button, int state, int x, int y);
 	void MouseMotion(int x, int y);
 
-	/*void KeyBoard( unsigned char key, int x, int y ) {}
-	void KeyBoardUp( unsigned char key, int x, int y) {}
+	void KeyBoard(unsigned char key, int x, int y);
+	void KeyBoardUp(unsigned char key, int x, int y);
+
+	/*
 	void KeyBoardSpecial( int key, int x, int y ) {}
 	void KeyBoardSpecialUp( int key, int x, int y ) {}
-	bool Command( std::vector< std::string > commandTokens ) { return false; }*/
+	bool Command( std::vector< std::string > commandTokens ) { return false; }
+	*/
+
+	Vector3 PickMouse(int x, int y);
 
 private:
 	GLdouble wx, wy, wz;
 	GLdouble modelView[16];
+
+	Vector2 mMouseClickPos;
+	ObjectOutLineCube mTestCube;
+
+	Vector3 mPickPos;
+	bool mMouseLDown;
+	bool mPickCal;
+	bool mKey[UCHAR_MAX];
 };
 
 #endif

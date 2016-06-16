@@ -16,6 +16,8 @@ public:
 	bool ExistClient(key index);
 	void DeleteClient(key index);
 
+	const std::map<key, T>& GetList();
+
 	MTObjectMGR() {}
 private:
 	MTObjectMGR(const MTObjectMGR& tmp) {}
@@ -60,12 +62,15 @@ void MTObjectMGR<key, T>::DeleteClient(key index)
 	mRWLock.WriteLock();
 	if (mObjectList.count(index) == 1)
 	{
-		closesocket(mObjectList[index].s);
-		mObjectList[index].is_connected = false;
 		mObjectList.erase(index);
 	}
 	mRWLock.WriteUnLock();
 }
 
+template <class key, class T>
+const std::map<key, T>& MTObjectMGR<key, T>::GetList()
+{
+	return mObjectList;
+}
 
 #endif __MTOBJMGR_H__

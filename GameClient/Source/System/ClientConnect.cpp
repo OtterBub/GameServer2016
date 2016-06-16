@@ -43,7 +43,7 @@ void ClientConnect::ReadPacket()
 			}
 		}
 
-		_sleep(100);
+		_sleep(10);
 	}
 }
 
@@ -51,12 +51,13 @@ void ClientConnect::ProcessPacket(char *packet)
 {
 	packet_header *header = reinterpret_cast<packet_header*> (packet);
 	std::cout << "[Recv] type: " << (int)header->type << " size: " << (int)header->size << std::endl;
-	
-	//char lTempData[BUF_SIZE];
 
-	//memcpy_s(lTempData, sizeof(lTempData), header, header->size);
+	PacketStore lTempPacket;
+	memcpy_s(&lTempPacket, BUF_SIZE, header, BUF_SIZE);
+	CONNECT.mDataQueue.push(lTempPacket);
 
-	//CONNECT.mDataQueue.push(lTempData);
+	packet_header *Test = reinterpret_cast<packet_header*> (&lTempPacket);
+
 	switch (header->type)
 	{
 	case SC_TYPE_MOVE:
@@ -64,8 +65,9 @@ void ClientConnect::ProcessPacket(char *packet)
 		sc_packet_player_pos *posPacket = reinterpret_cast<sc_packet_player_pos*>(packet);
 		std::string str = "SC_TYPE_MOVE (" +
 			std::to_string(posPacket->x) + std::string(", ") +
-			std::to_string(posPacket->y) + std::string(")");
-		SKCONSOLE << str;
+			std::to_string(posPacket->y) + std::string(")") + 
+			"[" + std::to_string(posPacket->id) + "]";
+		//SKCONSOLE << str;
 		break;
 	}
 	default:
@@ -208,4 +210,16 @@ void ClientConnect::SendPacket(unsigned long packetSize)
 		int errorCode = WSAGetLastError();
 		std::cout << "Error Code [" << errorCode << "] \n";
 	}
+}
+
+bool ClientConnect::ThereIsProcessPacket()
+{
+	return !mDataQueue.empty();
+}
+
+PacketStore ClientConnect::GetPacket()
+{
+	PacketStore packet= mDataQueue.back();
+	mDataQueue.pop();
+	return packet;
 }

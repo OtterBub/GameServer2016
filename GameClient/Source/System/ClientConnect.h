@@ -8,6 +8,11 @@
 
 #define CONNECT ClientConnect::GetInstance()
 
+struct PacketStore
+{
+	char packet[BUF_SIZE];
+};
+
 class ClientConnect
 {
 public:
@@ -33,6 +38,9 @@ public:
 
 	void SendPacket( unsigned long packetSize );
 
+	bool ThereIsProcessPacket();
+	PacketStore GetPacket();
+
 private:
 	ClientConnect() {};
 	ClientConnect(const ClientConnect& tmp) {};
@@ -53,7 +61,7 @@ private:
 
 	bool mShutDown;
 
-	std::queue<char[BUF_SIZE]> mDataQueue;
+	std::queue<PacketStore> mDataQueue;
 };
 
 #endif

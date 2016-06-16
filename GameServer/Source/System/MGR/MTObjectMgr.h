@@ -10,11 +10,13 @@ template <class key, class T>
 class MTObjectMGR
 {
 public:
-	static MTObjectMGR<key, T>& GetInstance( unsigned int index = 0 );
+	static MTObjectMGR<key, T>& GetInstance(unsigned int index = 0);
 
 	T& GetObj(key index);
 	bool ExistClient(key index);
 	void DeleteClient(key index);
+
+	const std::map<key, T>& GetList();
 
 	MTObjectMGR() {}
 private:
@@ -60,12 +62,15 @@ void MTObjectMGR<key, T>::DeleteClient(key index)
 	mRWLock.WriteLock();
 	if (mObjectList.count(index) == 1)
 	{
-		closesocket(mObjectList[index].s);
-		mObjectList[index].is_connected = false;
 		mObjectList.erase(index);
 	}
 	mRWLock.WriteUnLock();
 }
 
+template <class key, class T>
+const std::map<key, T>& MTObjectMGR<key, T>::GetList()
+{
+	return mObjectList;
+}
 
 #endif __MTOBJMGR_H__

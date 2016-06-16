@@ -70,17 +70,13 @@ void Connect::AcceptThread()
 		sc_packet_player_pos playerPosPacket;
 		playerPosPacket.header.size = sizeof(playerPosPacket);
 		playerPosPacket.header.type = SC_TYPE_MOVE;
-		playerPosPacket.x = 0;
-		playerPosPacket.y = 0;
-		Connect::SendPacket(&playerPosPacket, new_id);
 
 		playerPosPacket.x = 110;
 		playerPosPacket.y = 110;
+		playerPosPacket.id = new_id;
 		Connect::SendPacket(&playerPosPacket, new_id);
 
-		playerPosPacket.x = 220;
-		playerPosPacket.y = 220;
-		Connect::SendPacket(&playerPosPacket, new_id);
+		SendBroadCasting(&playerPosPacket, new_id);
 
 		CLIENT(new_id).is_connected = true;
 
@@ -122,7 +118,16 @@ void Connect::WorkerThread()
 		// disconnect
 		if (0 == iosize)
 		{
+			closesocket(CLIENT(key).s);
+			CLIENT(key).is_connected = false;
 			CLIENTMGR.DeleteClient(key);
+
+			sc_packet_player_remove removePacket;
+			removePacket.header.size = sizeof(removePacket);
+			removePacket.header.type = SC_TYPE_PLAYER_REMOVE;
+			removePacket.id = key;
+			SendBroadCasting(&removePacket);
+
 			std::cout << "clientNum: " << key << " logout:: " << std::endl;
 			continue;
 		}
@@ -228,6 +233,15 @@ void Connect::SendPacket(void *dataPtr, unsigned int key)
 	}
 }
 
+void Connect::SendBroadCasting(void* packet, unsigned int except )
+{
+	for (auto it = CLIENTMGR.GetList().begin(); it != CLIENTMGR.GetList().end(); ++it)
+	{
+		if (it->first != except)
+			Connect::SendPacket(packet, it->first);
+	}
+}
+
 void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 {
 	packet_header *header = reinterpret_cast<packet_header*>(packet);
@@ -245,9 +259,46 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 #if DEBUG
 		std::cout << "TYPE MOVE: " << movePacket->moveDir << std::endl;
 #endif
+		static float speed = 0.1;
+		CLIENT(key).info.mPos.x += (movePacket->moveDir & moveDir::MOVE_RIGHT) * speed;
+		CLIENT(key).info.mPos.x += (movePacket->moveDir & moveDir::MOVE_LEFT) * -speed;
+		CLIENT(key).info.mPos.y += (movePacket->moveDir & moveDir::MOVE_UP) * -speed;
+		CLIENT(key).info.mPos.y += (movePacket->moveDir & moveDir::MOVE_DOWN) * speed;
+
+		Vector3f pos = CLIENT(key).info.mPos;
+
+		sc_packet_player_pos playerPosPacket;
+		playerPosPacket.header.size = sizeof(playerPosPacket);
+		playerPosPacket.header.type = SC_TYPE_MOVE;
+
+		playerPosPacket.x = pos.x;
+		playerPosPacket.y = pos.y;
+		playerPosPacket.id = key;
+		SendBroadCasting(&playerPosPacket);
 		break;
 	}
+	case CS_TYPE_PLAYER_POS:
+	{
+		cs_packet_player_pos *movePacket = reinterpret_cast<cs_packet_player_pos*>(packet);
+		CLIENT(key).info.mPos.x = movePacket->x;
+		CLIENT(key).info.mPos.y = movePacket->y;
 
+#if DEBUG
+		std::cout << "TYPE PLAYER POS: " << movePacket->x << ", " << movePacket->y << std::endl;
+#endif
+
+		Vector3f pos = CLIENT(key).info.mPos;
+
+		sc_packet_player_pos playerPosPacket;
+		playerPosPacket.header.size = sizeof(playerPosPacket);
+		playerPosPacket.header.type = SC_TYPE_MOVE;
+
+		playerPosPacket.x = pos.x;
+		playerPosPacket.y = pos.y;
+		playerPosPacket.id = key;
+		SendBroadCasting(&playerPosPacket);
+	}
+	break;
 	default:
 		std::cout << "[" << key << "]" << " UnkownPacket \n";
 		break;
