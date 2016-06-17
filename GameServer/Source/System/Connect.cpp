@@ -339,8 +339,10 @@ void Connect::SendPacket(unsigned char *dataPtr, unsigned int key)
 	if (0 != ret)
 	{
 		int errorcode = WSAGetLastError();
-		if ((errorcode != 10054) && (errorcode != 10038))
-			std::cout << "WSASend ErrorCode: " << errorcode << std::endl;
+		if (errorcode == (int)10054) return;
+		if (errorcode == (int)10038) return;
+
+		std::cout << "WSASend ErrorCode: " << errorcode << std::endl;
 	}
 }
 
