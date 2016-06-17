@@ -11,8 +11,8 @@
 #define PLAYERMGR MTObjectMGR<unsigned int, ObjectSkier>::GetInstance(0)
 #define PLAYER(x) MTObjectMGR<unsigned int, ObjectSkier>::GetInstance(0).GetObj(x)
 
-#define NPCMGR MTObjectMGR<unsigned int, ObjectOutLineCube>::GetInstance(1)
-#define NPC(x) MTObjectMGR<unsigned int, ObjectOutLineCube>::GetInstance(1).GetObj(x)
+#define NPCMGR MTObjectMGR<unsigned int, ObjectSkier>::GetInstance(1)
+#define NPC(x) MTObjectMGR<unsigned int, ObjectSkier>::GetInstance(1).GetObj(x)
 
 class SceneMMO : public Scene
 {

@@ -32,23 +32,34 @@ void SceneMMO::Draw()
 {
 	glPushMatrix();
 	{
-		static int camDist = 5;
-		Vector3 myPos = PLAYER(CONNECT.mMyID).GetPosition();
-		gluLookAt(myPos.x, 10, myPos.z + camDist, myPos.x, 0, myPos.z, 0, 1, 0);
+		Vector3 myPos;
+		static int camDist = 15;
+		static int camHeight = 10;
+		if (CONNECT.mLogin)
+		{
+			myPos = PLAYER(CONNECT.mMyID).GetPosition();
+			gluLookAt(myPos.x, camHeight, myPos.z + camDist, myPos.x, 0, myPos.z, 0, 1, 0);
+		}
+		else
+		{
+			myPos = Vector3(50, 0, 50);
+			gluLookAt(myPos.x, camHeight, myPos.z + camDist, myPos.x, 0, myPos.z, 0, 1, 0);
+		}
 
 		glGetDoublev(GL_MODELVIEW_MATRIX, modelView);
 		// Draw Ground
 		glPushMatrix();
 		{
-			static int worldSize = 100;
+			static int worldSize = 300;
 			static Vector4 color = Vector4(0.8, 0.8, 0.8, 0.8);
 			static Vector4 reColor = Vector4(1, 1, 1, 1) - color;
 			float lGroundSize = 0.5f;
 			float lGroundHeight = 0;
-			for (int y = 0; y < worldSize; ++y)
+			for (int y = myPos.y - 50; y < myPos.y + 50; ++y)
 			{
-				for (int x = 0; x < worldSize; ++x)
+				for (int x = myPos.x - 50; x < myPos.x + 50; ++x)
 				{
+					
 					glPushMatrix();
 					glTranslatef( x, 0, y );
 					if ((x + y) % 2)
@@ -86,7 +97,7 @@ void SceneMMO::Draw()
 		if(mMouseLDown)
 			mPickPos = PickMouse( mMouseClickPos.x, mMouseClickPos.y );
 
-		mTestCube.Draw();
+		//mTestCube.Draw();
 		// Lock Please
 		CONNECT.mConnectLock.ReadLock();
 		for (auto it = PLAYERMGR.GetList().begin(); it != PLAYERMGR.GetList().end(); ++it)
@@ -95,8 +106,7 @@ void SceneMMO::Draw()
 		}
 		for (auto it = NPCMGR.GetList().begin(); it != NPCMGR.GetList().end(); ++it)
 		{
-			if( NPC(it->first).mDraw )
-				NPC(it->first).Draw();
+			NPC(it->first).Draw();
 		}
 		
 		CONNECT.mConnectLock.ReadUnLock();
@@ -105,7 +115,7 @@ void SceneMMO::Draw()
 
 	glPushMatrix();
 	{
-		// Console Coordinate
+		// UI Coordinate
 		glMatrixMode(GL_PROJECTION);
 		glPushMatrix();
 		glLoadIdentity();
@@ -128,7 +138,30 @@ void SceneMMO::Draw()
 		glDisable(GL_BLEND);
 
 		// Draw Strings
-		int lStrNum = 1;
+		if (CONNECT.mLogin)
+		{
+			int lStrNum = 1;
+			std::list<std::string> stringList;
+			std::string str = "LEVEL: " + std::to_string(PLAYER(CONNECT.mMyID).LEVEL);
+			stringList.push_back(str);
+			str = "EXP: " + std::to_string(PLAYER(CONNECT.mMyID).EXP) + "/ " + std::to_string((int)pow(100, PLAYER(CONNECT.mMyID).LEVEL));
+			
+			stringList.push_back(str);
+			str = "HP: " + std::to_string(PLAYER(CONNECT.mMyID).HP);
+			stringList.push_back(str);
+			str = "POS: (" + std::to_string((int)PLAYER(CONNECT.mMyID).GetPosition().x);
+			str += ", " + std::to_string((int)PLAYER(CONNECT.mMyID).GetPosition().y);
+			str += ")";
+			stringList.push_back(str);
+
+			for (std::string it : stringList)
+			{
+				glLineWidth(2);
+				glColor4f(1, 0.8, 0.8, 1);
+				DrawStrokeText(it.c_str(), 1, -(25 * lStrNum), 0, 0.150);
+				lStrNum++;
+			}
+		}
 
 		// Restore LineWidth 
 		glLineWidth(1);
@@ -158,8 +191,7 @@ void SceneMMO::Update(double dt)
 	}
 	for (auto it = NPCMGR.GetList().begin(); it != NPCMGR.GetList().end(); ++it)
 	{
-		if (NPC(it->first).mDraw)
-			NPC(it->first).Update(dt);
+		NPC(it->first).Update(dt);
 	}
 
 	CONNECT.mConnectLock.ReadUnLock();
@@ -173,7 +205,7 @@ void SceneMMO::Update(double dt)
 			mKey['w'] ||
 			mKey['s'])
 		{
-			static const float keyDelay = 0.1;
+			static const float keyDelay = 0.8;
 			if (mKeyTime >= keyDelay)
 			{
 				mKeyTime = 0;
@@ -272,7 +304,12 @@ void SceneMMO::KeyBoard(unsigned char key, int x, int y)
 	{
 		if (mAtkTime >= atkDelay)
 		{
-
+			mAtkTime = 0;
+			cs_packet_attack *attack = CONNECT.GetSendBuffAddr<cs_packet_attack>();
+			attack->header.size = sizeof(cs_packet_attack);
+			attack->header.type = CS_ATTACK;
+			CONNECT.SendPacket(sizeof(cs_packet_attack));
+			SKCONSOLE << "Attack!";
 		}
 	}
 }
@@ -306,6 +343,7 @@ bool SceneMMO::Command(std::vector< std::string > commandTokens)
 			logout->size = sizeof(cs_packet_login);
 			logout->type = CS_LOGOUT;
 
+			CONNECT.mLogin = false;
 			CONNECT.SendPacket(sizeof(packet_header));
 
 			SCENEMGR_INST->SceneChange(std::shared_ptr< SceneMainMenu >(new SceneMainMenu()));

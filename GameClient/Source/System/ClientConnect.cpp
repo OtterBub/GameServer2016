@@ -73,6 +73,13 @@ void ClientConnect::ProcessPacket(char *packet)
 
 		CONNECT.mLogin = true;
 		CONNECT.mMyID = okPacket->id;
+
+		PLAYER(okPacket->id).x_pos = okPacket->x_pos;
+		PLAYER(okPacket->id).y_pos = okPacket->y_pos;
+		PLAYER(okPacket->id).HP = okPacket->HP;
+		PLAYER(okPacket->id).LEVEL = okPacket->LEVEL;
+		PLAYER(okPacket->id).EXP = okPacket->EXP;
+
 		std::string str = "LOGIN SUCCESS!! Your Id: " + std::to_string(okPacket->id);
 		str += "(" + std::to_string((int)okPacket->x_pos) + ", " + std::to_string((int)okPacket->y_pos) + ")";
 		SKCONSOLE << str;
@@ -87,6 +94,7 @@ void ClientConnect::ProcessPacket(char *packet)
 		case TYPE_PLAYER:
 		{
 			PLAYER(addPacket->id).SetPosition(Vector3(addPacket->x_pos, 0, addPacket->y_pos));
+			PLAYER(addPacket->id).SetColor(Vector4(0, 0, 0, 1));
 			break;
 		}
 		case TYPE_MONSTER:
@@ -138,14 +146,18 @@ void ClientConnect::ProcessPacket(char *packet)
 		case TYPE_PLAYER:
 		{
 			//PLAYER(infoPacket->id).SetPosition(Vector3(infoPacket->x_pos, 0, infoPacket->y_pos));
-			
+			PLAYER(infoPacket->id).x_pos = infoPacket->x_pos;
+			PLAYER(infoPacket->id).y_pos = infoPacket->y_pos;
 			PLAYER(infoPacket->id).AddDest(Vector3(infoPacket->x_pos, 0, infoPacket->y_pos));
-			PLAYER(infoPacket->id).SetVelocityAndIncrement(10, 0);
+			PLAYER(infoPacket->id).SetVelocityAndIncrement(5, 0);
 			break;
 		}
 		case TYPE_MONSTER:
 		{
-			NPC(infoPacket->id).SetPosition(Vector3(infoPacket->x_pos, 0, infoPacket->y_pos));
+			NPC(infoPacket->id).x_pos = infoPacket->x_pos;
+			NPC(infoPacket->id).y_pos = infoPacket->y_pos;
+			NPC(infoPacket->id).AddDest(Vector3(infoPacket->x_pos, 0, infoPacket->y_pos));
+			NPC(infoPacket->id).SetVelocityAndIncrement(5, 0);
 			break;
 		}
 		default:
@@ -160,6 +172,15 @@ void ClientConnect::ProcessPacket(char *packet)
 		str += " to " + std::to_string(atkPacket->attack_to_id);
 		str += " last_hp: " + std::to_string(atkPacket->attack_to_hp);
 		SKCONSOLE << str;
+		break;
+	}
+	case SC_STAT_CHANGE:		
+	{
+		sc_packet_stat_change *stat = reinterpret_cast<sc_packet_stat_change*>(packet);
+		PLAYER(CONNECT.mMyID).EXP = stat->exp;
+		PLAYER(CONNECT.mMyID).LEVEL = stat->level;
+ 		PLAYER(CONNECT.mMyID).HP = stat->hp;
+
 		break;
 	}
 	default:

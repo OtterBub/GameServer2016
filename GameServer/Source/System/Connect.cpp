@@ -65,7 +65,7 @@ void Connect::AcceptThread()
 		CLIENT(new_id).s = new_client;
 		
 		CreateIoCompletionPort(reinterpret_cast<HANDLE>(new_client), GLOBAL.mhIocp, new_id, 0);
-		std::cout << "Connect User id: " << new_id << std::endl;
+		//std::cout << "Connect User id: " << new_id << std::endl;
 
 		// put player message
 		CLIENT(new_id).mViewListLock.WriteLock();
@@ -231,7 +231,7 @@ void Connect::WorkerThread()
 			removePacket.objType = TYPE_PLAYER;
 			SendBroadCasting(&removePacket);
 			
-			std::cout << "clientNum: " << key << " logout:: " << std::endl;
+			//std::cout << "clientNum: " << key << " logout:: " << std::endl;
 			continue;
 		}
 #if DEBUG
@@ -302,7 +302,7 @@ void Connect::WorkerThread()
 		}
 		case OP_TEST:
 		{
-			std::cout << "opTest" << std::endl;
+			//std::cout << "opTest" << std::endl;
 
 			//Connect::SendPacket();
 			delete my_overlap;
@@ -342,7 +342,7 @@ void Connect::SendPacket(unsigned char *dataPtr, unsigned int key)
 		if (errorcode == (int)10054) return;
 		if (errorcode == (int)10038) return;
 
-		std::cout << "WSASend ErrorCode: " << errorcode << std::endl;
+		//std::cout << "WSASend ErrorCode: " << errorcode << std::endl;
 		Connect::connectLock.WriteLock();
 		closesocket(CLIENT(key).s);
 		CLIENTMGR.DeleteClient(key);
@@ -375,7 +375,7 @@ void Connect::SendPacket(void *dataPtr, unsigned int key)
 		int errorcode = WSAGetLastError();
 		if (errorcode == (int)10054) return;
 		if (errorcode == (int)10038) return;
-		std::cout << "WSASend ErrorCode: " << errorcode << std::endl;
+		//std::cout << "WSASend ErrorCode: " << errorcode << std::endl;
 		Connect::connectLock.WriteLock();
 		closesocket(CLIENT(key).s);
 		CLIENTMGR.DeleteClient(key);
@@ -410,7 +410,7 @@ void Connect::SendPacket(void *packet, unsigned int size, unsigned int type, uns
 		int errorcode = WSAGetLastError();
 		if (errorcode == (int)10054) return;
 		if (errorcode == (int)10038) return;
-		std::cout << "WSASend ErrorCode: " << errorcode << std::endl;
+		//std::cout << "WSASend ErrorCode: " << errorcode << std::endl;
 		Connect::connectLock.WriteLock();
 		closesocket(CLIENT(key).s);
 		CLIENTMGR.DeleteClient(key);
@@ -442,7 +442,7 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 	case CS_LOGIN:
 	{
 		cs_packet_login *loginPacket = reinterpret_cast<cs_packet_login*>(packet);
-		char nick[100] = "gamepsk";
+		char nick[100] = "hello";
 		size_t i;
 		wcstombs_s(&i, nick, 100, loginPacket->nick, 100);
 		DBMGR.SearchNick( nick, key );
@@ -461,9 +461,10 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 		loginOkPacket.y_pos = CLIENT(key).info.mPos.y;
 		loginOkPacket.HP = CLIENT(key).info.hp;
 		loginOkPacket.EXP = CLIENT(key).info.exp;
+		loginOkPacket.LEVEL = CLIENT(key).info.level;
 		Connect::SendPacket(&loginOkPacket, key);
 
-		std::cout << "sizeof: " << sizeof(sc_packet_login_ok) << "\n";
+		//std::cout << "sizeof: " << sizeof(sc_packet_login_ok) << "\n";
 		
 
 		sc_packet_add_object addPacket;
@@ -563,7 +564,7 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 		
 		DBMGR.Query(query);
 
-		std::cout << "logout " << key << std::endl;
+		//std::cout << "logout " << key << std::endl;
 		break;
 	}
 	case CS_MOVE:
@@ -572,13 +573,16 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 #if DEBUG
 		std::cout << "TYPE MOVE: " << movePacket->moveDir << std::endl;
 #endif
-		static float speed = 1;
+		Vector3<int> prevPos = CLIENT(key).info.mPos;
+		static int speed = 1;
 		CLIENT(key).info.mPos.x += (movePacket->moveDir & moveDir::MOVE_RIGHT) * speed;
 		CLIENT(key).info.mPos.x += ((movePacket->moveDir & moveDir::MOVE_LEFT) >> 1)  * -speed;
 		CLIENT(key).info.mPos.y += ((movePacket->moveDir & moveDir::MOVE_UP) >> 2)  * -speed;
 		CLIENT(key).info.mPos.y += ((movePacket->moveDir & moveDir::MOVE_DOWN) >> 3) * speed;
 
-		Vector3f pos = CLIENT(key).info.mPos;
+		Vector3<int> pos = CLIENT(key).info.mPos;
+
+		if ((prevPos.x == pos.x) && (prevPos.y == pos.y)) return;
 
 		sc_packet_position_info playerPosPacket;
 
@@ -814,7 +818,6 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 					
 					if (NPC(i).info.hp <= 0)
 					{
-						NPCMGR.DeleteClient(i);
 						sc_packet_remove_object removePacket;
 						removePacket.id = i;
 						removePacket.objType = TYPE_MONSTER;
@@ -825,11 +828,27 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 						{
 							Connect::SendPacket(&removePacket, pl);
 						}
+
+						CLIENT(key).info.exp += NPC(i).info.exp;
+						if (CLIENT(key).info.exp >= pow(100, CLIENT(key).info.level))
+						{
+							CLIENT(key).info.level++;
+						}
+
+						sc_packet_stat_change statPacket;
+						statPacket.hp = CLIENT(key).info.hp;
+						statPacket.level = CLIENT(key).info.level;
+ 						statPacket.exp = CLIENT(key).info.exp;
+						Connect::SendPacket(&statPacket, key);
+
+						connectLock.WriteLock();
+						NPCMGR.DeleteClient(i);
+						connectLock.WriteUnLock();
 					}
 				}
 			}
 		}
-		std::cout << '[' << key << ']' << "CS_ATTACK\n";
+		//std::cout << '[' << key << ']' << "CS_ATTACK\n";
 		CLIENT(key).mViewListLock.WriteUnLock();
 		break;
 	}

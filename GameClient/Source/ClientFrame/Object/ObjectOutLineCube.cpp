@@ -23,7 +23,7 @@ void ObjectOutLineCube::Draw()
 		glutSolidCube( mSize );
 
 		glColor4f( 1 - mColor.x, 1 - mColor.y, 1 - mColor.z, mColor.w );
-		glutWireCube( mSize + 0.5 );
+		glutWireCube( mSize + 0.1 );
 	}
 	glPopMatrix();
 }

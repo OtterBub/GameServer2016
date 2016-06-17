@@ -40,8 +40,9 @@ int main(int argc, char** argv){
 			if (false == NPCMGR.ExistClient(i))
 			{
 				NPC(i).is_active = false;
-				NPC(i).info.mPos = Vector3f(rand() % 100, rand() % 100, 0);
+				NPC(i).info.mPos = Vector3<int>(rand() % 100, rand() % 100, 0);
 				NPC(i).info.hp = 1 + rand() % 10;
+				NPC(i).info.exp = 20 * NPC(i).info.hp;
 
 				std::wstring wstr = L"[Mob]";
 				int nameCnt = 1 + (rand() % 4);

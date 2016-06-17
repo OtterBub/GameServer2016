@@ -4,6 +4,7 @@
 
 ObjectSkier::ObjectSkier()
 {
+	//memset(this, 0, sizeof(ObjectSkier));
 	mMainBody.SetColor( Vector4( 0, 0, 1, 1 ) );
 	mMainBody.SetSize( 1 );
 	mSetDest = false;
@@ -15,6 +16,9 @@ ObjectSkier::ObjectSkier()
 	mInitVel = 0;
 	mAngleY = 0;
 	mAngleZ = 0;
+
+	mDestDistance = 0;
+	mLeftDistance = 0;
 }
 
 ObjectSkier::~ObjectSkier()
@@ -34,7 +38,7 @@ void ObjectSkier::Draw()
 		mMainBody.Draw();
 
 		glTranslatef( 0, 1, 0 );
-		glutSolidCube( 1 );
+		glutSolidCube( 0.5 );
 	}
 	glPopMatrix();
 }
@@ -42,6 +46,9 @@ void ObjectSkier::Draw()
 void ObjectSkier::Update( double dt )
 {
 	Move( dt );
+
+	if(mAttack)
+		mAttackTime += dt;
 
 	if( !mSetCollisionTree )
 	{

@@ -16,7 +16,7 @@
 #define SC_LOGIN_FAIL 2
 #define SC_POSITION_INFO 3
 #define SC_CHAT 4
-
+#define SC_STAT_CHANGE 5
 #define SC_REMOVE_OBJECT 6
 #define SC_ADD_OBJECT 7
 #define SC_ATTACK_TO_OBJECT 8
@@ -165,6 +165,20 @@ struct sc_packet_remove_object
 		memset(this, 0, sizeof(sc_packet_remove_object));
 		this->header.size = sizeof(sc_packet_remove_object);
 		this->header.type = SC_REMOVE_OBJECT;
+	}
+};
+
+struct sc_packet_stat_change
+{
+	packet_header header;
+	WORD hp;
+	WORD level;
+	WORD exp;
+	sc_packet_stat_change()
+	{
+		memset(this, 0, sizeof(sc_packet_stat_change));
+		this->header.size = sizeof(sc_packet_stat_change);
+		this->header.type = SC_STAT_CHANGE;
 	}
 };
 

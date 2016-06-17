@@ -1,7 +1,9 @@
 #ifndef __OBJECT_SKIER_H__
 #define __OBJECT_SKIER_H__
 
+#include "../../Common.h"
 #include "ObjectOutLineCube.h"
+
 #include <list>
 
 class ObjectSkier : public Object
@@ -58,6 +60,9 @@ protected:
 	bool mAutoRotate;
 	bool mSetCollisionTree;
 	bool mSmoothFinish;
+
+	double mAttackTime;
+	bool mAttack;
 
 	std::list< Vector3 > mListDest;
 

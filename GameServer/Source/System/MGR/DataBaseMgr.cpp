@@ -357,6 +357,7 @@ SQLRETURN DataBaseMgr::Query(std::string str, unsigned int index)
 				CLIENT(index).info.def = def;
 				CLIENT(index).info.exp = exp;
 				CLIENT(index).info.id = char_id;
+				CLIENT(index).info.level = char_level;
 				wcscpy_s(CLIENT(index).info.char_id, char_name);
 
 
