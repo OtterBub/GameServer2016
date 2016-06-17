@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-LONG display_array[101][101];
+LONG display_array[800][800];
 int	id_table[MAX_USER];
 HANDLE g_iocp;
 SYSTEM_INFO sysInfo;

@@ -1,6 +1,6 @@
 #pragma once
 
-extern LONG display_array[101][101];
+extern LONG display_array[800][800];
 extern int id_table[MAX_USER];
 extern HANDLE g_iocp;
 extern SYSTEM_INFO sysInfo;

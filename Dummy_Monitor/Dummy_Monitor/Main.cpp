@@ -18,6 +18,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      LPSTR     lpCmdLine,
                      int       nCmdShow)
 {
+	CMiniDump::Begin();
 	//------------------------------------------------------------------//
 	// 기본적인 윈도우 프레임 생성..                                    //
  	//------------------------------------------------------------------//
@@ -89,7 +90,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	printf("Dummy Client 종료\n");
 
 	ReleaseD3D();
-
+	CMiniDump::End();
 	return 0;
 }
  

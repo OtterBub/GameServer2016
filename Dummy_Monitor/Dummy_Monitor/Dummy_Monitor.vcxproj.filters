@@ -28,6 +28,9 @@
     <ClCompile Include="Sessions.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="mdump.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -53,6 +56,9 @@
     </ClInclude>
     <ClInclude Include="..\..\GameServer\Source\PacketStruct.h">
       <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="mdump.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

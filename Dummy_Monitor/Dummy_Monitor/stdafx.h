@@ -42,6 +42,7 @@ using namespace std;
 #include "global.h"
 #pragma comment(lib, "ws2_32.lib")
 #include "Device.h"
+#include "mdump.h"
 #include "resource.h"
 #pragma comment (linker , "/entry:WinMainCRTStartup /subsystem:console")  
 #pragma warning (disable : 4244)

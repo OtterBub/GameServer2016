@@ -181,8 +181,9 @@ int DataBaseMgr::SearchNick(const std::string nick, unsigned int index)
 		{
 			SearchID = "SELECT * FROM dbo.user_table WHERE ID = " + std::to_string(++num);
 		}
-
-		std::string CreateQuery = "INSERT INTO dbo.user_table VALUES (" + std::to_string(num) + ", '" + nick + "', 1, 50.0, 50.0, 1, 1, 1, 100)";
+		Vector2f mRandPos(rand()%100, rand()%100);
+		std::string CreateQuery = "INSERT INTO dbo.user_table VALUES (" + std::to_string(num) + ", '" + nick + "', 1, " + 
+			std::to_string(mRandPos.x) + ", " + std::to_string(mRandPos.y) + ", 1, 1, 1, 100)";
 		Query(CreateQuery);
 		Query(nickQuery, index);
 	}
