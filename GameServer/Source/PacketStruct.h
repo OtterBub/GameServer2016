@@ -40,6 +40,7 @@
 #define OP_MOVE_AI 3
 
 #define OP_TEST 100
+#include <Windows.h>
 
 
 #pragma pack (push, 1)
