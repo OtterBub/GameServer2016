@@ -218,7 +218,7 @@ void Connect::WorkerThread()
 			query += "Defence = " + std::to_string(CLIENT(key).info.def) + ", ";
 			query += "HP = " + std::to_string(CLIENT(key).info.hp) + " ";
 			query += "WHERE ID = " + std::to_string(CLIENT(key).info.id);
-			std::cout << query << std::endl;
+			//std::cout << query << std::endl;
 			DBMGR.Query(query);
 
 			CLIENTMGR.DeleteClient(key);
@@ -343,6 +343,10 @@ void Connect::SendPacket(unsigned char *dataPtr, unsigned int key)
 		if (errorcode == (int)10038) return;
 
 		std::cout << "WSASend ErrorCode: " << errorcode << std::endl;
+		Connect::connectLock.WriteLock();
+		closesocket(CLIENT(key).s);
+		CLIENTMGR.DeleteClient(key);
+		Connect::connectLock.WriteUnLock();
 	}
 }
 
@@ -369,7 +373,13 @@ void Connect::SendPacket(void *dataPtr, unsigned int key)
 	if (0 != ret)
 	{
 		int errorcode = WSAGetLastError();
+		if (errorcode == (int)10054) return;
+		if (errorcode == (int)10038) return;
 		std::cout << "WSASend ErrorCode: " << errorcode << std::endl;
+		Connect::connectLock.WriteLock();
+		closesocket(CLIENT(key).s);
+		CLIENTMGR.DeleteClient(key);
+		Connect::connectLock.WriteUnLock();
 	}
 }
 
@@ -398,7 +408,13 @@ void Connect::SendPacket(void *packet, unsigned int size, unsigned int type, uns
 	if (0 != ret)
 	{
 		int errorcode = WSAGetLastError();
+		if (errorcode == (int)10054) return;
+		if (errorcode == (int)10038) return;
 		std::cout << "WSASend ErrorCode: " << errorcode << std::endl;
+		Connect::connectLock.WriteLock();
+		closesocket(CLIENT(key).s);
+		CLIENTMGR.DeleteClient(key);
+		Connect::connectLock.WriteUnLock();
 	}
 }
 

@@ -28,7 +28,15 @@
 bool ProcessPacket(int user_id, char *packet)
 {
 	switch (packet[1]) {
+	case SC_LOGIN_OK:
+	{
+		sc_packet_login_ok *okPacket = reinterpret_cast<sc_packet_login_ok*>(packet);
+		if (okPacket->id >= TEST_PLAYER_NUM) return true;
+		player[okPacket->id].x = okPacket->x_pos;
+		player[okPacket->id].y = okPacket->y_pos;
 
+		break;
+	}
 	case SC_ADD_OBJECT:
 	{
 		sc_packet_add_object *addPacket = reinterpret_cast<sc_packet_add_object*>(packet);
@@ -40,13 +48,13 @@ bool ProcessPacket(int user_id, char *packet)
 
 		player[user_id].x = addPacket->x_pos;
 		player[user_id].y = addPacket->y_pos;
+		if (user_id == 1)
+			std::cout << player[user_id].x << ", " << player[user_id].y << std::endl;
 		break;
 	}
 	case SC_POSITION_INFO:
 	{
 		sc_packet_position_info *PutObject = reinterpret_cast<sc_packet_position_info *>(packet);
-
-		if (user_id != PutObject->id) return true;
 
 		player[user_id].x = PutObject->x_pos;
 		player[user_id].y = PutObject->y_pos;
