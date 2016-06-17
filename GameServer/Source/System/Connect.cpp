@@ -208,6 +208,7 @@ void Connect::WorkerThread()
 			closesocket(CLIENT(key).s);
 			CLIENT(key).is_connected = false;
 
+			connectLock.WriteLock();
 			std::string query = "UPDATE dbo.user_table SET ";
 			query += "XPos = " + std::to_string(CLIENT(key).info.mPos.x) + ", ";
 			query += "YPos = " + std::to_string(CLIENT(key).info.mPos.y) + ", ";
@@ -220,8 +221,8 @@ void Connect::WorkerThread()
 			std::cout << query << std::endl;
 			DBMGR.Query(query);
 
-			//connectLock.WriteLock();
 			CLIENTMGR.DeleteClient(key);
+			connectLock.WriteUnLock();
 
 			sc_packet_remove_object removePacket;
 			removePacket.header.size = sizeof(removePacket);
@@ -229,7 +230,7 @@ void Connect::WorkerThread()
 			removePacket.id = key;
 			removePacket.objType = TYPE_PLAYER;
 			SendBroadCasting(&removePacket);
-			//connectLock.WriteUnLock();
+			
 			std::cout << "clientNum: " << key << " logout:: " << std::endl;
 			continue;
 		}
