@@ -1,5 +1,6 @@
 #include "SceneMMO.h"
 #include "../../../System/ClientConnect.h"
+#include "SceneMainMenu.h"
 
 SceneMMO::SceneMMO()
 {
@@ -20,18 +21,8 @@ void SceneMMO::Enter()
 
 	memset(mKey, 0, sizeof(mKey));
 
-	cs_packet_login *login = CONNECT.GetSendBuffAddr<cs_packet_login>();
-
-	wchar_t gameid[10];
-
-	std::cout << "GAME ID를 입력하시오: ";
-	std::wcin >> gameid;
-
-	login->header.size = sizeof(cs_packet_login);
-	login->header.type = CS_LOGIN;
-	std::wcscpy(login->nick, gameid);
-
-	CONNECT.SendPacket(sizeof(cs_packet_login));
+	SKCONSOLE << "------- Input ID Help -------";
+	SKCONSOLE << "/login Your_id";
 }
 void SceneMMO::Exit()
 {
@@ -271,4 +262,38 @@ void SceneMMO::KeyBoard(unsigned char key, int x, int y)
 void SceneMMO::KeyBoardUp(unsigned char key, int x, int y)
 {
 	mKey[key] = false;
+}
+
+bool SceneMMO::Command(std::vector< std::string > commandTokens)
+{
+	if (commandTokens.size() >= 2)
+	{
+		if (commandTokens[0] == "login")
+		{
+			cs_packet_login *login = CONNECT.GetSendBuffAddr<cs_packet_login>();
+
+			login->header.size = sizeof(cs_packet_login);
+			login->header.type = CS_LOGIN;
+			size_t i;
+			mbstowcs_s(&i, login->nick, 10, commandTokens[1].c_str(), 10);
+
+			CONNECT.SendPacket(sizeof(cs_packet_login));
+		}
+	}
+	else if (commandTokens.size() >= 1)
+	{
+		if (commandTokens[0] == "logout")
+		{
+			packet_header *logout = CONNECT.GetSendBuffAddr<packet_header>();
+
+			logout->size = sizeof(cs_packet_login);
+			logout->type = CS_LOGOUT;
+
+			CONNECT.SendPacket(sizeof(packet_header));
+
+			SCENEMGR_INST->SceneChange(std::shared_ptr< SceneMainMenu >(new SceneMainMenu()));
+		}
+		
+	}
+	return true;
 }

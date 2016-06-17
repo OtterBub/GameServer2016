@@ -87,6 +87,17 @@ struct cs_packet_move
 	}
 };
 
+struct cs_packet_attack
+{
+	packet_header header;
+	cs_packet_attack()
+	{
+		memset(this, 0, sizeof(cs_packet_attack));
+		header.size = sizeof(cs_packet_move);
+		header.type = CS_ATTACK;
+	}
+};
+
 struct cs_packet_player_pos
 {
 	packet_header header;	

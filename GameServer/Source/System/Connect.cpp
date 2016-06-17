@@ -68,102 +68,9 @@ void Connect::AcceptThread()
 		std::cout << "Connect User id: " << new_id << std::endl;
 
 		// put player message
-		CLIENT(new_id).viewlist_lock.lock();
+		CLIENT(new_id).mViewListLock.WriteLock();
 		CLIENT(new_id).view_list.clear();
-		CLIENT(new_id).viewlist_lock.unlock();
-
-		//sc_packet_login_ok loginPacket;
-
-		///*loginPacket.header.size = sizeof(sc_packet_login_ok);
-		//loginPacket.header.type = SC_LOGIN_OK;*/
-		//loginPacket.id = new_id;
-		//loginPacket.x_pos = CLIENT(new_id).info.mPos.x;
-		//loginPacket.y_pos = CLIENT(new_id).info.mPos.y;
-		//loginPacket.HP = 100;
-		//loginPacket.EXP = 10;
-		//Connect::SendPacket( &loginPacket, new_id );
-
-		//sc_packet_add_object addPacket;
-		//addPacket.id = new_id;
-		//addPacket.x_pos = CLIENT(new_id).info.mPos.x;
-		//addPacket.y_pos = CLIENT(new_id).info.mPos.y;
-		//addPacket.objType = TYPE_PLAYER;
-
-		//for (auto i = 0; i < USERMAX; ++i)
-		//{
-		//	if (i == new_id) continue;
-		//	if (CLIENTMGR.ExistClient(i))
-		//	{
-		//		if (CLIENT(i).is_connected)
-		//		{
-		//			Vector2f newClientPos = Vector2f(CLIENT(new_id).info.mPos.x, CLIENT(new_id).info.mPos.y);
-		//			Vector2f targetClientPos = Vector2f(CLIENT(i).info.mPos.x, CLIENT(i).info.mPos.y);
-		//			if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
-		//			{
-		//				CLIENT(i).viewlist_lock.lock();
-		//				CLIENT(i).view_list.insert(new_id);
-		//				CLIENT(i).viewlist_lock.unlock();
-		//				Connect::SendPacket(&addPacket, i);
-		//			}
-		//		}
-		//	}
-		//}
-
-		//for (auto i = 0; i < USERMAX; ++i)
-		//{
-		//	if (i == new_id) continue;
-		//	if (CLIENTMGR.ExistClient(i))
-		//	{
-		//		if (CLIENT(i).is_connected)
-		//		{
-		//			Vector2f newClientPos = Vector2f(CLIENT(new_id).info.mPos.x, CLIENT(new_id).info.mPos.y);
-		//			Vector2f targetClientPos = Vector2f(CLIENT(i).info.mPos.x, CLIENT(i).info.mPos.y);
-		//			if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
-		//			{
-		//				CLIENT(new_id).viewlist_lock.lock();
-		//				CLIENT(new_id).view_list.insert(new_id);
-		//				CLIENT(new_id).viewlist_lock.unlock();
-
-		//				addPacket.id = i;
-		//				addPacket.x_pos = CLIENT(i).info.mPos.x;
-		//				addPacket.y_pos = CLIENT(i).info.mPos.y;
-		//				Connect::SendPacket(&addPacket, new_id);
-		//			}
-		//		}
-		//	}
-		//}
-
-		//for (auto i = 0; i < NPCMAX; ++i)
-		//{
-		//	if (NPCMGR.ExistClient(i))
-		//	{
-		//		if (NPC(i).is_active)
-		//		{
-		//			Vector2f newClientPos = Vector2f(CLIENT(new_id).info.mPos.x, CLIENT(new_id).info.mPos.y);
-		//			Vector2f targetClientPos = Vector2f(NPC(i).info.mPos.x, NPC(i).info.mPos.y);
-		//			if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
-		//			{
-		//				if (!NPC(i).is_active)
-		//				{
-		//					NPC(i).is_active = true;
-		//					TIMERMGR.PushEvent(i, GetTickCount() + 1000, OP_MOVE_AI);
-		//				}
-
-		//				CLIENT(new_id).viewlist_lock.lock();
-		//				CLIENT(new_id).npc_view_list.insert(i);
-		//				CLIENT(new_id).viewlist_lock.unlock();
-
-		//				addPacket.id = i;
-		//				addPacket.x_pos = NPC(i).info.mPos.x;
-		//				addPacket.y_pos = NPC(i).info.mPos.y;
-		//				addPacket.objType = TYPE_MONSTER;
-		//				Connect::SendPacket(&addPacket, new_id);
-		//			}
-		//		}
-		//	}
-		//}
-		//CLIENT(new_id).is_connected = true;
-
+		CLIENT(new_id).mViewListLock.WriteUnLock();
 
 		DWORD flags = 0;
 		int ret = WSARecv(new_client, &CLIENT(new_id).recv_overlap.wsabuf/* wsabuf */, 1, NULL,
@@ -233,9 +140,9 @@ void Connect::DoMove(unsigned int key)
 		{
 			if (0 == new_list.count(pl))
 			{
-				CLIENT(pl).viewlist_lock.lock();
+				CLIENT(pl).mViewListLock.WriteLock();
 				CLIENT(pl).view_list.erase(key);
-				CLIENT(pl).viewlist_lock.unlock();
+				CLIENT(pl).mViewListLock.WriteUnLock();
 
 				sc_packet_remove_object removePacket;
 				removePacket.id = key;
@@ -521,9 +428,9 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 		DBMGR.SearchNick( nick, key );
 
 		// put player message
-		CLIENT(key).viewlist_lock.lock();
+		CLIENT(key).mViewListLock.WriteLock();
 		CLIENT(key).view_list.clear();
-		CLIENT(key).viewlist_lock.unlock();
+		CLIENT(key).mViewListLock.WriteUnLock();
 
 		sc_packet_login_ok loginOkPacket;
 
@@ -557,9 +464,9 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 					Vector2f targetClientPos = Vector2f(CLIENT(i).info.mPos.x, CLIENT(i).info.mPos.y);
 					if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
 					{
-						CLIENT(i).viewlist_lock.lock();
+						CLIENT(i).mViewListLock.WriteLock();
 						CLIENT(i).view_list.insert(key);
-						CLIENT(i).viewlist_lock.unlock();
+						CLIENT(i).mViewListLock.WriteUnLock();
 						Connect::SendPacket(&addPacket, i);
 					}
 				}
@@ -577,9 +484,9 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 					Vector2f targetClientPos = Vector2f(CLIENT(i).info.mPos.x, CLIENT(i).info.mPos.y);
 					if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
 					{
-						CLIENT(key).viewlist_lock.lock();
+						CLIENT(key).mViewListLock.WriteLock();
 						CLIENT(key).view_list.insert(key);
-						CLIENT(key).viewlist_lock.unlock();
+						CLIENT(key).mViewListLock.WriteUnLock();
 
 						addPacket.id = i;
 						addPacket.x_pos = CLIENT(i).info.mPos.x;
@@ -606,9 +513,9 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 							TIMERMGR.PushEvent(i, GetTickCount() + 1000, OP_MOVE_AI);
 						}
 
-						CLIENT(key).viewlist_lock.lock();
+						CLIENT(key).mViewListLock.WriteLock();
 						CLIENT(key).npc_view_list.insert(i);
-						CLIENT(key).viewlist_lock.unlock();
+						CLIENT(key).mViewListLock.WriteUnLock();
 
 						addPacket.id = i;
 						addPacket.x_pos = NPC(i).info.mPos.x;
@@ -635,6 +542,8 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 		query += "WHERE ID = " + std::to_string(CLIENT(key).info.id);
 		
 		DBMGR.Query(query);
+
+		std::cout << "logout " << key << std::endl;
 		break;
 	}
 	case CS_MOVE:
@@ -680,11 +589,11 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 
 		for (auto i : new_list)
 		{
-			CLIENT(key).viewlist_lock.lock();
+			CLIENT(key).mViewListLock.WriteLock();
 			if (0 == CLIENT(key).view_list.count(i))
 			{
 				CLIENT(key).view_list.insert(i);
-				CLIENT(key).viewlist_lock.unlock();
+				CLIENT(key).mViewListLock.WriteUnLock();
 
 				sc_packet_add_object addPacket;
 				addPacket.id = i;
@@ -694,11 +603,11 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 
 				Connect::SendPacket(&addPacket, key);
 
-				CLIENT(i).viewlist_lock.lock();
+				CLIENT(i).mViewListLock.WriteLock();
 				if (0 == CLIENT(i).view_list.count(key))
 				{
 					CLIENT(i).view_list.insert(key);
-					CLIENT(i).viewlist_lock.unlock();
+					CLIENT(i).mViewListLock.WriteUnLock();
 
 					sc_packet_add_object addPacket;
 					addPacket.id = key;
@@ -710,25 +619,25 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 				}
 				else
 				{
-					CLIENT(i).viewlist_lock.unlock();
+					CLIENT(i).mViewListLock.WriteUnLock();
 					Connect::SendPacket(&playerPosPacket, i);
 				}
 			}
 			else
 			{
-				CLIENT(key).viewlist_lock.unlock();
+				CLIENT(key).mViewListLock.WriteUnLock();
 				// is npc continue;
 
-				CLIENT(i).viewlist_lock.lock();
+				CLIENT(i).mViewListLock.WriteLock();
 				if (1 >= CLIENT(i).view_list.count(key))
 				{
-					CLIENT(i).viewlist_lock.unlock();
+					CLIENT(i).mViewListLock.WriteUnLock();
 					Connect::SendPacket(&playerPosPacket, i);
 				}
 				else
 				{
 					CLIENT(i).view_list.insert(key);
-					CLIENT(i).viewlist_lock.unlock();
+					CLIENT(i).mViewListLock.WriteUnLock();
 					
 					sc_packet_add_object addPacket;
 					addPacket.id = key;
@@ -757,11 +666,11 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 
 		for (auto i : npc_new_list)
 		{
-			CLIENT(key).viewlist_lock.lock();
+			CLIENT(key).mViewListLock.WriteLock();
 			if (0 == CLIENT(key).npc_view_list.count(i))
 			{
 				CLIENT(key).npc_view_list.insert(i);
-				CLIENT(key).viewlist_lock.unlock();
+				CLIENT(key).mViewListLock.WriteUnLock();
 
 				sc_packet_add_object npcAddPacket;
 				npcAddPacket.id = i;
@@ -781,14 +690,14 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 			}
 			else
 			{
-				CLIENT(key).viewlist_lock.unlock();
+				CLIENT(key).mViewListLock.WriteUnLock();
 				// is npc continue;
 			}
 		}
 
 		// 리스트에서 나간다.
 		std::vector<unsigned int> remove_list;
-		CLIENT(key).viewlist_lock.lock();
+		CLIENT(key).mViewListLock.WriteLock();
 		for (auto i : CLIENT(key).view_list)
 		{
 			if (key == i) continue;
@@ -814,7 +723,7 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 		{
 			CLIENT(key).npc_view_list.erase(i);
 		}
-		CLIENT(key).viewlist_lock.unlock();
+		CLIENT(key).mViewListLock.WriteUnLock();
 
 		for (auto i : remove_list)
 		{
@@ -836,20 +745,24 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 		for (auto i : remove_list)
 		{
 			// if npc continue;
-			CLIENT(i).viewlist_lock.lock();
+			CLIENT(i).mViewListLock.WriteLock();
 			if (0 != CLIENT(i).view_list.count(key))
 			{
 				CLIENT(i).view_list.erase(key);
-				CLIENT(i).viewlist_lock.unlock();
+				CLIENT(i).mViewListLock.WriteUnLock();
 				
 				sc_packet_remove_object removePacket;
 				removePacket.id = key;
 				removePacket.objType = TYPE_PLAYER;
 				Connect::SendPacket(&removePacket, i);
 			}
-			else CLIENT(i).viewlist_lock.unlock();
+			else CLIENT(i).mViewListLock.WriteUnLock();
 		}
 
+		break;
+	}
+	case CS_ATTACK:
+	{
 		break;
 	}
 	default:

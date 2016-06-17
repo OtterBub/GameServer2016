@@ -31,6 +31,7 @@ public:
 	void KeyBoard(unsigned char key, int x, int y);
 	void KeyBoardUp(unsigned char key, int x, int y);
 
+	bool Command(std::vector< std::string > commandTokens);
 	/*
 	void KeyBoardSpecial( int key, int x, int y ) {}
 	void KeyBoardSpecialUp( int key, int x, int y ) {}
