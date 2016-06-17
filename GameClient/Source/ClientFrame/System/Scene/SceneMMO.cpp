@@ -144,7 +144,7 @@ void SceneMMO::Draw()
 			std::list<std::string> stringList;
 			std::string str = "LEVEL: " + std::to_string(PLAYER(CONNECT.mMyID).LEVEL);
 			stringList.push_back(str);
-			str = "EXP: " + std::to_string(PLAYER(CONNECT.mMyID).EXP) + "/ " + std::to_string((int)pow(100, PLAYER(CONNECT.mMyID).LEVEL));
+			str = "EXP: " + std::to_string(PLAYER(CONNECT.mMyID).EXP) + "/ " + std::to_string( 100 * (int)pow(2, PLAYER(CONNECT.mMyID).LEVEL));
 			
 			stringList.push_back(str);
 			str = "HP: " + std::to_string(PLAYER(CONNECT.mMyID).HP);

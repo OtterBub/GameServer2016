@@ -21,11 +21,11 @@ int main()
 	CONNECT.Initialize();
 #if !LOCALTEST
 	std::cout << "서버 ip 주소를 입력하시오: ";
-	//std::cin >> SERVERIP;
+	std::cin >> SERVERIP;
 
-	CONNECT.Connect("127.0.0.1");
+	//CONNECT.Connect("127.0.0.1");
 	//CONNECT.Connect("222.120.172.245");
-	//CONNECT.Connect(SERVERIP.c_str());
+	CONNECT.Connect(SERVERIP.c_str());
 
 #else
 	//CONNECT.Connect("127.0.0.1");

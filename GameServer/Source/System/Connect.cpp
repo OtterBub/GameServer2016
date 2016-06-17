@@ -830,7 +830,7 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 						}
 
 						CLIENT(key).info.exp += NPC(i).info.exp;
-						if (CLIENT(key).info.exp >= pow(100, CLIENT(key).info.level))
+						if (CLIENT(key).info.exp >= (100 * pow(2, CLIENT(key).info.level)))
 						{
 							CLIENT(key).info.level++;
 						}
