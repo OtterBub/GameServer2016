@@ -4,14 +4,14 @@
 
 // other Scenes
 #include "Scene/SceneCollisionTest.h"
-//#include "Scene/SceneCurveTest.h"
-//#include "Scene/SceneCurveLine.h"
-//#include "Scene/SceneMultiCurveLine.h"
-//#include "Scene/SceneSkiingTestStage.h"
-//#include "Scene/SceneSkiingMainStage.h"
-//#include "Scene/SceneSkiingBonusStage.h"
-//#include "Scene/SceneLineTest.h"
-//#include "Scene/SceneFireworkTest.h"
+#include "Scene/SceneCurveTest.h"
+#include "Scene/SceneCurveLine.h"
+#include "Scene/SceneMultiCurveLine.h"
+#include "Scene/SceneSkiingTestStage.h"
+#include "Scene/SceneSkiingMainStage.h"
+#include "Scene/SceneSkiingBonusStage.h"
+#include "Scene/SceneLineTest.h"
+#include "Scene/SceneFireworkTest.h"
 #include "Scene/SceneMainMenu.h"
 #include "Scene/SceneMMO.h"
 
@@ -152,7 +152,7 @@ bool SceneManager::SceneChangeByName( std::string SceneName )
 	{
 		lResult = SceneChange( std::make_shared< SceneCollisionTest >() );
 	}
-	/*else if( SceneName == "Curve1" )
+	else if( SceneName == "Curve1" )
 	{
 		lResult = SceneChange( std::make_shared< SceneCurveTest >() );
 	}
@@ -183,7 +183,7 @@ bool SceneManager::SceneChangeByName( std::string SceneName )
 	else if( SceneName == "Firework" )
 	{
 		lResult = SceneChange( std::make_shared< SceneFireworkTest >() );
-	}*/
+	}
 	else if ( SceneName == "MMO" )
 	{
 		lResult = SceneChange( std::make_shared< SceneMMO >() );
