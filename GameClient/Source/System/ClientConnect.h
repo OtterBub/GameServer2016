@@ -43,6 +43,7 @@ public:
 	PacketStore GetPacket();
 
 	RWLock mConnectLock;
+	int mMyID;
 
 private:
 	ClientConnect() {};

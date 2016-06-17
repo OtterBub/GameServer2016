@@ -16,6 +16,7 @@
     <ClCompile Include="Source\Object\Player.cpp" />
     <ClCompile Include="Source\System\Connect.cpp" />
     <ClCompile Include="Source\System\mdump.cpp" />
+    <ClCompile Include="Source\System\MGR\DataBaseMgr.cpp" />
     <ClCompile Include="Source\System\MGR\EventMgr.cpp" />
     <ClCompile Include="Source\System\MGR\ThreadMgr.cpp" />
     <ClCompile Include="Source\System\RWLock.cpp" />

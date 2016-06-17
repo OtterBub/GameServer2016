@@ -70,7 +70,9 @@ void ClientConnect::ProcessPacket(char *packet)
 		PLAYER(okPacket->id).SetPosition(Vector3(okPacket->x_pos, 0, okPacket->y_pos));
 		CONNECT.mConnectLock.WriteUnLock();
 
+		CONNECT.mMyID = okPacket->id;
 		std::string str = "LOGIN SUCCESS!! Your Id: " + std::to_string(okPacket->id);
+		str += "(" + std::to_string((int)okPacket->x_pos) + ", " + std::to_string((int)okPacket->y_pos) + ")";
 		SKCONSOLE << str;
 		break;
 	}
@@ -96,8 +98,8 @@ void ClientConnect::ProcessPacket(char *packet)
 		}
 		CONNECT.mConnectLock.WriteUnLock();
 		
-		std::string str = "AddObject Id: " + std::to_string(addPacket->id);
-		SKCONSOLE << str;
+		//std::string str = "AddObject Id: " + std::to_string(addPacket->id);
+		//SKCONSOLE << str;
 		break;
 	}
 	case SC_REMOVE_OBJECT:
@@ -252,7 +254,6 @@ void ClientConnect::Connect(std::string ipAddr)
 
 	char value = 1;
 	setsockopt(mSocket, IPPROTO_TCP, TCP_NODELAY, &value, sizeof(value));
-
 	//mSocket = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, 0);
 
 	/*

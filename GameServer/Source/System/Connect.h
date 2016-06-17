@@ -18,7 +18,9 @@ public:
 	static void AcceptThread();
 	static void WorkerThread();
 	
+	static void SendPacket(unsigned char *dataPtr, unsigned int key);
 	static void SendPacket(void *packet, unsigned int key);
+	static void SendPacket(void *packet, unsigned int size, unsigned int type, unsigned int key);
 	static void SendBroadCasting(void* packet, unsigned int except = MAX_USER);
 	static void ProcessPacket(unsigned char* packet, unsigned int key);
 

@@ -62,6 +62,19 @@ struct packet_header
 };
 
 // client to server
+struct cs_packet_login
+{
+	packet_header header;
+	WCHAR nick[10];
+
+	cs_packet_login()
+	{
+		memset(this, 0, sizeof(cs_packet_login));
+		header.size = sizeof(cs_packet_login);
+		header.type = CS_LOGIN;
+	}
+};
+
 struct cs_packet_move
 {
 	packet_header header;
@@ -93,8 +106,8 @@ struct sc_packet_login_ok
 	sc_packet_login_ok()
 	{
 		memset(this, 0, sizeof(sc_packet_login_ok));
-		header.size = sizeof(sc_packet_login_ok);
-		header.type = SC_LOGIN_OK;
+		this->header.size = sizeof(sc_packet_login_ok);
+		this->header.type = SC_LOGIN_OK;
 	}
 };
 

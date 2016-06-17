@@ -6,6 +6,7 @@
 #include "System\mdump.h"
 #include "System\MGR\EventMgr.h"
 #include "System\MGR\DataBaseMgr.h"
+#include "Global.h"
 #include <string>
 
 // keyinput
@@ -22,7 +23,7 @@ void keyboardTest()
 		std::string nickQuery = "SELECT * FROM dbo.user_table WHERE Nick = '";
 		std::string nick;
 		std::cin >> nick;
-		DBMGR.SearchNick(nick);
+		DBMGR.SearchNick(nick, 1000000);
 	}
 }
 
@@ -34,7 +35,7 @@ int main(int argc, char** argv){
 	
 	//init test
 	{
-		for (unsigned int i = 0; i < 1000; ++i)
+		for (unsigned int i = 0; i < NPCMAX; ++i)
 		{
 			if (false == NPCMGR.ExistClient(i))
 			{

@@ -19,6 +19,19 @@ void SceneMMO::Enter()
 	mKeyTime = 0.0;
 
 	memset(mKey, 0, sizeof(mKey));
+
+	cs_packet_login *login = CONNECT.GetSendBuffAddr<cs_packet_login>();
+
+	wchar_t gameid[10];
+
+	std::cout << "GAME ID를 입력하시오: ";
+	std::wcin >> gameid;
+
+	login->header.size = sizeof(cs_packet_login);
+	login->header.type = CS_LOGIN;
+	std::wcscpy(login->nick, gameid);
+
+	CONNECT.SendPacket(sizeof(cs_packet_login));
 }
 void SceneMMO::Exit()
 {
@@ -27,7 +40,9 @@ void SceneMMO::Draw()
 {
 	glPushMatrix();
 	{
-		gluLookAt(50, 10, 100, 50, 0, 50, 0, 1, 0);
+		static int camDist = 20;
+		Vector3 myPos = PLAYER(CONNECT.mMyID).GetPosition();
+		gluLookAt(myPos.x, 10, myPos.z + camDist, myPos.x, 0, myPos.z, 0, 1, 0);
 
 		glGetDoublev(GL_MODELVIEW_MATRIX, modelView);
 		// Draw Ground

@@ -1,6 +1,7 @@
 #include "Connect.h"
 #include "..\Global.h"
 #include "..\System\MGR\ObjectMgrList.h"
+#include "..\System\MGR\DataBaseMgr.h"
 #include "../System/MGR/EventMgr.h"
 
 RWLock Connect::connectLock;
@@ -62,110 +63,106 @@ void Connect::AcceptThread()
 
 		// client initialize
 		CLIENT(new_id).s = new_client;
-
-		CLIENT(new_id).info.mPos.x = 50;
-		CLIENT(new_id).info.mPos.y = 70;
-
+		
 		CreateIoCompletionPort(reinterpret_cast<HANDLE>(new_client), GLOBAL.mhIocp, new_id, 0);
 		std::cout << "Connect User id: " << new_id << std::endl;
 
 		// put player message
-
 		CLIENT(new_id).viewlist_lock.lock();
 		CLIENT(new_id).view_list.clear();
 		CLIENT(new_id).viewlist_lock.unlock();
 
-		sc_packet_login_ok loginPacket;
+		//sc_packet_login_ok loginPacket;
 
-		/*loginPacket.header.size = sizeof(sc_packet_login_ok);
-		loginPacket.header.type = SC_LOGIN_OK;*/
-		loginPacket.id = new_id;
-		loginPacket.x_pos = CLIENT(new_id).info.mPos.x;
-		loginPacket.y_pos = CLIENT(new_id).info.mPos.y;
-		loginPacket.HP = 100;
-		loginPacket.EXP = 10;
-		Connect::SendPacket( &loginPacket, new_id );
+		///*loginPacket.header.size = sizeof(sc_packet_login_ok);
+		//loginPacket.header.type = SC_LOGIN_OK;*/
+		//loginPacket.id = new_id;
+		//loginPacket.x_pos = CLIENT(new_id).info.mPos.x;
+		//loginPacket.y_pos = CLIENT(new_id).info.mPos.y;
+		//loginPacket.HP = 100;
+		//loginPacket.EXP = 10;
+		//Connect::SendPacket( &loginPacket, new_id );
 
-		sc_packet_add_object addPacket;
-		addPacket.id = new_id;
-		addPacket.x_pos = CLIENT(new_id).info.mPos.x;
-		addPacket.y_pos = CLIENT(new_id).info.mPos.y;
-		addPacket.objType = TYPE_PLAYER;
+		//sc_packet_add_object addPacket;
+		//addPacket.id = new_id;
+		//addPacket.x_pos = CLIENT(new_id).info.mPos.x;
+		//addPacket.y_pos = CLIENT(new_id).info.mPos.y;
+		//addPacket.objType = TYPE_PLAYER;
 
-		for (auto i = 0; i < USERMAX; ++i)
-		{
-			if (i == new_id) continue;
-			if (CLIENTMGR.ExistClient(i))
-			{
-				if (CLIENT(i).is_connected)
-				{
-					Vector2f newClientPos = Vector2f(CLIENT(new_id).info.mPos.x, CLIENT(new_id).info.mPos.y);
-					Vector2f targetClientPos = Vector2f(CLIENT(i).info.mPos.x, CLIENT(i).info.mPos.y);
-					if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
-					{
-						CLIENT(i).viewlist_lock.lock();
-						CLIENT(i).view_list.insert(new_id);
-						CLIENT(i).viewlist_lock.unlock();
-						Connect::SendPacket(&addPacket, i);
-					}
-				}
-			}
-		}
+		//for (auto i = 0; i < USERMAX; ++i)
+		//{
+		//	if (i == new_id) continue;
+		//	if (CLIENTMGR.ExistClient(i))
+		//	{
+		//		if (CLIENT(i).is_connected)
+		//		{
+		//			Vector2f newClientPos = Vector2f(CLIENT(new_id).info.mPos.x, CLIENT(new_id).info.mPos.y);
+		//			Vector2f targetClientPos = Vector2f(CLIENT(i).info.mPos.x, CLIENT(i).info.mPos.y);
+		//			if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
+		//			{
+		//				CLIENT(i).viewlist_lock.lock();
+		//				CLIENT(i).view_list.insert(new_id);
+		//				CLIENT(i).viewlist_lock.unlock();
+		//				Connect::SendPacket(&addPacket, i);
+		//			}
+		//		}
+		//	}
+		//}
 
-		for (auto i = 0; i < USERMAX; ++i)
-		{
-			if (i == new_id) continue;
-			if (CLIENTMGR.ExistClient(i))
-			{
-				if (CLIENT(i).is_connected)
-				{
-					Vector2f newClientPos = Vector2f(CLIENT(new_id).info.mPos.x, CLIENT(new_id).info.mPos.y);
-					Vector2f targetClientPos = Vector2f(CLIENT(i).info.mPos.x, CLIENT(i).info.mPos.y);
-					if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
-					{
-						CLIENT(new_id).viewlist_lock.lock();
-						CLIENT(new_id).view_list.insert(new_id);
-						CLIENT(new_id).viewlist_lock.unlock();
+		//for (auto i = 0; i < USERMAX; ++i)
+		//{
+		//	if (i == new_id) continue;
+		//	if (CLIENTMGR.ExistClient(i))
+		//	{
+		//		if (CLIENT(i).is_connected)
+		//		{
+		//			Vector2f newClientPos = Vector2f(CLIENT(new_id).info.mPos.x, CLIENT(new_id).info.mPos.y);
+		//			Vector2f targetClientPos = Vector2f(CLIENT(i).info.mPos.x, CLIENT(i).info.mPos.y);
+		//			if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
+		//			{
+		//				CLIENT(new_id).viewlist_lock.lock();
+		//				CLIENT(new_id).view_list.insert(new_id);
+		//				CLIENT(new_id).viewlist_lock.unlock();
 
-						addPacket.id = i;
-						addPacket.x_pos = CLIENT(i).info.mPos.x;
-						addPacket.y_pos = CLIENT(i).info.mPos.y;
-						Connect::SendPacket(&addPacket, new_id);
-					}
-				}
-			}
-		}
+		//				addPacket.id = i;
+		//				addPacket.x_pos = CLIENT(i).info.mPos.x;
+		//				addPacket.y_pos = CLIENT(i).info.mPos.y;
+		//				Connect::SendPacket(&addPacket, new_id);
+		//			}
+		//		}
+		//	}
+		//}
 
-		for (auto i = 0; i < NPCMAX; ++i)
-		{
-			if (NPCMGR.ExistClient(i))
-			{
-				if (NPC(i).is_active)
-				{
-					Vector2f newClientPos = Vector2f(CLIENT(new_id).info.mPos.x, CLIENT(new_id).info.mPos.y);
-					Vector2f targetClientPos = Vector2f(NPC(i).info.mPos.x, NPC(i).info.mPos.y);
-					if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
-					{
-						if (!NPC(i).is_active)
-						{
-							NPC(i).is_active = true;
-							TIMERMGR.PushEvent(i, GetTickCount() + 1000, OP_MOVE_AI);
-						}
+		//for (auto i = 0; i < NPCMAX; ++i)
+		//{
+		//	if (NPCMGR.ExistClient(i))
+		//	{
+		//		if (NPC(i).is_active)
+		//		{
+		//			Vector2f newClientPos = Vector2f(CLIENT(new_id).info.mPos.x, CLIENT(new_id).info.mPos.y);
+		//			Vector2f targetClientPos = Vector2f(NPC(i).info.mPos.x, NPC(i).info.mPos.y);
+		//			if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
+		//			{
+		//				if (!NPC(i).is_active)
+		//				{
+		//					NPC(i).is_active = true;
+		//					TIMERMGR.PushEvent(i, GetTickCount() + 1000, OP_MOVE_AI);
+		//				}
 
-						CLIENT(new_id).viewlist_lock.lock();
-						CLIENT(new_id).npc_view_list.insert(i);
-						CLIENT(new_id).viewlist_lock.unlock();
+		//				CLIENT(new_id).viewlist_lock.lock();
+		//				CLIENT(new_id).npc_view_list.insert(i);
+		//				CLIENT(new_id).viewlist_lock.unlock();
 
-						addPacket.id = i;
-						addPacket.x_pos = NPC(i).info.mPos.x;
-						addPacket.y_pos = NPC(i).info.mPos.y;
-						addPacket.objType = TYPE_MONSTER;
-						Connect::SendPacket(&addPacket, new_id);
-					}
-				}
-			}
-		}
-		CLIENT(new_id).is_connected = true;
+		//				addPacket.id = i;
+		//				addPacket.x_pos = NPC(i).info.mPos.x;
+		//				addPacket.y_pos = NPC(i).info.mPos.y;
+		//				addPacket.objType = TYPE_MONSTER;
+		//				Connect::SendPacket(&addPacket, new_id);
+		//			}
+		//		}
+		//	}
+		//}
+		//CLIENT(new_id).is_connected = true;
 
 
 		DWORD flags = 0;
@@ -304,13 +301,26 @@ void Connect::WorkerThread()
 			closesocket(CLIENT(key).s);
 			CLIENT(key).is_connected = false;
 
+			std::string query = "UPDATE dbo.user_table SET ";
+			query += "XPos = " + std::to_string(CLIENT(key).info.mPos.x) + ", ";
+			query += "YPos = " + std::to_string(CLIENT(key).info.mPos.y) + ", ";
+			query += "CLevel = " + std::to_string(CLIENT(key).info.level) + ", ";
+			query += "EXP = " + std::to_string(CLIENT(key).info.exp) + ", ";
+			query += "Attack = " + std::to_string(CLIENT(key).info.atk) + ", ";
+			query += "Defence = " + std::to_string(CLIENT(key).info.def) + ", ";
+			query += "HP = " + std::to_string(CLIENT(key).info.hp) + " ";
+			query += "WHERE ID = " + std::to_string(CLIENT(key).info.id);
+			std::cout << query << std::endl;
+			DBMGR.Query(query);
+
 			//connectLock.WriteLock();
 			CLIENTMGR.DeleteClient(key);
 
-			sc_packet_player_remove removePacket;
+			sc_packet_remove_object removePacket;
 			removePacket.header.size = sizeof(removePacket);
-			removePacket.header.type = SC_TYPE_PLAYER_REMOVE;
+			removePacket.header.type = SC_REMOVE_OBJECT;
 			removePacket.id = key;
+			removePacket.objType = TYPE_PLAYER;
 			SendBroadCasting(&removePacket);
 			//connectLock.WriteUnLock();
 			std::cout << "clientNum: " << key << " logout:: " << std::endl;
@@ -379,6 +389,7 @@ void Connect::WorkerThread()
 		case OP_MOVE_AI:
 		{
 			Connect::DoMove(key);
+			delete my_overlap;
 			break;
 		}
 		case OP_TEST:
@@ -397,6 +408,33 @@ void Connect::WorkerThread()
 
 }
 
+void Connect::SendPacket(unsigned char *dataPtr, unsigned int key)
+{
+	if (CLIENTMGR.ExistClient(key) == false) return;
+
+	/*unsigned char* packet = reinterpret_cast<unsigned char*>(dataPtr);
+	packet_header *header = reinterpret_cast<packet_header*>(packet);*/
+	OverlapEx *over = new OverlapEx;
+	memset(over, 0, sizeof(OverlapEx));
+
+	over->operation = OP_SEND;
+	over->wsabuf.buf = reinterpret_cast<CHAR*>(over->iocp_buff);
+	over->wsabuf.len = dataPtr[0];
+
+	//std::cout << "type " << (unsigned int)header->type << std::endl;
+
+	memcpy(over->iocp_buff, dataPtr, dataPtr[0]);
+
+	int ret = WSASend(CLIENT(key).s, &over->wsabuf, 1, NULL, 0,
+		&over->OriginalOverlap, NULL);
+
+	if (0 != ret)
+	{
+		int errorcode = WSAGetLastError();
+		std::cout << "WSASend ErrorCode: " << errorcode << std::endl;
+	}
+}
+
 void Connect::SendPacket(void *dataPtr, unsigned int key)
 {
 	if (CLIENTMGR.ExistClient(key) == false) return;
@@ -404,15 +442,44 @@ void Connect::SendPacket(void *dataPtr, unsigned int key)
 	unsigned char* packet = reinterpret_cast<unsigned char*>(dataPtr);
 	packet_header *header = reinterpret_cast<packet_header*>(packet);
 	OverlapEx *over = new OverlapEx;
+	memset(over, 0, sizeof(OverlapEx));
+
+	over->operation = OP_SEND;
+	over->wsabuf.buf = reinterpret_cast<CHAR*>(over->iocp_buff);
+	over->wsabuf.len = packet[0];
+
+	//std::cout << "type " << (unsigned int)header->type << std::endl;
+
+	memcpy(over->iocp_buff, packet, packet[0]);
+
+	int ret = WSASend(CLIENT(key).s, &over->wsabuf, 1, NULL, 0,
+		&over->OriginalOverlap, NULL);
+
+	if (0 != ret)
+	{
+		int errorcode = WSAGetLastError();
+		std::cout << "WSASend ErrorCode: " << errorcode << std::endl;
+	}
+}
+
+void Connect::SendPacket(void *packet, unsigned int size, unsigned int type, unsigned int key)
+{
+	if (CLIENTMGR.ExistClient(key) == false) return;
+
+	char* data = reinterpret_cast<char*>(packet);
+	packet_header *header = reinterpret_cast<packet_header*>(data);
+	header->size = size;
+	header->type = type;
+	OverlapEx *over = new OverlapEx;
 
 	memset(over, 0, sizeof(OverlapEx));
 	over->operation = OP_SEND;
 	over->wsabuf.buf = reinterpret_cast<CHAR*>(over->iocp_buff);
-	over->wsabuf.len = header->size;
+	over->wsabuf.len = size;
 
 	//std::cout << "type " << (unsigned int)header->type << std::endl;
 
-	memcpy(over->iocp_buff, packet, header->size);
+	memcpy(over->iocp_buff, data, size);
 
 	int ret = WSASend(CLIENT(key).s, &over->wsabuf, 1, NULL, 0,
 		&over->OriginalOverlap, NULL);
@@ -445,6 +512,131 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 
 	switch ( header->type )
 	{
+	case CS_LOGIN:
+	{
+		cs_packet_login *loginPacket = reinterpret_cast<cs_packet_login*>(packet);
+		char nick[100] = "gamepsk";
+		size_t i;
+		wcstombs_s(&i, nick, 100, loginPacket->nick, 100);
+		DBMGR.SearchNick( nick, key );
+
+		// put player message
+		CLIENT(key).viewlist_lock.lock();
+		CLIENT(key).view_list.clear();
+		CLIENT(key).viewlist_lock.unlock();
+
+		sc_packet_login_ok loginOkPacket;
+
+		loginOkPacket.header.size = sizeof(sc_packet_login_ok);
+		loginOkPacket.header.type = SC_LOGIN_OK;
+		loginOkPacket.id = key;
+		loginOkPacket.x_pos = CLIENT(key).info.mPos.x;
+		loginOkPacket.y_pos = CLIENT(key).info.mPos.y;
+		loginOkPacket.HP = CLIENT(key).info.hp;
+		loginOkPacket.EXP = CLIENT(key).info.exp;
+		Connect::SendPacket(&loginOkPacket, key);
+
+		std::cout << "sizeof: " << sizeof(sc_packet_login_ok) << "\n";
+		
+
+		sc_packet_add_object addPacket;
+		addPacket.id = key;
+		addPacket.x_pos = CLIENT(key).info.mPos.x;
+		addPacket.y_pos = CLIENT(key).info.mPos.y;
+		addPacket.objType = TYPE_PLAYER;
+		Connect::SendPacket(&addPacket, key);
+
+		for (auto i = 0; i < USERMAX; ++i)
+		{
+			if (i == key) continue;
+			if (CLIENTMGR.ExistClient(i))
+			{
+				if (CLIENT(i).is_connected)
+				{
+					Vector2f newClientPos = Vector2f(CLIENT(key).info.mPos.x, CLIENT(key).info.mPos.y);
+					Vector2f targetClientPos = Vector2f(CLIENT(i).info.mPos.x, CLIENT(i).info.mPos.y);
+					if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
+					{
+						CLIENT(i).viewlist_lock.lock();
+						CLIENT(i).view_list.insert(key);
+						CLIENT(i).viewlist_lock.unlock();
+						Connect::SendPacket(&addPacket, i);
+					}
+				}
+			}
+		}
+
+		for (auto i = 0; i < USERMAX; ++i)
+		{
+			if (i == key) continue;
+			if (CLIENTMGR.ExistClient(i))
+			{
+				if (CLIENT(i).is_connected)
+				{
+					Vector2f newClientPos = Vector2f(CLIENT(key).info.mPos.x, CLIENT(key).info.mPos.y);
+					Vector2f targetClientPos = Vector2f(CLIENT(i).info.mPos.x, CLIENT(i).info.mPos.y);
+					if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
+					{
+						CLIENT(key).viewlist_lock.lock();
+						CLIENT(key).view_list.insert(key);
+						CLIENT(key).viewlist_lock.unlock();
+
+						addPacket.id = i;
+						addPacket.x_pos = CLIENT(i).info.mPos.x;
+						addPacket.y_pos = CLIENT(i).info.mPos.y;
+						Connect::SendPacket(&addPacket, key);
+					}
+				}
+			}
+		}
+
+		for (auto i = 0; i < NPCMAX; ++i)
+		{
+			if (NPCMGR.ExistClient(i))
+			{
+				if (NPC(i).is_active)
+				{
+					Vector2f newClientPos = Vector2f(CLIENT(key).info.mPos.x, CLIENT(key).info.mPos.y);
+					Vector2f targetClientPos = Vector2f(NPC(i).info.mPos.x, NPC(i).info.mPos.y);
+					if (SquareCheck(newClientPos, targetClientPos, VIEWDIST))
+					{
+						if (!NPC(i).is_active)
+						{
+							NPC(i).is_active = true;
+							TIMERMGR.PushEvent(i, GetTickCount() + 1000, OP_MOVE_AI);
+						}
+
+						CLIENT(key).viewlist_lock.lock();
+						CLIENT(key).npc_view_list.insert(i);
+						CLIENT(key).viewlist_lock.unlock();
+
+						addPacket.id = i;
+						addPacket.x_pos = NPC(i).info.mPos.x;
+						addPacket.y_pos = NPC(i).info.mPos.y;
+						addPacket.objType = TYPE_MONSTER;
+						Connect::SendPacket(&addPacket, key);
+					}
+				}
+			}
+		}
+		CLIENT(key).is_connected = true;
+		break;
+	}
+	case CS_LOGOUT:
+	{
+		std::string query = "UPDATE dbo.user_table SET ";
+		query += "XPos = " + std::to_string(CLIENT(key).info.mPos.x) + ", ";
+		query += "YPos = " + std::to_string(CLIENT(key).info.mPos.y) + ", ";
+		query += "CLevel = " + std::to_string(CLIENT(key).info.level) + ", ";
+		query += "EXP = " + std::to_string(CLIENT(key).info.exp) + ", ";
+		query += "Attack = " + std::to_string(CLIENT(key).info.atk) + ", ";
+		query += "Defence = " + std::to_string(CLIENT(key).info.def) + ", ";
+		query += "HP = " + std::to_string(CLIENT(key).info.hp) + " ";
+		query += "WHERE ID = " + std::to_string(CLIENT(key).info.id);
+		
+		DBMGR.Query(query);
+		break;
+	}
 	case CS_MOVE:
 	{
 		cs_packet_move *movePacket = reinterpret_cast<cs_packet_move*>(packet);
