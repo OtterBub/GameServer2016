@@ -18,6 +18,7 @@ void SceneMMO::Enter()
 	mMouseLDown = false;
 	mPickCal = false;
 	mKeyTime = 0.0;
+	mAtkTime = 0.0;
 
 	memset(mKey, 0, sizeof(mKey));
 
@@ -31,7 +32,7 @@ void SceneMMO::Draw()
 {
 	glPushMatrix();
 	{
-		static int camDist = 20;
+		static int camDist = 5;
 		Vector3 myPos = PLAYER(CONNECT.mMyID).GetPosition();
 		gluLookAt(myPos.x, 10, myPos.z + camDist, myPos.x, 0, myPos.z, 0, 1, 0);
 
@@ -42,7 +43,7 @@ void SceneMMO::Draw()
 			static int worldSize = 100;
 			static Vector4 color = Vector4(0.8, 0.8, 0.8, 0.8);
 			static Vector4 reColor = Vector4(1, 1, 1, 1) - color;
-			float lGroundSize = 0.5;
+			float lGroundSize = 0.5f;
 			float lGroundHeight = 0;
 			for (int y = 0; y < worldSize; ++y)
 			{
@@ -141,6 +142,7 @@ void SceneMMO::Draw()
 }
 void SceneMMO::Update(double dt)
 {
+	mAtkTime += dt;
 	mKeyTime += dt;
 	if (mPickCal)
 	{
@@ -149,83 +151,62 @@ void SceneMMO::Update(double dt)
 		mPickCal = false;
 	}
 
-	//cs_packet_move
-	if (mKey['a'] ||
-		mKey['d'] ||
-		mKey['w'] || 
-		mKey['s'] )
+	CONNECT.mConnectLock.ReadLock();
+	for (auto it = PLAYERMGR.GetList().begin(); it != PLAYERMGR.GetList().end(); ++it)
 	{
-		static const float keyDelay = 0.1;
-		if (mKeyTime >= keyDelay)
-		{
-			mKeyTime = 0;
-			BYTE lDir = 0;
-
-			if (mKey['a'])
-			{
-				lDir |= moveDir::MOVE_LEFT;
-			}
-			if (mKey['d'])
-			{
-				lDir |= moveDir::MOVE_RIGHT;
-			}
-			if (mKey['w'])
-			{
-				lDir |= moveDir::MOVE_UP;
-			}
-			if (mKey['s'])
-			{
-				lDir |= moveDir::MOVE_DOWN;
-			}
-
-			if (lDir)
-			{
-				cs_packet_move *movePacket = CONNECT.GetSendBuffAddr<cs_packet_move>();
-				movePacket->moveDir = lDir;
-				movePacket->header.type = CS_MOVE;
-
-				CONNECT.SendPacket(sizeof(cs_packet_move));
-			}
-		}
+		PLAYER(it->first).Update(dt);
+	}
+	for (auto it = NPCMGR.GetList().begin(); it != NPCMGR.GetList().end(); ++it)
+	{
+		if (NPC(it->first).mDraw)
+			NPC(it->first).Update(dt);
 	}
 
+	CONNECT.mConnectLock.ReadUnLock();
+	
 
-	/*while (CONNECT.ThereIsProcessPacket())
+	if (CONNECT.mLogin)
 	{
-		packet_header *header = reinterpret_cast<packet_header*> (&CONNECT.GetPacket());
-
-		switch (header->type)
+		//cs_packet_move
+		if (mKey['a'] ||
+			mKey['d'] ||
+			mKey['w'] ||
+			mKey['s'])
 		{
-		case SC_TYPE_MOVE:
-		{
-			sc_packet_player_pos *posPacket = reinterpret_cast<sc_packet_player_pos*>(header);
-			std::string str = "SC_TYPE_MOVE (" +
-				std::to_string(posPacket->x) + std::string(", ") +
-				std::to_string(posPacket->y) + std::string(")") +
-				"[" + std::to_string(posPacket->id) + "]";
-			SKCONSOLE << str;
+			static const float keyDelay = 0.1;
+			if (mKeyTime >= keyDelay)
+			{
+				mKeyTime = 0;
+				BYTE lDir = 0;
 
-			PLAYER(posPacket->id).SetPosition(Vector3(posPacket->x, 0, posPacket->y));
+				if (mKey['a'])
+				{
+					lDir |= moveDir::MOVE_LEFT;
+				}
+				if (mKey['d'])
+				{
+					lDir |= moveDir::MOVE_RIGHT;
+				}
+				if (mKey['w'])
+				{
+					lDir |= moveDir::MOVE_UP;
+				}
+				if (mKey['s'])
+				{
+					lDir |= moveDir::MOVE_DOWN;
+				}
 
-			break;
+				if (lDir)
+				{
+					cs_packet_move *movePacket = CONNECT.GetSendBuffAddr<cs_packet_move>();
+					movePacket->moveDir = lDir;
+					movePacket->header.type = CS_MOVE;
+
+					CONNECT.SendPacket(sizeof(cs_packet_move));
+				}
+			}
 		}
-		case SC_TYPE_PLAYER_REMOVE:
-		{
-			sc_packet_player_remove *removePacket = reinterpret_cast<sc_packet_player_remove*>(header);
-
-			std::string str = "SC_TYPE_PLAYER_REMOVE [" + std::to_string(removePacket->id) + "]";
-			SKCONSOLE << str;
-
-			PLAYERMGR.DeleteClient(removePacket->id);
-			break;
-		}
-		default:
-			std::cout << "UnKnown Packet Type: " << (int)header->type << std::endl;
-			break;
-		}
-	}*/
-	
-	
+	}	
 }
 void SceneMMO::Reshape(int w, int h)
 {
@@ -286,13 +267,13 @@ Vector3 SceneMMO::PickMouse(int x, int y)
 void SceneMMO::KeyBoard(unsigned char key, int x, int y)
 {
 	mKey[key] = true;
-	if (key == ' ')
+	static const float atkDelay = 1;
+	if (mKey[' '] && CONNECT.mLogin )
 	{
-		cs_packet_attack *attack = CONNECT.GetSendBuffAddr<cs_packet_attack>();
-		attack->header.size = sizeof(cs_packet_attack);
-		attack->header.type = CS_ATTACK;
-		CONNECT.SendPacket(sizeof(cs_packet_attack));
-		SKCONSOLE << "Attack!";
+		if (mAtkTime >= atkDelay)
+		{
+
+		}
 	}
 }
 void SceneMMO::KeyBoardUp(unsigned char key, int x, int y)

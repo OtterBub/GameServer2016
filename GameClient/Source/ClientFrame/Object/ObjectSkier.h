@@ -17,6 +17,9 @@ public:
 	void SetPosition( Vector3 pos );
 	void SetDest( std::list< Vector3 > listDest );
 	void AddDest( std::list< Vector3 > listDest );
+	void AddDest( Vector3 listDest );
+	void SetColor(Vector4 color);
+
 	void SetCollisionTree( bool set );
 	void SetAutoRotate( bool set );
 	void SetSmooth( bool set );
@@ -26,6 +29,14 @@ public:
 	Vector3 GetMidPosition();
 	float GetSize();
 	bool GetCollisionTree();
+
+public:
+	WORD id;
+	WORD x_pos;
+	WORD y_pos;
+	WORD HP;
+	WORD LEVEL;
+	WORD EXP;
 
 protected:
 	Vector3 GetNextDest();
@@ -51,7 +62,6 @@ protected:
 	std::list< Vector3 > mListDest;
 
 	ObjectOutLineCube mMainBody;
-	
 };
 
 #endif

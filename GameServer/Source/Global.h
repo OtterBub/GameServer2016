@@ -7,7 +7,7 @@
 
 #define USERMAX 5000
 #define NPCMAX 1000
-#define VIEWDIST 4
+#define VIEWDIST 15
 #define ATKDIST 2.0
 
 class Global

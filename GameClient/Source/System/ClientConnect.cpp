@@ -59,6 +59,7 @@ void ClientConnect::ProcessPacket(char *packet)
 	CONNECT.mDataQueueLock.WriteUnLock();*/
 
 	packet_header *header = reinterpret_cast<packet_header*> (packet);
+	if ((header->type != SC_LOGIN_OK) && !CONNECT.mLogin) return;
 
 	switch (header->type)
 	{
@@ -70,6 +71,7 @@ void ClientConnect::ProcessPacket(char *packet)
 		PLAYER(okPacket->id).SetPosition(Vector3(okPacket->x_pos, 0, okPacket->y_pos));
 		CONNECT.mConnectLock.WriteUnLock();
 
+		CONNECT.mLogin = true;
 		CONNECT.mMyID = okPacket->id;
 		std::string str = "LOGIN SUCCESS!! Your Id: " + std::to_string(okPacket->id);
 		str += "(" + std::to_string((int)okPacket->x_pos) + ", " + std::to_string((int)okPacket->y_pos) + ")";
@@ -135,7 +137,10 @@ void ClientConnect::ProcessPacket(char *packet)
 		{
 		case TYPE_PLAYER:
 		{
-			PLAYER(infoPacket->id).SetPosition(Vector3(infoPacket->x_pos, 0, infoPacket->y_pos));
+			//PLAYER(infoPacket->id).SetPosition(Vector3(infoPacket->x_pos, 0, infoPacket->y_pos));
+			
+			PLAYER(infoPacket->id).AddDest(Vector3(infoPacket->x_pos, 0, infoPacket->y_pos));
+			PLAYER(infoPacket->id).SetVelocityAndIncrement(10, 0);
 			break;
 		}
 		case TYPE_MONSTER:
@@ -166,6 +171,8 @@ void ClientConnect::ProcessPacket(char *packet)
 void ClientConnect::Initialize()
 {
 	int result = 0;
+	mMyID = 0;
+	mLogin = false;
 
 	WSADATA	wsadata;
 	result = WSAStartup(MAKEWORD(2, 2), &wsadata);

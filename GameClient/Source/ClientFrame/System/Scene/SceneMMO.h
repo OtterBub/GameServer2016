@@ -5,10 +5,11 @@
 #include "Scene.h"
 #include "../ButtonUI.h"
 #include "../../Object/ObjectOutLineCube.h"
+#include "../../Object/ObjectSkier.h"
 #include "../MGR/MTObjectMgr.h"
 
-#define PLAYERMGR MTObjectMGR<unsigned int, ObjectOutLineCube>::GetInstance(0)
-#define PLAYER(x) MTObjectMGR<unsigned int, ObjectOutLineCube>::GetInstance(0).GetObj(x)
+#define PLAYERMGR MTObjectMGR<unsigned int, ObjectSkier>::GetInstance(0)
+#define PLAYER(x) MTObjectMGR<unsigned int, ObjectSkier>::GetInstance(0).GetObj(x)
 
 #define NPCMGR MTObjectMGR<unsigned int, ObjectOutLineCube>::GetInstance(1)
 #define NPC(x) MTObjectMGR<unsigned int, ObjectOutLineCube>::GetInstance(1).GetObj(x)
@@ -53,6 +54,7 @@ private:
 	bool mKey[UCHAR_MAX];
 
 	double mKeyTime;
+	double mAtkTime;
 	bool mKeyDown;
 };
 

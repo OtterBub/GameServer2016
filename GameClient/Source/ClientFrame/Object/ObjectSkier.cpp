@@ -5,10 +5,10 @@
 ObjectSkier::ObjectSkier()
 {
 	mMainBody.SetColor( Vector4( 0, 0, 1, 1 ) );
-	mMainBody.SetSize( 30 );
+	mMainBody.SetSize( 1 );
 	mSetDest = false;
 	mSetCollisionTree = false;
-	mAutoRotate = false;
+	mAutoRotate = true;
 	mSmoothFinish = false;
 	mVelIncrement = 0;
 	mVelocity = 0;
@@ -27,13 +27,14 @@ void ObjectSkier::Draw()
 	glPushMatrix();
 	{
 		glTranslatef( mPosition.x, mPosition.y, mPosition.z );
+		
 		glRotatef( ( mAngleZ / 3.14f ) * 180, 0, 0, 1 );
 		glRotatef( ( mAngleY / 3.14f ) * 180, 0, 1, 0 );
-		glTranslatef( 0, 10, 0 );
+		glTranslatef( 0, 0, 0 );
 		mMainBody.Draw();
 
-		glTranslatef( 0, 20, 0 );
-		glutSolidCube( 10 );
+		glTranslatef( 0, 1, 0 );
+		glutSolidCube( 1 );
 	}
 	glPopMatrix();
 }
@@ -59,6 +60,11 @@ void ObjectSkier::Reshape( int w, int h )
 
 }
 
+void ObjectSkier::SetColor(Vector4 color)
+{
+	mMainBody.SetColor(color);
+}
+
 void ObjectSkier::SetPosition( Vector3 pos )
 {
 	mPosition = pos;
@@ -74,6 +80,11 @@ void ObjectSkier::SetDest( std::list< Vector3 > listDest )
 void ObjectSkier::AddDest( std::list< Vector3 > listDest )
 {
 	std::copy( listDest.begin(), listDest.end(), std::back_inserter( mListDest ) );
+}
+
+void ObjectSkier::AddDest(Vector3 listDest)
+{
+	mListDest.push_back(listDest);
 }
 
 void ObjectSkier::SetCollisionTree( bool set )
@@ -185,7 +196,7 @@ void ObjectSkier::Move( double dt )
 
 	} while( mLeftDistance );
 
-	if( mPosition.y <= -1 )
+	/*if( mPosition.y <= -1 )
 	{
 		SetCollisionTree( true );
 		Vector3 lDestFly;
@@ -196,7 +207,7 @@ void ObjectSkier::Move( double dt )
 		std::list< Vector3 > lList;
 		lList.push_back( lDestFly );
 		SetDest( lList );
-	}
+	}*/
 }
 
 void ObjectSkier::Rotate()
