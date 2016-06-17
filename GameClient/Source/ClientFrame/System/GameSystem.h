@@ -47,6 +47,7 @@ private:
 	double mCurrentTime;
 	double mDeltaTime;
 
+	bool mActivateConsoleDontType;
 	bool mActivateConsole;
 	bool mPerspectiveMode;
 	bool mDepthTest;

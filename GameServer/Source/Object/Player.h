@@ -15,6 +15,11 @@ public:
 	int def;
 	int hp;
 	int level;
+
+	Player()
+	{
+		memset(this, 0, sizeof(Player));
+	}
 private:
 
 };

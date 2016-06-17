@@ -16,14 +16,14 @@ void keyboardTest()
 	char key = 0;
 	while (false == GLOBAL.mShutdown)
 	{
-		/*key = _getch();
+		key = _getch();
 		OverlapEx *over = new OverlapEx;
 		over->operation = OP_TEST;
-		PostQueuedCompletionStatus(GLOBAL.mhIocp, 1, key, &over->OriginalOverlap);*/
-		std::string nickQuery = "SELECT * FROM dbo.user_table WHERE Nick = '";
+		PostQueuedCompletionStatus(GLOBAL.mhIocp, 1, key, &over->OriginalOverlap);
+		/*std::string nickQuery = "SELECT * FROM dbo.user_table WHERE Nick = '";
 		std::string nick;
 		std::cin >> nick;
-		DBMGR.SearchNick(nick, 1000000);
+		DBMGR.SearchNick(nick, 1000000);*/
 	}
 }
 
@@ -41,6 +41,19 @@ int main(int argc, char** argv){
 			{
 				NPC(i).is_active = false;
 				NPC(i).info.mPos = Vector3f(rand() % 100, rand() % 100, 0);
+				NPC(i).info.hp = 1 + rand() % 10;
+
+				std::wstring wstr = L"[Mob]";
+				int nameCnt = 1 + (rand() % 4);
+				for (int i = 0; i < nameCnt; ++i)
+				{
+					if( i == 0)
+						wstr += (L'A') + rand() % (L'Z' + 1);
+					else
+						wstr += (L'a') + rand() % (L'z' + 1);
+
+				}
+				wstr.copy(NPC(i).info.char_id, wstr.size());
 			}
 		}		
 	}

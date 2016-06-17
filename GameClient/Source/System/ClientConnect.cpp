@@ -124,8 +124,8 @@ void ClientConnect::ProcessPacket(char *packet)
 		}
 		CONNECT.mConnectLock.WriteUnLock();
 
-		std::string str = "Remove Id: " + std::to_string(removePacket->id);
-		SKCONSOLE << str;
+		//std::string str = "Remove Id: " + std::to_string(removePacket->id);
+		//SKCONSOLE << str;
 		break;
 	}
 	case SC_POSITION_INFO:
@@ -146,6 +146,15 @@ void ClientConnect::ProcessPacket(char *packet)
 		default:
 			break;
 		}
+		break;
+	}
+	case SC_ATTACK_TO_OBJECT:
+	{
+		sc_packet_attack_object *atkPacket = reinterpret_cast<sc_packet_attack_object*>(packet);
+		std::string str = "[ATTACK] " + std::to_string(atkPacket->attacker_id);
+		str += " to " + std::to_string(atkPacket->attack_to_id);
+		str += " last_hp: " + std::to_string(atkPacket->attack_to_hp);
+		SKCONSOLE << str;
 		break;
 	}
 	default:

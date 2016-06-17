@@ -19,6 +19,7 @@
 
 #define SC_REMOVE_OBJECT 6
 #define SC_ADD_OBJECT 7
+#define SC_ATTACK_TO_OBJECT 8
 
 // add object type
 #define TYPE_PLAYER 1
@@ -166,6 +167,26 @@ struct sc_packet_remove_object
 	}
 };
 
+struct sc_packet_attack_object
+{
+	packet_header header;
+	WORD attacker_id;
+	BYTE attacker_type;
+	WCHAR attacker_nick[10];
+
+	WORD attack_to_id;
+	BYTE attack_to_type;
+	WORD attack_to_hp;
+	WCHAR attacker_to_nick[10];
+	sc_packet_attack_object()
+	{
+		memset(this, 0, sizeof(sc_packet_attack_object));
+		this->header.size = sizeof(sc_packet_attack_object);
+		this->header.type = SC_ATTACK_TO_OBJECT;
+	}
+};
+/*
+
 struct sc_packet_player_pos
 {
 	packet_header header;
@@ -195,7 +216,7 @@ struct playerInfo
 struct WorldData {
 	char type;
 	playerInfo playerInfo[MAX_VIEW_USER];
-};
+};*/
 
 #pragma pack (pop)
 

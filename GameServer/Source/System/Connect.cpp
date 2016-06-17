@@ -763,6 +763,54 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 	}
 	case CS_ATTACK:
 	{
+		CLIENT(key).mViewListLock.WriteLock();
+
+		for (auto i : CLIENT(key).npc_view_list)
+		{
+			if (NPCMGR.ExistClient(i))
+			{
+				Vector2f newClientPos = Vector2f(CLIENT(key).info.mPos.x, CLIENT(key).info.mPos.y);
+				Vector2f targetClientPos = Vector2f(NPC(i).info.mPos.x, NPC(i).info.mPos.y);
+				if (SquareCheck(newClientPos, targetClientPos, ATKDIST))
+				{
+					NPC(i).info.hp -= CLIENT(key).info.atk;
+
+					sc_packet_attack_object attackPacket;
+					attackPacket.attacker_id = key;
+					attackPacket.attacker_type = TYPE_PLAYER;
+					//wcscpy_s(attackPacket.attacker_nick, 10, CLIENT(key).info.char_id);
+					attackPacket.attack_to_id = i;
+					attackPacket.attack_to_type = TYPE_MONSTER;
+					//wcscpy_s(attackPacket.attacker_to_nick, 10, NPC(i).info.char_id);
+					attackPacket.attack_to_hp = NPC(i).info.hp;
+
+					Connect::SendPacket(&attackPacket, key);
+					
+					for (auto pl : CLIENT(key).view_list)
+					{
+						Connect::SendPacket(&attackPacket, pl);
+					}
+
+					
+					if (NPC(i).info.hp <= 0)
+					{
+						NPCMGR.DeleteClient(i);
+						sc_packet_remove_object removePacket;
+						removePacket.id = i;
+						removePacket.objType = TYPE_MONSTER;
+
+						Connect::SendPacket(&removePacket, key);
+
+						for (auto pl : CLIENT(key).view_list)
+						{
+							Connect::SendPacket(&removePacket, pl);
+						}
+					}
+				}
+			}
+		}
+		std::cout << '[' << key << ']' << "CS_ATTACK\n";
+		CLIENT(key).mViewListLock.WriteUnLock();
 		break;
 	}
 	default:

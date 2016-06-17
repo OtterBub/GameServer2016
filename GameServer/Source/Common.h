@@ -34,7 +34,7 @@
 #define WORLDSIZE 100
 #define NUM_THREADS 6
 
-extern playerPos g_playerPos;
-extern SOCKET g_playerSocket;
+//extern playerPos g_playerPos;
+//extern SOCKET g_playerSocket;
 
 #endif 

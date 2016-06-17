@@ -17,6 +17,7 @@ GameSystem::GameSystem()
 	mDeltaTime = clock();
 
 	mActivateConsole = false;
+	mActivateConsoleDontType = false;
 	mPerspectiveMode = false;
 	mDepthTest = true;
 	mReshape = false;
@@ -39,7 +40,7 @@ void GameSystem::Draw()
 	SCENEMGR_INST->Draw();
 
 	// Console Draw
-	if( mActivateConsole || mChangeScene )
+	if( mActivateConsole || mChangeScene || mActivateConsoleDontType)
 		SKCONSOLE.Draw();
 }
 
@@ -87,6 +88,10 @@ void GameSystem::KeyBoard( unsigned char key, int x, int y )
 
 		case '`':
 			mActivateConsole = !mActivateConsole;
+			mActivateConsoleDontType = false;
+			break;
+		case '~':
+			mActivateConsoleDontType = !mActivateConsoleDontType;
 			break;
 	}
 
@@ -123,7 +128,7 @@ void GameSystem::KeyBoardUp( unsigned char key, int x, int y )
 
 void GameSystem::KeyBoardSpecial( int key, int x, int y )
 {
-	std::cout << "SK: " << key << std::endl;
+	//std::cout << "SK: " << key << std::endl;
 	SCENEMGR_INST->KeyBoardSpecial( key, x, y );
 }
 

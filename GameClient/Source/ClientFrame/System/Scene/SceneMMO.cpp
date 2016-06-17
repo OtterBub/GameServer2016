@@ -99,15 +99,43 @@ void SceneMMO::Draw()
 		}
 		
 		CONNECT.mConnectLock.ReadUnLock();
+	}
+	glPopMatrix();
 
+	glPushMatrix();
+	{
+		// Console Coordinate
+		glMatrixMode(GL_PROJECTION);
 		glPushMatrix();
-		{
-			//glLoadIdentity();
-			/*glTranslatef(pickpos.x, pickpos.y, pickpos.z);
-			glColor4f( 1, 1, 1, 1 );
-			glutSolidCube(10);*/
-		}
+		glLoadIdentity();
+		glOrtho(0, SCENEMGR_INST->GetClientSize().x, -SCENEMGR_INST->GetClientSize().y, 0, -1, 1);
+
+		// Depth Test Off
+		glDisable(GL_DEPTH_TEST);
+
+		// Light Off
+		glDisable(GL_LIGHTING);
+
+		// Console BackGround Draw
+		// Blend On
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		glColor4f(0.7, 0.7, 0.7, 0.8);
+		glRectf(0, -SCENEMGR_INST->GetClientSize().y + 10, SCENEMGR_INST->GetClientSize().x, -SCENEMGR_INST->GetClientSize().y + 50);
+
+		// Blend Off
+		glDisable(GL_BLEND);
+
+		// Draw Strings
+		int lStrNum = 1;
+
+		// Restore LineWidth 
+		glLineWidth(1);
 		glPopMatrix();
+		glMatrixMode(GL_MODELVIEW);
+
+		// Restore Depth Test
+		glEnable(GL_DEPTH_TEST);
 	}
 	glPopMatrix();
 }
@@ -258,6 +286,14 @@ Vector3 SceneMMO::PickMouse(int x, int y)
 void SceneMMO::KeyBoard(unsigned char key, int x, int y)
 {
 	mKey[key] = true;
+	if (key == ' ')
+	{
+		cs_packet_attack *attack = CONNECT.GetSendBuffAddr<cs_packet_attack>();
+		attack->header.size = sizeof(cs_packet_attack);
+		attack->header.type = CS_ATTACK;
+		CONNECT.SendPacket(sizeof(cs_packet_attack));
+		SKCONSOLE << "Attack!";
+	}
 }
 void SceneMMO::KeyBoardUp(unsigned char key, int x, int y)
 {

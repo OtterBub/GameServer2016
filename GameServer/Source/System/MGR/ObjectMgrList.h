@@ -14,7 +14,7 @@ struct ClientStruct
 	bool is_connected;
 	std::unordered_set<int> view_list;
 	std::unordered_set<int> npc_view_list;
-	std::mutex viewlist_lock;
+	//std::mutex viewlist_lock;
 	RWLock mViewListLock;
 
 	Player info;
