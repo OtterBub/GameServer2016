@@ -580,9 +580,19 @@ void Connect::ProcessPacket(unsigned char* packet, unsigned int key)
 		CLIENT(key).info.mPos.y += ((movePacket->moveDir & moveDir::MOVE_UP) >> 2)  * -speed;
 		CLIENT(key).info.mPos.y += ((movePacket->moveDir & moveDir::MOVE_DOWN) >> 3) * speed;
 
+		if (CLIENT(key).info.mPos.x < 0)
+			CLIENT(key).info.mPos.x = 0;
+		if (CLIENT(key).info.mPos.y < 0)
+			CLIENT(key).info.mPos.y = 0;
+
+			
+
 		Vector3<int> pos = CLIENT(key).info.mPos;
 
+
+		
 		if ((prevPos.x == pos.x) && (prevPos.y == pos.y)) return;
+
 
 		sc_packet_position_info playerPosPacket;
 
