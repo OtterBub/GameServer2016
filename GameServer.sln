@@ -7,8 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameClient", "GameClient\Ga
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameServer", "GameServer\GameServer.vcxproj", "{C7A1E937-04E8-4353-B04C-558C5BDBBA77}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestApp", "TestApp\TestApp.vcxproj", "{FC038C4A-738F-4B5E-B361-57A6994714B4}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FrameWork", "ClientFrameWork\FrameWork.vcxproj", "{2ABCE658-88C5-41B8-A762-E48B025E5618}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dummy_Monitor", "Dummy_Monitor\Dummy_Monitor\Dummy_Monitor.vcxproj", "{F221BC4A-E6EB-489F-8C15-3F1DBBF89C6B}"
@@ -33,12 +31,6 @@ Global
 		{C7A1E937-04E8-4353-B04C-558C5BDBBA77}.Release|Win32.ActiveCfg = Release|Win32
 		{C7A1E937-04E8-4353-B04C-558C5BDBBA77}.Release|Win32.Build.0 = Release|Win32
 		{C7A1E937-04E8-4353-B04C-558C5BDBBA77}.Release|x64.ActiveCfg = Release|Win32
-		{FC038C4A-738F-4B5E-B361-57A6994714B4}.Debug|Win32.ActiveCfg = Debug|Win32
-		{FC038C4A-738F-4B5E-B361-57A6994714B4}.Debug|x64.ActiveCfg = Debug|x64
-		{FC038C4A-738F-4B5E-B361-57A6994714B4}.Debug|x64.Build.0 = Debug|x64
-		{FC038C4A-738F-4B5E-B361-57A6994714B4}.Release|Win32.ActiveCfg = Release|Win32
-		{FC038C4A-738F-4B5E-B361-57A6994714B4}.Release|x64.ActiveCfg = Release|x64
-		{FC038C4A-738F-4B5E-B361-57A6994714B4}.Release|x64.Build.0 = Release|x64
 		{2ABCE658-88C5-41B8-A762-E48B025E5618}.Debug|Win32.ActiveCfg = Debug|Win32
 		{2ABCE658-88C5-41B8-A762-E48B025E5618}.Debug|x64.ActiveCfg = Debug|Win32
 		{2ABCE658-88C5-41B8-A762-E48B025E5618}.Release|Win32.ActiveCfg = Release|Win32
