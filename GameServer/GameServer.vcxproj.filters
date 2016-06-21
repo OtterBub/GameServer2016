@@ -23,7 +23,9 @@
     <ClCompile Include="Source\Object\Player.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="Source\System\MGR\DataBaseMgr.cpp" />
+    <ClCompile Include="Source\System\MGR\DataBaseMgr.cpp">
+      <Filter>System\MGR</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Common.h" />

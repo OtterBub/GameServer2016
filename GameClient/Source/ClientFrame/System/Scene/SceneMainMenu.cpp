@@ -58,7 +58,7 @@ void SceneMainMenu::Reshape(int w, int h)
 	float lHeight = lClientSize.y - 250;
 	float lButtonX = lClientSize.x / 3.f;
 
-	mButtons.AddButton("Line Bresenham", Vector2(lButtonX, lHeight + 100), 8);
+	mButtons.AddButton("MMO PLAY", Vector2(lButtonX, lHeight + 100), 10);
 	mButtons.AddButton("Firework", Vector2(lButtonX, lHeight + 50), 9);
 	mButtons.AddButton("Curve T", Vector2(lButtonX, lHeight), 1);
 	mButtons.AddButton("Curve Line", Vector2(lButtonX, lHeight - 50), 2);
@@ -67,7 +67,7 @@ void SceneMainMenu::Reshape(int w, int h)
 	mButtons.AddButton("BasicFrame", Vector2(lButtonX, lHeight - 200), 5);
 	mButtons.AddButton("SkiingBasic", Vector2(lButtonX, lHeight - 250), 6);
 	mButtons.AddButton("SkiingBonus", Vector2(lButtonX, lHeight - 300), 7);
-	mButtons.AddButton("MMO", Vector2(lButtonX, lHeight - 350), 10);
+	mButtons.AddButton("Line Bresenham", Vector2(lButtonX, lHeight - 350), 8);
 }
 
 void SceneMainMenu::Mouse(int button, int state, int x, int y)

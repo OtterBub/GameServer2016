@@ -150,7 +150,7 @@ void SceneMMO::Draw()
 			str = "HP: " + std::to_string(PLAYER(CONNECT.mMyID).HP);
 			stringList.push_back(str);
 			str = "POS: (" + std::to_string((int)PLAYER(CONNECT.mMyID).GetPosition().x);
-			str += ", " + std::to_string((int)PLAYER(CONNECT.mMyID).GetPosition().y);
+			str += ", " + std::to_string((int)PLAYER(CONNECT.mMyID).GetPosition().z);
 			str += ")";
 			stringList.push_back(str);
 
