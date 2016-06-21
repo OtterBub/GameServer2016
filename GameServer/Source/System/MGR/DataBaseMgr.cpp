@@ -72,7 +72,7 @@ void DataBaseMgr::Init()
 				SQLSetConnectAttr(hdbc, SQL_LOGIN_TIMEOUT, (SQLPOINTER)5, 0);
 
 				// Connect to data source
-				retcode = SQLConnect(hdbc, (SQLCHAR*)"odbc2", SQL_NTS, (SQLCHAR*)"sa", SQL_NTS, (SQLCHAR*)"gamedb", SQL_NTS);
+				retcode = SQLConnect(hdbc, (SQLCHAR*)"2010180020", SQL_NTS, (SQLCHAR*)"sa", SQL_NTS, (SQLCHAR*)"gamedb", SQL_NTS);
 
 				// Allocate statement handle
 				if (retcode == SQL_SUCCESS || retcode == SQL_SUCCESS_WITH_INFO) {
