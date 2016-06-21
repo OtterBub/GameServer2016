@@ -23,7 +23,16 @@ void UpdateThread()
 		Sleep(1000);
 		for (int i = 0; i < TEST_PLAYER_NUM; i++) {
 			unsigned int move_flag;
-			move_flag = rand() % 9;
+			if (rand() % 2)
+				move_flag = moveDir::MOVE_DOWN;
+			else
+				move_flag = moveDir::MOVE_UP;
+			
+			if(rand()%2)
+				move_flag |= moveDir::MOVE_RIGHT;
+			else
+				move_flag |= moveDir::MOVE_LEFT;
+
 			if (player[i].GetConnect())
 			{
 				cs_packet_move movePacket;
